@@ -1,11 +1,18 @@
 import { Suspense, lazy, useState } from "react";
-import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollManager from "./components/ScrollManager";
 import BootTerminal from "./components/BootTerminal";
 import { markBooted, shouldBoot } from "./lib/boot";
 import HomePage from "./pages/HomePage";
+import ArchivePage from "./pages/ArchivePage";
 import {
   getProjectBySlug,
   getProjectByLegacySlug,
@@ -32,11 +39,19 @@ function LegacyProjectRedirect() {
 
 function App() {
   const [booting, setBooting] = useState(shouldBoot);
+  const location = useLocation();
 
   const handleBootDone = () => {
     markBooted();
     setBooting(false);
   };
+
+  // The redesigned continuous archive owns "/" and is fully self-contained
+  // (its own header, frame and footer, its own token/style scope). Every
+  // legacy multi-page route keeps the original shell below, untouched.
+  if (location.pathname === "/") {
+    return <ArchivePage />;
+  }
 
   return (
     <div className="app-shell">

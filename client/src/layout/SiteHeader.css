@@ -1,0 +1,162 @@
+/* Frozen global header (art-design.md §8) — restrained, quiet,
+   part of the same frame as every section. */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header__inner {
+  min-height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding-block: 0.75rem;
+}
+
+/* ---- Left identity block ---- */
+.site-header__identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  line-height: 1.2;
+}
+
+.site-header__name {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.site-header__handle {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.site-header__sector {
+  color: var(--text-muted);
+}
+
+/* ---- Right navigation cluster ---- */
+.site-header__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.site-header__nav-list {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+.site-header__nav-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  padding-block: 0.35rem;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-micro) var(--ease-standard),
+    border-color var(--dur-micro) var(--ease-standard);
+}
+
+.site-header__nav-num {
+  color: var(--text-muted);
+}
+
+.site-header__nav-link:hover {
+  color: var(--text-primary);
+}
+
+/* Active section — restrained orange emphasis (§8).
+   Only the landing state is marked in Phase 1; real tracking is Phase 3. */
+.site-header__nav-link[aria-current="true"] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.site-header__nav-link[aria-current="true"] .site-header__nav-num {
+  color: var(--accent);
+}
+
+/* ---- Secondary utilities ---- */
+.site-header__utils {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.6rem, 1.4vw, 1.1rem);
+  padding-left: clamp(1rem, 2vw, 2rem);
+  border-left: 1px solid var(--line);
+}
+
+.site-header__util {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color var(--dur-micro) var(--ease-standard);
+}
+
+.site-header__util:hover {
+  color: var(--text-secondary);
+}
+
+.site-header__util[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.site-header__util[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =============================================================
+   Graceful degrade below desktop. This is NOT the authored
+   mobile menu (Phase 5) — the numbered anchors simply wrap and
+   the non-essential utilities drop away so nothing overflows.
+   ============================================================= */
+
+@media (max-width: 1100px) {
+  .site-header__utils {
+    gap: 0.75rem;
+  }
+  .site-header__util--mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .site-header__inner {
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+  }
+  .site-header__nav {
+    width: 100%;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .site-header__nav-list {
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header__utils {
+    padding-left: 0;
+    border-left: none;
+  }
+  /* Keep only the section index + Resume; RM/SND/reload are
+     non-essential until Phase 3/5. */
+  .site-header__util:not([href]) {
+    display: none;
+  }
+}

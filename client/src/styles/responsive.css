@@ -1,0 +1,134 @@
+/* =============================================================
+   Shared responsive layout frame + section rhythm.
+   Built only from clamp()/min()/max()/minmax()/grid — no fixed
+   design-canvas scaling (§6). All sections align to the same
+   left/right anchors via .frame.
+   ============================================================= */
+
+/* ---- The one shared horizontal content frame (§7) ----
+   Every section header, body and the global header/footer align
+   to these anchors. */
+.frame {
+  width: 100%;
+  max-width: calc(var(--content-max) + (var(--gutter) * 2));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---- Section shell ----
+   Content-driven height. NOT forced to 100vh (§7, §22). */
+.section {
+  position: relative;
+  padding-block: var(--section-py);
+}
+
+.section + .section {
+  /* Hairline keeps the continuous-material read while separating
+     states — no background swap, so no black band is possible. */
+  border-top: 1px solid var(--line);
+}
+
+/* Home may approach a full opening viewport (§7) — but via the
+   small-viewport unit and only as a minimum, so short content
+   still can't leave an empty lower half. */
+.section--opening {
+  min-height: calc(100svh - var(--header-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+/* ---- Section eyebrow: archive-style state label (§1, §8) ---- */
+.section__eyebrow {
+  display: block;
+  margin-bottom: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.section__title {
+  font-size: var(--text-h2);
+  max-width: 20ch;
+}
+
+.section__intro {
+  margin-top: var(--space-md);
+  font-size: var(--text-lead);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  max-width: 46ch;
+}
+
+/* ---- Two-column editorial composition (Home / About) ----
+   ~57% content / ~34% side, collapsing cleanly. The side column
+   is constrained so a portrait/preview can never become
+   IMAX-sized (§9, §11, §22). */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+
+.split__aside {
+  width: 100%;
+  max-width: 420px;
+  justify-self: end;
+}
+
+/* ---- Generic responsive column set (Stack / Contact meta) ---- */
+.cols-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.cols-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+/* =============================================================
+   Breakpoints — values are implementation concerns (§3) and are
+   deliberately conservative so the desktop targets 1920/1536/
+   1440/1366 all use the full composition.
+   ============================================================= */
+
+/* Tablet / narrow laptop: collapse the editorial split. */
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 6vw, 3rem);
+  }
+  .split__aside {
+    justify-self: start;
+    max-width: 360px;
+  }
+  .cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Phone: single column, no forced opening viewport, damp large type.
+   This is NOT the authored mobile pass (Phase 5) — just a safe
+   degrade: prevent overflow, keep readable padding (§21). */
+@media (max-width: 560px) {
+  .archive {
+    --section-py: clamp(2.75rem, 12vw, 3.5rem);
+    /* Rein in the display step so the hero headline is not giant
+       on a 390px screen. */
+    --text-display: clamp(2.1rem, 1.4rem + 4vw, 2.6rem);
+    --text-h2: clamp(1.65rem, 1.3rem + 2vw, 2rem);
+  }
+  .section--opening {
+    min-height: 0;
+  }
+  .cols-3 {
+    grid-template-columns: 1fr;
+  }
+}

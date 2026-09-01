@@ -1,0 +1,104 @@
+/* =============================================================
+   Design tokens — "A builder's living archive"
+   Canonical values from art-design.md §4–§7, §15.
+   Scoped to .archive so the legacy multi-page routes keep their
+   own visual system untouched.
+   ============================================================= */
+
+.archive {
+  /* ---- Surface / background (§4) ---- */
+  --bg: #15110f;            /* continuous warm near-black page ground   */
+  --bg-soft: #1c1713;       /* barely-there lift, used sparingly        */
+  --surface: #1c1815;       /* raised panels / preview frames           */
+
+  /* ---- Foreground (§4) ---- */
+  --text-primary: #efe8dc;
+  --text-secondary: #b8afa3;
+  --text-muted: #777067;
+
+  /* ---- Accent — used sparingly (§4) ---- */
+  --accent: #c6632c;
+  --accent-quiet: rgba(198, 99, 44, 0.16);
+
+  /* ---- Lines / hairlines ---- */
+  --line: rgba(239, 232, 220, 0.12);
+  --line-strong: rgba(239, 232, 220, 0.22);
+
+  /* ---- State colours (§4) ---- */
+  --state-success: #7f9a6f;   /* muted green   */
+  --state-maintained: #6f8695; /* muted steel-blue */
+
+  /* ---- Selection ---- */
+  --selection-bg: rgba(198, 99, 44, 0.28);
+  --selection-fg: var(--text-primary);
+
+  /* ---- Typography families (§5) ---------------------------------
+     No webfonts are bundled and the brief prefers no new external
+     dependencies, so these are resilient system stacks:
+       display  -> editorial serif (Georgia leads: literary, highly
+                   readable, not luxury-fashion exaggerated)
+       body     -> calm humanist sans
+       mono     -> archive / system / navigation metadata
+     ------------------------------------------------------------- */
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Palatino",
+    "Book Antiqua", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", "Segoe UI Mono",
+    Consolas, "Liberation Mono", monospace;
+
+  /* ---- Type scale (§5, §6) — clamp()-driven, tuned so body copy
+     is immediately comfortable at 100% zoom on a 15–16" laptop and
+     metadata never becomes microscopic. ------------------------- */
+  --text-meta: clamp(0.8125rem, 0.77rem + 0.2vw, 0.9rem);   /* ~13–14.5px */
+  --text-sm: clamp(0.9rem, 0.86rem + 0.2vw, 1rem);          /* ~14.5–16px */
+  --text-body: clamp(1rem, 0.95rem + 0.28vw, 1.15rem);      /* ~16–18.5px */
+  --text-lead: clamp(1.1rem, 1rem + 0.5vw, 1.4rem);         /* intro copy */
+  --text-h4: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+  --text-h3: clamp(1.3rem, 1.1rem + 1vw, 1.9rem);
+  --text-h2: clamp(1.9rem, 1.45rem + 2.1vw, 3rem);          /* section head */
+  --text-display: clamp(2.5rem, 1.7rem + 4vw, 4.5rem);      /* hero head   */
+
+  --leading-tight: 1.08;
+  --leading-snug: 1.28;
+  --leading-body: 1.65;
+
+  --tracking-meta: 0.14em;   /* mono labels        */
+  --tracking-tight: -0.02em; /* large serif display */
+
+  /* ---- Spacing scale ---- */
+  --space-2xs: 0.375rem;
+  --space-xs: 0.625rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  /* ---- Shared layout frame (§6, §7) ---- */
+  --content-max: 1280px;                       /* inner content ceiling   */
+  --gutter: clamp(1.25rem, 5vw, 5rem);         /* consistent outer gutter */
+  --header-h: clamp(3.75rem, 3rem + 2.5vw, 5rem);
+
+  /* ---- Section rhythm — content-driven, never forced to 100vh ---- */
+  --section-py: clamp(3.5rem, 6vw, 6.5rem);
+
+  /* ---- Radii ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+
+  /* ---- Focus ring (§8, §18) ---- */
+  --focus-ring: 2px solid var(--accent);
+  --focus-offset: 3px;
+
+  /* ---- Motion (§15) — honour prefers-reduced-motion elsewhere ---- */
+  --dur-micro: 150ms;
+  --dur-state: 280ms;
+  --dur-major: 520ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---- Z layers ---- */
+  --z-header: 100;
+  --z-overlay: 200;
+}

@@ -1,0 +1,183 @@
+/* =============================================================
+   Global foundation for the continuous archive.
+   Loaded after index.css. Only a few genuinely app-wide rules
+   live here (background continuity, media defaults); everything
+   visual is scoped to .archive so legacy routes are untouched.
+   ============================================================= */
+
+/* ---- Background continuity (§4) ------------------------------
+   The warm ground is painted on html AND body AND #root so there
+   is never an uncovered strip — before React mounts, between
+   sections, or past the footer. Value is hard-coded (not a token)
+   because it must apply outside the .archive scope too. */
+html,
+body,
+#root {
+  background-color: #15110f;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  /* Kill any chance of a horizontal scrollbar from sub-pixel /
+     transform overflow without clipping sticky positioning. */
+  overflow-x: clip;
+}
+
+/* Sensible media defaults */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+  display: block;
+}
+
+/* =============================================================
+   Archive scope
+   ============================================================= */
+
+.archive {
+  background-color: var(--bg);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.archive *,
+.archive *::before,
+.archive *::after {
+  box-sizing: border-box;
+}
+
+/* ---- Typography defaults (§5) ---- */
+.archive h1,
+.archive h2,
+.archive h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.archive h4,
+.archive h5,
+.archive h6 {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.archive p {
+  margin: 0;
+}
+
+/* Comfortable line length by default (§5). :where() keeps this at zero
+   specificity so any section-level max-width override wins cleanly. */
+.archive :where(p) {
+  max-width: 62ch;
+}
+
+.archive a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.archive ul,
+.archive ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.archive button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* ---- Mono metadata label — one reusable primitive (§5) ----
+   Deliberately NOT micro-sized. */
+.archive .meta-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ---- Accessible focus (§8, §18) ---- */
+.archive :focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}
+.archive :focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---- Selection ---- */
+.archive ::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+/* ---- Skip link ---- */
+.archive .skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: 0;
+  transform: translateY(-120%);
+  z-index: var(--z-overlay);
+  padding: 0.6rem 1rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform var(--dur-micro) var(--ease-standard);
+}
+.archive .skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ---- Visually hidden ---- */
+.archive .u-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Reduced motion (§15) ---- */
+@media (prefers-reduced-motion: reduce) {
+  .archive *,
+  .archive *::before,
+  .archive *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
