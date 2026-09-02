@@ -1,0 +1,214 @@
+/* =============================================================
+   Project file — /projects/:slug in the archive visual language.
+   Tokens/primitives come from the imported .archive scope; only the
+   page-specific composition lives here.
+   ============================================================= */
+
+.project-file {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+}
+
+/* ---- Slim top bar: identity + back to archive ---- */
+.project-file__bar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.project-file__bar-inner {
+  min-height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 0.55rem;
+}
+.project-file__identity {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.project-file__handle {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.project-file__back {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0.15rem;
+  transition: color var(--dur-micro) var(--ease-standard),
+    border-color var(--dur-micro) var(--ease-standard);
+}
+.project-file__back:hover,
+.project-file__back:focus-visible {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ---- Body ---- */
+.project-file__main {
+  flex: 1;
+  width: 100%;
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-content: start;
+}
+.project-file__main > * {
+  max-width: 68ch;
+}
+
+.project-file__head {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: var(--space-md);
+}
+.project-file__title {
+  font-size: var(--text-h2);
+  max-width: 20ch;
+}
+.project-file__eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--text-h4);
+  line-height: var(--leading-snug);
+  color: var(--text-secondary);
+  max-width: 40ch;
+}
+.project-file__lead {
+  font-size: var(--text-lead);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  max-width: 52ch;
+}
+
+/* Screenshot — prominent but not fullscreen, whole image, bordered ---- */
+.project-file__shot {
+  margin: 0;
+  max-width: min(960px, 100%);
+  border: 1px solid var(--line-strong);
+  background-color: var(--bg);
+  overflow: hidden;
+}
+.project-file__shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ---- Meta strip ---- */
+.project-file__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2.75rem;
+  padding-block: clamp(0.9rem, 1.6vw, 1.2rem);
+  border-block: 1px solid var(--line);
+}
+.project-file__meta > div {
+  display: grid;
+  gap: 0.3rem;
+  max-width: 44ch;
+}
+.project-file__meta dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.project-file__meta dd {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.project-file__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--text-muted);
+  flex: none;
+}
+.project-file[data-state="live"] .project-file__dot,
+.project-file[data-state="shipped"] .project-file__dot {
+  background-color: var(--state-success);
+}
+.project-file[data-state="wip"] .project-file__dot {
+  background-color: var(--accent);
+}
+.project-file[data-state="archived"] .project-file__dot {
+  background-color: var(--state-maintained);
+}
+
+/* ---- Text blocks ---- */
+.project-file__block {
+  display: grid;
+  gap: 0.75rem;
+}
+.project-file__h {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.project-file__p {
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--text-secondary);
+  max-width: 62ch;
+}
+.project-file__p + .project-file__p {
+  margin-top: 0.5rem;
+}
+.project-file__note {
+  font-family: var(--font-display);
+  font-style: italic;
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent);
+}
+.project-file__list {
+  display: grid;
+  gap: 0.5rem;
+}
+.project-file__list li {
+  position: relative;
+  padding-left: 1rem;
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+  max-width: 62ch;
+}
+.project-file__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--accent);
+}
+
+.project-file__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.75rem;
+  padding-top: 0.5rem;
+}
+
+.project-file__back--foot {
+  align-self: flex-start;
+  margin-top: 1rem;
+}

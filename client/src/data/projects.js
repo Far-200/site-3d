@@ -28,9 +28,54 @@
 
 const projects = [
   {
-    slug: "aptivision",
+    // ⚠️ DATA INCOMPLETE — flagged in Phase 4.5.
+    // "The Last Website" is a SEPARATE, shipped 3D hackathon project. It is
+    // NOT this portfolio site. An earlier pass invented a "this site itself
+    // / portfolio-template experiment" description; that fabrication has
+    // been removed. The only facts currently confirmed are: it is a 3D web
+    // build, it was made for a hackathon, and it shipped. Every field below
+    // marked TODO needs the real details from the original project source
+    // (repo, devpost/submission, or the author) before launch. Do not
+    // invent replacements.
+    slug: "the-last-website",
     legacySlugs: [],
     index: "01",
+    title: "The Last Website",
+    shortTitle: "The Last Website",
+    eyebrow: "3D web — hackathon build",
+    role: null, // TODO: confirm role/contribution on the hackathon team
+    // Visitor-facing summary states only what is confirmed. No recovery /
+    // TODO language here — unavailable metadata is simply omitted in the UI.
+    summary:
+      "A 3D web experience built for a hackathon and shipped.",
+    problem: null, // TODO
+    contribution: null, // TODO
+    description: [], // TODO: restore from original submission
+    builtBecause: null, // TODO
+    technologies: [], // TODO: confirm real stack (3D web — likely WebGL/Three.js, unverified)
+    features: [],
+    projectFocus: [],
+    learnings: [],
+    nextImprovements: null,
+    liveUrl: null, // TODO: hackathon demo / deployment URL if still live
+    githubUrl: null, // TODO: source repo
+    // Real screenshot chosen from public/project_images/the-last-website/
+    // by viewing every candidate — see Phase 4.7 report.
+    image: "/project_images/the-last-website/prelude.png",
+    imageAlt:
+      "The Last Website — a dark low-poly 3D scene with a glowing monitor reading CONNECT TO SIGNAL",
+    gallery: [],
+    featured: true,
+    featuredWork: true,
+    status: "Shipped · hackathon",
+    availability: null,
+    dataComplete: false,
+    scenePreset: "orbit",
+  },
+  {
+    slug: "aptivision",
+    legacySlugs: [],
+    index: "02",
     title: "AptiVision",
     shortTitle: "AptiVision",
     eyebrow: "Reasoning-first aptitude learning system",
@@ -63,9 +108,11 @@ const projects = [
     nextImprovements: null,
     liveUrl: null,
     githubUrl: null,
-    image: "/projects/aptivision.jpg",
+    image: "/project_images/aptivision/Home.png",
+    imageAlt:
+      "AptiVision landing screen — 'Learn Aptitude Visually' with a live train-speed simulator preview",
     gallery: [],
-    featured: true,
+    featured: false,
     featuredWork: true,
     status: null,
     availability: "Source / case study",
@@ -74,7 +121,7 @@ const projects = [
   {
     slug: "flowtrace",
     legacySlugs: [],
-    index: "02",
+    index: "03",
     title: "FlowTrace",
     shortTitle: "FlowTrace",
     eyebrow: "C execution and control-flow visualiser",
@@ -106,7 +153,8 @@ const projects = [
     nextImprovements: null,
     liveUrl: null,
     githubUrl: null,
-    image: "/projects/flowtrace.jpg",
+    image: null, // no screenshot supplied — text/metadata carry the record
+    imageAlt: null,
     gallery: [],
     featured: false,
     featuredWork: true,
@@ -117,7 +165,7 @@ const projects = [
   {
     slug: "folder-structure-visualizer",
     legacySlugs: ["cortex-ai"],
-    index: "03",
+    index: "04",
     title: "Folder Structure Visualizer",
     shortTitle: "Folder Visualizer",
     eyebrow: "Developer productivity utility",
@@ -157,7 +205,11 @@ const projects = [
       "Strong future upgrades would include live tree editing, more preset templates, drag-and-drop node management, custom starter kits, and a downloadable config system for different frameworks and languages.",
     liveUrl: "https://foldervisualiser.farhaankhan.dev",
     githubUrl: "https://github.com/Far-200/folder-structure-visualizer",
-    image: "/projects/folder-structure-visualizer.jpg",
+    // Folder on disk is public/project_images/folder-structure-viewer/
+    // (spelled "viewer", not the "visualizer" slug).
+    image: "/project_images/folder-structure-viewer/example_use.png",
+    imageAlt:
+      "Folder Structure Visualizer — a pasted ASCII tree on the left rendered as an interactive visual folder tree on the right",
     gallery: [
       {
         src: "/projects/folder-structure-visualizer-placement.jpg",
@@ -179,7 +231,7 @@ const projects = [
   {
     slug: "password-strength-crack-time-estimator",
     legacySlugs: ["password-estimator", "password-strength-estimator"],
-    index: "04",
+    index: "05",
     title: "Password Strength & Crack Time Estimator",
     shortTitle: "Password Estimator",
     eyebrow: "Browser-based security utility",
@@ -219,7 +271,8 @@ const projects = [
     liveUrl: "https://password.farhaankhan.dev",
     githubUrl:
       "https://github.com/Far-200/Password-Strength-Crack-Time-Estimator",
-    image: "/projects/password-strength-crack-time-estimator.jpg",
+    image: null, // no screenshot supplied — text/metadata carry the record
+    imageAlt: null,
     gallery: [],
     featured: false,
     featuredWork: true,
@@ -230,7 +283,7 @@ const projects = [
   {
     slug: "devtool",
     legacySlugs: [],
-    index: "05",
+    index: "06",
     title: "DevTool — JSON Formatter & API Tester",
     shortTitle: "DevTool",
     eyebrow: "Developer workflow utility",
@@ -271,7 +324,9 @@ const projects = [
       "Strong next upgrades would be custom request methods and headers, better error highlighting, collapsible JSON nodes, saved request history, and side-by-side request/response comparison for smoother debugging.",
     liveUrl: "https://devtool.farhaankhan.dev",
     githubUrl: "https://github.com/Far-200/DevTool",
-    image: "/projects/devtool.jpg",
+    image: "/project_images/devtool/image.png",
+    imageAlt:
+      "DevTool API Tester — a GET request with a 200 response, response time, and pretty-printed JSON",
     gallery: [],
     featured: false,
     featuredWork: false,
@@ -282,7 +337,7 @@ const projects = [
   {
     slug: "prompt-router",
     legacySlugs: [],
-    index: "06",
+    index: "07",
     title: "PromptRouter",
     shortTitle: "PromptRouter",
     eyebrow: "Privacy-first Chrome extension",
@@ -326,7 +381,9 @@ const projects = [
       "Next upgrades would include stronger prompt classification rules, better model detection across UI changes, improved provider support, cleaner onboarding, and a more polished Chrome Web Store-ready experience.",
     liveUrl: null,
     githubUrl: "https://github.com/Far-200/prompt-model-suggester",
-    image: "/projects/prompt-router.jpg",
+    image: "/project_images/prompt-router/ChatGPT_Dark_Medium_Prompt.png",
+    imageAlt:
+      "PromptRouter widget docked in the ChatGPT UI, recommending GPT-4o at 75% signal strength for a technical prompt",
     gallery: [],
     featured: false,
     featuredWork: false,
@@ -337,7 +394,7 @@ const projects = [
   {
     slug: "astra",
     legacySlugs: [],
-    index: "07",
+    index: "08",
     title: "Astra",
     shortTitle: "Astra",
     eyebrow: "Experimental desktop AI assistant",
@@ -362,7 +419,8 @@ const projects = [
     nextImprovements: null,
     liveUrl: null,
     githubUrl: null,
-    image: "/projects/astra.jpg",
+    image: null, // no screenshot supplied — text/metadata carry the record
+    imageAlt: null,
     gallery: [],
     featured: false,
     featuredWork: false,

@@ -1,4 +1,8 @@
+import { useRef } from "react";
 import usePageMeta from "../lib/usePageMeta";
+import { ArchivePrefsProvider } from "../lib/archivePrefs";
+import { useArchivePrefs } from "../lib/archivePrefsContext";
+import useSpatialRig from "../lib/useSpatialRig";
 import SiteHeader from "../layout/SiteHeader";
 import ArchiveFooter from "../layout/ArchiveFooter";
 import HomeSection from "../sections/HomeSection";
@@ -13,17 +17,25 @@ import "../styles/responsive.css";
 import "../sections/sections.css";
 
 // The continuous archive — one page, five states (art-design.md §7).
-// Foundation only: structure, tokens, typography, frame, header/nav,
-// section flow. No 3D, no accordion/preview/personnel/stack interaction.
+// Phase 3 added the interaction layer; Phase 4 adds a restrained CSS-only
+// spatial layer (perspective, per-record depth, one shared pointer rig).
+// No WebGL / R3F Canvas — CSS transforms carry the depth cleanly (§8).
 
-function ArchivePage() {
-  usePageMeta(
-    "Farhaan Khan — builder's living archive",
-    "Farhaan Khan — full-stack developer. A continuous archive of full-stack apps, developer tools, and AI-assisted systems.",
-  );
+function ArchiveShell() {
+  const { motionReduced } = useArchivePrefs();
+  const rootRef = useRef(null);
+
+  // One shared pointer source for the whole archive's spatial layer;
+  // fully disabled under reduced motion (and, inside the hook, for
+  // coarse pointers and hidden tabs).
+  useSpatialRig(rootRef, { enabled: !motionReduced });
 
   return (
-    <div className="archive">
+    <div
+      className="archive"
+      ref={rootRef}
+      data-reduced-motion={motionReduced ? "true" : "false"}
+    >
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
@@ -40,6 +52,19 @@ function ArchivePage() {
 
       <ArchiveFooter />
     </div>
+  );
+}
+
+function ArchivePage() {
+  usePageMeta(
+    "Farhaan Khan — builder's living archive",
+    "Farhaan Khan — full-stack developer. A continuous archive of full-stack apps, developer tools, and AI-assisted systems.",
+  );
+
+  return (
+    <ArchivePrefsProvider>
+      <ArchiveShell />
+    </ArchivePrefsProvider>
   );
 }
 

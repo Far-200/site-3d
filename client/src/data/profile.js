@@ -43,7 +43,6 @@ export const contact = {
 };
 
 // Canonical links, used across the header utilities and Contact actions.
-// resumeUrl points at a file that still needs to be dropped into /public.
 export const links = {
   email: "mailto:farhaabkhanff@gmail.com",
   emailAddress: "farhaabkhanff@gmail.com",

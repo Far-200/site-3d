@@ -1,35 +1,64 @@
+import { useState } from "react";
 import { identity, links } from "../data/profile";
 import { featuredWorkProjects } from "../data/projects";
+import useReveal from "../lib/useReveal";
+import Portrait from "../components/Portrait";
 
 // HOME — opening state of the builder's archive (art-design.md §9).
-// Phase 1: structural composition + hierarchy only. The right column is a
-// static PREVIEW / SELECTED WORK shell; the portrait ↔ project preview
-// crossfade and hover/focus selection are Phase 3.
+//
+// Hierarchy: a compact mono identity line (name is metadata), then the
+// large editorial-serif thesis as the visual hero, a supporting
+// paragraph, a burnt-orange primary CTA and quieter secondary actions.
+// Right: one narrow / tall PREVIEW panel — the portrait fills a
+// portrait-oriented media region with a single in-image caption; Selected
+// Work rows sit beneath as real links to /projects/:slug (hover/focus
+// previews, click navigates). Reduced motion swaps instantly.
+
+const PORTRAIT_CAPTION = "// debugging life choices_";
+
+function projectStatus(project) {
+  return project.status ?? project.availability ?? "—";
+}
 
 function HomeSection() {
+  const revealRef = useReveal();
   const selected = featuredWorkProjects.slice(0, 4);
+  const [activeSlug, setActiveSlug] = useState(null);
+
+  const active = selected.find((p) => p.slug === activeSlug) ?? null;
+
+  const clearIfLeaving = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setActiveSlug(null);
+    }
+  };
 
   return (
     <section
       id="home"
       className="section section--opening"
       aria-labelledby="home-title"
+      ref={revealRef}
     >
       <div className="frame">
         <span className="section__eyebrow">SECTOR // HOME</span>
 
-        <div className="split">
-          <div>
-            <h1 id="home-title" className="home__headline">
-              {identity.name}
-              <span className="home__role">— {identity.role}</span>
+        <div className="split split--home">
+          <div className="home__lead">
+            <p className="home__identity">
+              <span className="home__identity-name">{identity.name}</span>
+              <span aria-hidden="true"> — </span>
+              {identity.role}
+            </p>
+
+            <h1 id="home-title" className="home__thesis">
+              {identity.thesis}
             </h1>
 
-            <p className="home__thesis">{identity.thesis}</p>
             <p className="home__elaboration">{identity.elaboration}</p>
 
             <div className="home__actions">
-              <a className="link-cta" href="#projects">
+              <a className="home__cta" href="#projects">
                 View Projects <span aria-hidden="true">→</span>
               </a>
               <a
@@ -54,21 +83,115 @@ function HomeSection() {
             </div>
           </div>
 
-          <aside className="split__aside preview" aria-label="Selected work preview">
-            <p className="meta-label">Preview</p>
-            <div className="preview__frame">PORTRAIT</div>
-            <p className="preview__hint">hover selected work →</p>
+          <aside
+            className="split__aside preview"
+            aria-label="Selected work preview"
+            data-preview-active={active ? "true" : "false"}
+            onMouseLeave={() => setActiveSlug(null)}
+            onBlur={clearIfLeaving}
+          >
+            <div className="preview__head">
+              <p className="meta-label">Preview</p>
+              <p className="preview__hint">
+                {active ? "selected work" : "hover selected work →"}
+              </p>
+            </div>
+
+            <div className="preview__stage">
+              <div
+                className="preview__portrait"
+                data-active={active ? "false" : "true"}
+                aria-hidden={active ? "true" : undefined}
+              >
+                <Portrait variant="home" eager />
+                <span className="preview__portrait-caption" aria-hidden="true">
+                  {PORTRAIT_CAPTION}
+                </span>
+              </div>
+
+              <div
+                className="preview__project"
+                data-active={active ? "true" : "false"}
+                data-has-image={active?.image ? "true" : "false"}
+                aria-hidden={active ? undefined : "true"}
+              >
+                {active && (
+                  <>
+                    {active.image && (
+                      <span className="preview__shot">
+                        <img
+                          src={active.image}
+                          alt={active.imageAlt ?? `${active.title} screenshot`}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </span>
+                    )}
+                    <span className="preview__project-body">
+                      <span className="preview__project-cat meta-label">
+                        {active.featured ? "FLAGSHIP" : active.eyebrow}
+                      </span>
+                      <span className="preview__project-title">
+                        {active.title}
+                      </span>
+                      <span className="preview__project-status">
+                        <span
+                          className="archive-record__dot"
+                          aria-hidden="true"
+                        />
+                        {projectStatus(active)}
+                      </span>
+                      {!active.image && (
+                        <span className="preview__project-summary">
+                          {active.summary}
+                        </span>
+                      )}
+                    </span>
+                  </>
+                )}
+              </div>
+            </div>
 
             <div className="selected-work">
-              <p className="meta-label">Selected Work</p>
-              {selected.map((project) => (
-                <div className="selected-work__item" key={project.slug}>
-                  <span className="selected-work__title">{project.title}</span>
-                  <span className="selected-work__status">
-                    {project.status ?? project.availability ?? "—"}
-                  </span>
-                </div>
-              ))}
+              <p className="meta-label" id="selected-work-label">
+                Selected Work
+              </p>
+              <ul
+                className="selected-work__list"
+                aria-labelledby="selected-work-label"
+              >
+                {selected.map((project) => {
+                  const isActive = project.slug === activeSlug;
+                  return (
+                    <li key={project.slug}>
+                      <a
+                        className="selected-work__item"
+                        href={`/projects/${project.slug}`}
+                        aria-label={`${project.title} — open project file`}
+                        data-active={isActive ? "true" : undefined}
+                        onMouseEnter={() => setActiveSlug(project.slug)}
+                        onFocus={() => setActiveSlug(project.slug)}
+                      >
+                        <span className="selected-work__idx">
+                          {project.index}
+                        </span>
+                        <span className="selected-work__line">
+                          <span className="selected-work__title">
+                            {project.shortTitle ?? project.title}
+                          </span>
+                          <span className="selected-work__status">
+                            {projectStatus(project)}
+                          </span>
+                        </span>
+                        <span
+                          className="selected-work__cue"
+                          aria-hidden="true"
+                        />
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           </aside>
         </div>

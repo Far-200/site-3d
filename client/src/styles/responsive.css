@@ -20,6 +20,10 @@
 .section {
   position: relative;
   padding-block: var(--section-py);
+  /* A nav anchor lands the section eyebrow comfortably below the sticky
+     header — offset is derived from the real header height token plus a
+     breathing gap, so it holds at every width (§8, Phase 4.6 §2). */
+  scroll-margin-top: calc(var(--header-h) + var(--space-md));
 }
 
 .section + .section {
@@ -28,21 +32,26 @@
   border-top: 1px solid var(--line);
 }
 
-/* Home may approach a full opening viewport (§7) — but via the
-   small-viewport unit and only as a minimum, so short content
-   still can't leave an empty lower half. */
+/* Home fills close to the opening viewport (§7) but the composition sits
+   just below the header rather than being floated to dead-centre — that
+   centring was the source of the large void under the name (Phase 4.5
+   §2/§3). Any slack now falls to the foot as intentional negative space. */
+/* Home-only. A gentle floor for short content; the composition's own
+   height drives the section on every desktop target, so this never opens
+   a dead band (Home §9). Top-aligned: no gap above the eyebrow, no forced
+   void below. */
 .section--opening {
-  min-height: calc(100svh - var(--header-h));
+  min-height: clamp(26rem, 58vh, 38rem);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  justify-content: flex-start;
+  padding-block: clamp(2.25rem, 4vw, 3.5rem) clamp(2.5rem, 4.5vw, 4rem);
 }
 
 /* ---- Section eyebrow: archive-style state label (§1, §8) ---- */
 .section__eyebrow {
   display: block;
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--eyebrow-gap);
   font-family: var(--font-mono);
   font-size: var(--text-meta);
   letter-spacing: var(--tracking-meta);
@@ -52,7 +61,7 @@
 
 .section__title {
   font-size: var(--text-h2);
-  max-width: 20ch;
+  max-width: 24ch;
 }
 
 .section__intro {
@@ -60,7 +69,7 @@
   font-size: var(--text-lead);
   color: var(--text-secondary);
   line-height: 1.5;
-  max-width: 46ch;
+  max-width: 52ch;
 }
 
 /* ---- Two-column editorial composition (Home / About) ----
@@ -69,8 +78,22 @@
    IMAX-sized (§9, §11, §22). */
 .split {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 5rem);
+  /* Frozen editorial balance (§9 55–60 / 32–36, §11 55–58 / 32–36).
+     Home's preview panel is given more authority in Phase 4.5 — see
+     .split--home below. */
+  grid-template-columns: minmax(0, 1.68fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4.5vw, 4.5rem);
+  align-items: start;
+}
+
+/* Home: a wide left thesis block and a narrow / tall PREVIEW panel. The
+   left column takes the flexible remainder (~60–65% at desktop), the
+   preview panel is ~300–380px — narrower but taller — not 480px (Home
+   §10). Slack falls to the right margin. */
+.split--home {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  justify-content: start;
+  gap: clamp(2rem, 4.5vw, 4.5rem);
   align-items: start;
 }
 
@@ -78,6 +101,18 @@
   width: 100%;
   max-width: 420px;
   justify-self: end;
+}
+
+.split--home .split__aside {
+  max-width: none;
+  justify-self: stretch;
+}
+
+/* About's side column is a personnel stack, not a preview panel — kept a
+   touch narrower than Home's, but still a substantial ~33% record system
+   rather than a thin margin note (§11 32–36%). */
+.split--about .split__aside {
+  max-width: 400px;
 }
 
 /* ---- Generic responsive column set (Stack / Contact meta) ---- */
@@ -98,6 +133,22 @@
    deliberately conservative so the desktop targets 1920/1536/
    1440/1366 all use the full composition.
    ============================================================= */
+
+/* Home-only: stack before the large thesis and the tall preview panel run
+   out of shared width (the panel must not sit beside cramped hero copy,
+   and the thesis must not be shrunk just to keep two columns — Home §13).
+   Stacked DOM order is eyebrow → identity → thesis → paragraph → actions
+   → preview. */
+@media (max-width: 1140px) {
+  .split--home {
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vw, 3rem);
+  }
+  .split--home .split__aside {
+    justify-self: start;
+    max-width: 30rem;
+  }
+}
 
 /* Tablet / narrow laptop: collapse the editorial split. */
 @media (max-width: 900px) {

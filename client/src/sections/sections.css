@@ -1,96 +1,330 @@
-/* Structural shells for the five archive states. Phase 1 establishes
-   geometry + hierarchy only — no accordion, preview, personnel or stack
-   interaction yet (those are Phase 3). */
+/* =============================================================
+   Section compositions.
+   Phase 2 built the frozen visual language; Phase 3 the interaction
+   layer; Phase 4 the CSS spatial depth; Phase 4.5 this desktop
+   composition + motion polish (art-design.md §7–§13, §15, §17).
+   Reduced motion and the reveal system are handled in global.css.
+   ============================================================= */
 
-/* ---- HOME ------------------------------------------------------ */
-.home__headline {
-  font-size: var(--text-display);
-  max-width: 16ch;
+/* =============================================================
+   HOME (§9)
+   ============================================================= */
+.split--home {
+  /* stable editorial top alignment — never centred one side against the
+     other (§11). Column ratio + aside width live in responsive.css. */
+  align-items: start;
 }
 
-.home__role {
-  display: block;
-  margin-top: var(--space-sm);
+/* Identity is metadata: one compact mono line, not a display heading
+   (§1). Not microscopic. */
+.home__identity {
   font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  letter-spacing: var(--tracking-meta);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
+.home__identity-name {
+  color: var(--text-secondary);
+}
 
+/* The thesis is the visual hero — large editorial italic serif (§2). */
 .home__thesis {
-  margin-top: var(--space-lg);
+  margin-top: clamp(1.5rem, 2.4vw, 2rem);
   font-family: var(--font-display);
-  font-size: var(--text-h3);
-  line-height: var(--leading-snug);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2rem, 1rem + 4vw, 4rem);
+  line-height: 1.12;
+  letter-spacing: var(--tracking-tight);
   color: var(--text-primary);
-  max-width: 22ch;
+  max-width: 17ch;
+  text-wrap: balance;
 }
 
 .home__elaboration {
-  margin-top: var(--space-md);
+  margin-top: clamp(1.5rem, 2.4vw, 2rem);
   font-size: var(--text-body);
-  max-width: 52ch;
+  max-width: 46ch;
 }
 
 .home__actions {
-  margin-top: var(--space-lg);
+  margin-top: clamp(2rem, 3.5vw, 2.75rem);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem 1.5rem;
+  gap: 0.9rem 1.4rem;
 }
 
-/* ---- PREVIEW / SELECTED WORK panel (static shell) ---- */
+/* Primary CTA — restrained burnt-orange fill, near-square corners, no
+   pill / gradient / glow (§4). */
+.home__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background-color: var(--accent);
+  border-radius: 2px;
+  transition: filter var(--dur-micro) var(--ease-standard);
+}
+.home__cta:hover,
+.home__cta:focus-visible {
+  filter: brightness(1.09);
+}
+.home__cta:focus-visible {
+  outline-color: var(--text-primary);
+}
+
+/* ---- PREVIEW + SELECTED WORK — one coherent right-side object (§8) ---- */
 .preview {
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   background-color: var(--bg-soft);
-  padding: clamp(1.25rem, 2vw, 1.75rem);
-}
-
-.preview__frame {
-  aspect-ratio: 4 / 5;
-  max-height: 55vh;
+  padding: clamp(0.9rem, 1.2vw, 1.15rem);
   display: grid;
-  place-items: center;
-  border: 1px solid var(--line);
-  background-color: var(--surface);
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  letter-spacing: var(--tracking-meta);
+  gap: clamp(0.8rem, 1.1vw, 1rem);
+  /* a hair of 2D pointer parallax — a physical archive display (§9). */
+  transform: translate(
+    calc(var(--rig-px) * -3px),
+    calc(var(--rig-py) * -2px)
+  );
+  box-shadow: var(--depth-shadow-rest);
+  transition: transform var(--dur-micro) linear,
+    box-shadow var(--dur-state) var(--ease-standard);
+}
+.preview[data-preview-active="true"] {
+  box-shadow: var(--depth-shadow-raised);
 }
 
-.preview__hint {
-  margin-top: 0.75rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  color: var(--text-muted);
-}
-
-.selected-work {
-  margin-top: var(--space-md);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--line);
-}
-
-.selected-work__item {
+.preview__head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  padding-block: 0.55rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.preview__hint {
   font-family: var(--font-mono);
   font-size: var(--text-meta);
+  color: var(--text-muted);
 }
-.selected-work__item + .selected-work__item {
+
+/* The media region is PORTRAIT-oriented (tall, not a landscape box). The
+   portrait fills it; a selected project's screenshot is contained inside
+   it against the archive ground. One region, no nested media rectangles
+   (§5, §7, §8). */
+.preview__stage {
+  position: relative;
+  border: 1px solid var(--line-strong);
+  background-color: var(--surface);
+  overflow: hidden;
+  height: clamp(300px, 40vh, 360px);
+}
+
+.preview__portrait,
+.preview__project {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity var(--dur-state) var(--ease-standard),
+    transform var(--dur-state) var(--ease-standard);
+}
+.preview__portrait[data-active="false"],
+.preview__project[data-active="false"] {
+  opacity: 0;
+  transform: translateY(5px);
+  pointer-events: none;
+}
+.preview__portrait[data-active="true"],
+.preview__project[data-active="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Portrait mode: the photo fills the tall media region (§6). ---- */
+.preview__portrait {
+  background-color: var(--surface);
+}
+.preview__portrait .portrait-img {
+  width: 100%;
+  height: 100%;
+}
+.preview__portrait-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.4rem clamp(0.8rem, 1.6vw, 1.1rem) 0.65rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  /* subtle functional bottom fade for caption legibility only (§6) */
+  background: linear-gradient(
+    to top,
+    rgba(21, 17, 15, 0.82),
+    rgba(21, 17, 15, 0)
+  );
+}
+
+/* ---- Project mode: contain the landscape screenshot against the archive
+   ground rather than crop it to fill the portrait region (§7). ---- */
+.preview__project {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  overflow: hidden;
+}
+.preview__project[data-has-image="false"] {
+  gap: 0.5rem;
+  padding: clamp(1rem, 1.6vw, 1.4rem);
+  background-color: var(--bg-soft);
+}
+
+.preview__shot {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.preview__shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: saturate(0.94) contrast(1.02);
+}
+
+.preview__project-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.preview__project[data-has-image="true"] .preview__project-body {
+  padding: 0.5rem clamp(0.75rem, 1.3vw, 1rem) 0.6rem;
+  background-color: var(--bg);
   border-top: 1px solid var(--line);
 }
-.selected-work__title {
+.preview__project[data-has-image="false"] .preview__project-body {
+  gap: 0.4rem;
+}
+.preview__project-cat {
+  color: var(--accent);
+}
+.preview__project-title {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  line-height: var(--leading-snug);
+}
+.preview__project[data-has-image="false"] .preview__project-title {
+  font-size: var(--text-h4);
+}
+.preview__project-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--text-muted);
+}
+.preview__project-summary {
+  font-size: var(--text-sm);
   color: var(--text-secondary);
+  overflow: hidden;
+}
+
+/* ---- Selected Work — each row is a link to /projects/:slug; hover /
+   focus previews, click opens the file (§4). Two-line archival
+   composition: [nn] Title over the quieter status, not a table (§5). ---- */
+.selected-work {
+  padding-top: clamp(0.75rem, 1.1vw, 1rem);
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0.55rem;
+}
+
+.selected-work__list {
+  display: grid;
+}
+.selected-work__list li + li {
+  border-top: 1px solid var(--line);
+}
+
+.selected-work__item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2.25ch minmax(0, 1fr) 3px;
+  grid-template-areas: "idx line cue";
+  column-gap: 0.75rem;
+  align-items: baseline;
+  padding-block: 0.5rem;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color var(--dur-micro) var(--ease-standard);
+}
+
+.selected-work__idx {
+  grid-area: idx;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--text-muted);
+}
+.selected-work__line {
+  grid-area: line;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.selected-work__title {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  transition: color var(--dur-micro) var(--ease-standard);
 }
 .selected-work__status {
+  font-family: var(--font-mono);
+  font-size: calc(var(--text-meta) - 0.5px);
   color: var(--text-muted);
+}
+.selected-work__status::before {
+  content: " · ";
+  color: var(--text-muted);
+}
+
+/* Non-colour selection cue: a right-edge rule that grows in for the
+   previewed / focused row, alongside the serif title going accent
+   (§5, §18). */
+.selected-work__cue {
+  grid-area: cue;
+  align-self: stretch;
+  width: 3px;
+  background-color: transparent;
+  transform: scaleY(0.35);
+  transition:
+    background-color var(--dur-micro) var(--ease-standard),
+    transform var(--dur-micro) var(--ease-standard);
+}
+.selected-work__item:hover,
+.selected-work__item:focus-visible {
+  background-color: var(--bg-soft);
+}
+.selected-work__item:hover .selected-work__title,
+.selected-work__item:focus-visible .selected-work__title,
+.selected-work__item[data-active="true"] .selected-work__title {
+  color: var(--accent);
+}
+.selected-work__item:hover .selected-work__cue,
+.selected-work__item:focus-visible .selected-work__cue,
+.selected-work__item[data-active="true"] .selected-work__cue {
+  background-color: var(--accent);
+  transform: scaleY(1);
 }
 
 /* ---- Shared inline link / button primitives ---- */
@@ -105,7 +339,8 @@
   color: var(--text-primary);
   border-bottom: 1px solid var(--accent);
   padding-bottom: 0.2rem;
-  transition: color var(--dur-micro) var(--ease-standard);
+  transition: color var(--dur-micro) var(--ease-standard),
+    letter-spacing var(--dur-micro) var(--ease-standard);
 }
 .link-cta:hover {
   color: var(--accent);
@@ -127,47 +362,275 @@
   border-bottom-color: var(--line-strong);
 }
 
-/* ---- Metadata block list (About / Contact) ---- */
-.meta-list {
-  display: grid;
-  gap: var(--space-md);
+/* ---- Archive ledger — labelled record system (About / Contact) (§11) ---- */
+.ledger {
+  margin-top: var(--space-lg);
+  max-width: 42rem;
+  border-top: 1px solid var(--line);
 }
-.meta-list__row {
+.ledger__row {
   display: grid;
-  gap: 0.3rem;
+  grid-template-columns: minmax(9ch, 13ch) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: baseline;
+  padding-block: clamp(0.7rem, 1.3vw, 1rem);
+  border-bottom: 1px solid var(--line);
 }
-.meta-list__value {
+.ledger__label {
+  color: var(--accent);
+}
+.ledger__value {
   font-size: var(--text-body);
   color: var(--text-secondary);
 }
 
-/* ---- PROJECTS: static archive shelf ---- */
+/* =============================================================
+   PROJECTS — horizontal archive, FIXED SHELF + overlay expansion (§10)
+   The resting 8-slot shelf never changes — width, height, gap, position.
+   On hover / focus a LARGER preview of the SAME project appears as an
+   absolute overlay inside the shelf's own vertical band, visually
+   covering the neighbouring records horizontally. Nothing reflows: no
+   sibling moves, no clearance above the shelf, no shelf resize. The
+   overlay lives in the same <a>, so hover stays true moving into it and
+   a click anywhere navigates. Entirely CSS-driven — no React state.
+   ============================================================= */
 .archive-shelf {
-  margin-top: var(--space-lg);
-  border-top: 1px solid var(--line);
+  margin-top: var(--space-lg); /* normal editorial spacing — no hover-UI reservation */
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  border: 1px solid var(--line-strong);
+  background-color: var(--line-strong); /* shows through the seams */
+  min-height: clamp(240px, 30vh, 300px);
+  /* the overlay must be able to spill over sibling slots (§14) — nothing
+     in this chain clips, and edge overlays are anchored inward so no
+     horizontal page scrollbar appears. */
+  overflow: visible;
+  /* a hair of pointer parallax, 2D translate only */
+  transform: translate(
+    calc(var(--rig-px) * 3px),
+    calc(var(--rig-py) * 2px)
+  );
+  transition: transform var(--dur-micro) linear;
 }
 
+/* Every slot is the same size, always — equal flex, no width/basis/grow
+   change ever (§1, §2). The <li> is the positioning context for its own
+   overlay; the <a> is the visible resting card. */
 .archive-record {
-  display: grid;
-  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: clamp(1rem, 2.5vw, 2.5rem);
-  padding-block: clamp(1rem, 2vw, 1.5rem);
-  border-bottom: 1px solid var(--line);
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+}
+/* Lift the hovered record's whole slot (incl. its overlay) above every
+   sibling. Layout-neutral — z-index only. */
+.archive-record:hover,
+.archive-record:focus-within {
+  z-index: 5;
 }
 
+.archive-record__link {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.8rem;
+  padding: clamp(0.95rem, 1.3vw, 1.3rem) clamp(0.7rem, 0.85vw, 0.95rem);
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  background-color: var(--bg-soft);
+  background-image: linear-gradient(
+    180deg,
+    rgba(239, 232, 220, 0.03),
+    transparent 42%
+  );
+  box-shadow: var(--depth-shadow-rest);
+}
+.archive-record__link:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -3px;
+}
+
+/* The resting content is a display:contents wrapper so filing / title /
+   state stay direct flex children of the link (keeps the column layout
+   here and the ≤1300px row layout working unchanged). */
+.archive-record__rest {
+  display: contents;
+}
+
+.archive-record__filing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--line-strong);
+}
 .archive-record__num {
+  font-family: var(--font-mono);
+  font-size: var(--text-body);
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+.archive-record__flag {
+  font-family: var(--font-mono);
+  font-size: calc(var(--text-meta) - 1px);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Spine title: authored shortTitle, at most two lines, never a mid-word
+   break (§5, §12). */
+.archive-record__title {
+  flex: 0 1 auto;
+  font-family: var(--font-display);
+  font-size: clamp(0.8rem, 0.72rem + 0.32vw, 0.98rem);
+  line-height: 1.22;
+  color: var(--text-secondary);
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.archive-record__state {
+  margin-top: auto; /* pinned to the foot */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: var(--font-mono);
   font-size: var(--text-meta);
   color: var(--text-muted);
 }
 
-.archive-record__body {
-  display: grid;
-  gap: 0.3rem;
+/* ---- Overlay expansion (§3–§12) --------------------------------------
+   Absolute inside the <li>: top:0 / height:100% keeps it locked to the
+   shelf's vertical band (never above it). Fixed width, so neighbours are
+   covered, not pushed. Hidden + slightly scaled at rest; fades/scales in
+   from its own slot on hover or keyboard focus. */
+.archive-record__overlay {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: clamp(300px, 26vw, 380px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: clamp(0.8rem, 1vw, 1.05rem);
+  background-color: var(--surface);
+  border: 1px solid var(--line-strong);
+  /* burnt-orange top edge + a stronger-but-restrained foreground shadow —
+     the one place a heavier shadow is wanted (§10). No glow / gradient. */
+  box-shadow:
+    inset 0 3px 0 var(--accent),
+    0 26px 55px -20px rgba(0, 0, 0, 0.72),
+    0 8px 20px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96);
+  pointer-events: none;
+  transition: opacity 200ms ease-out,
+    transform 200ms ease-out,
+    visibility 0s linear 200ms;
+}
+.archive-record__link:hover .archive-record__overlay,
+.archive-record__link:focus-visible .archive-record__overlay {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  pointer-events: auto;
+  transition: opacity 200ms ease-out,
+    transform 200ms ease-out,
+    visibility 0s linear 0s;
 }
 
-.archive-record__cat {
+/* Source-based alignment (§4/§8): edge records grow inward from their own
+   slot, middle records grow symmetrically about theirs. */
+.archive-record__overlay[data-align="left"] {
+  left: 0;
+  transform-origin: left center;
+}
+.archive-record__overlay[data-align="right"] {
+  right: 0;
+  transform-origin: right center;
+}
+.archive-record__overlay[data-align="center"] {
+  left: 50%;
+  margin-left: calc(clamp(300px, 26vw, 380px) / -2);
+  transform-origin: center center;
+}
+
+/* Reduced motion: appear immediately, no scale animation (§16). The
+   global rule already zeroes the opacity/visibility transitions. */
+.archive[data-reduced-motion="true"] .archive-record__overlay {
+  transform: none;
+}
+
+.archive-record__overlay .archive-record__filing {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding-bottom: 0.5rem;
+}
+.archive-record__ov-title {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.24rem);
+  line-height: 1.2;
+  color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.archive-record__ov-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--text-muted);
+}
+.archive-record__ov-shot {
+  flex: 1 1 auto;
+  min-height: 46px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background-color: var(--bg);
+}
+.archive-record__ov-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.archive-record__ov-summary {
+  font-size: var(--text-meta);
+  line-height: 1.45;
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+/* With a screenshot present, keep the summary to two lines so the shot
+   and OPEN FILE stay inside the shelf-height band. */
+.archive-record__overlay:has(.archive-record__ov-shot)
+  .archive-record__ov-summary {
+  -webkit-line-clamp: 2;
+}
+.archive-record__ov-open {
+  margin-top: auto;
   font-family: var(--font-mono);
   font-size: var(--text-meta);
   letter-spacing: var(--tracking-meta);
@@ -175,20 +638,27 @@
   color: var(--accent);
 }
 
-.archive-record__title {
-  font-family: var(--font-display);
-  font-size: var(--text-h4);
-  color: var(--text-primary);
+.archive-record__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--text-muted);
+  flex: none;
+}
+.archive-record[data-state="live"] .archive-record__dot,
+.archive-record[data-state="shipped"] .archive-record__dot {
+  background-color: var(--state-success);
+}
+.archive-record[data-state="wip"] .archive-record__dot {
+  background-color: var(--accent);
+}
+.archive-record[data-state="archived"] .archive-record__dot {
+  background-color: var(--state-maintained);
 }
 
-.archive-record__status {
-  font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-/* ---- ABOUT ---- */
+/* =============================================================
+   ABOUT — identity + personnel composition (§11)
+   ============================================================= */
 .about__statement {
   margin-top: var(--space-md);
   font-family: var(--font-display);
@@ -198,34 +668,161 @@
   max-width: 24ch;
 }
 
+.about__aside {
+  display: grid;
+  gap: var(--space-md);
+  /* subtle pointer parallax, 2D translate only (no preserve-3d) */
+  transform: translate(
+    calc(var(--rig-px) * 3px),
+    calc(var(--rig-py) * 2px)
+  );
+  transition: transform var(--dur-micro) linear;
+}
+
 .about__portrait {
   margin: 0;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   background-color: var(--surface);
+  overflow: hidden;
+  /* nudged up a little in Phase 4.8 §10 for balance — still not dominant */
+  max-width: clamp(164px, 21vw, 224px);
+  transition: transform var(--dur-state) var(--ease-standard);
 }
-.about__portrait img {
+/* when the personnel file opens the portrait eases fractionally back */
+.about__aside[data-personnel-open="true"] .about__portrait {
+  transform: translateY(4px) scale(0.985);
+}
+.about__portrait :is(img, .portrait-plate) {
+  display: block;
   width: 100%;
+}
+.portrait-img--about {
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  filter: grayscale(0.35) contrast(1.02);
+  object-position: 50% 18%;
 }
 
 .personnel {
-  margin-top: var(--space-md);
-  padding: var(--space-sm) 0 0;
-  border-top: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  border: 1px solid var(--line-strong);
+  background-color: var(--bg-soft);
+  padding: clamp(1.05rem, 1.6vw, 1.45rem);
+  display: grid;
+  gap: 0.85rem;
+  box-shadow: var(--depth-shadow-rest);
+  transition: transform var(--dur-state) var(--ease-standard),
+    box-shadow var(--dur-state) var(--ease-standard),
+    border-color var(--dur-state) var(--ease-standard);
 }
-.personnel__hint {
-  font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  color: var(--text-muted);
+.personnel[data-open="true"] {
+  transform: translateY(-3px) scale(1.008);
+  box-shadow: var(--depth-shadow-raised);
+  border-color: var(--accent);
 }
 
-/* ---- STACK ---- */
+.personnel__toggle-btn {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line-strong);
+  text-align: left;
+}
+.personnel__label {
+  flex: 1 1 auto;
+}
+.personnel__ref {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.personnel__toggle {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--accent);
+  transition: transform var(--dur-micro) var(--ease-standard);
+}
+.personnel__toggle-btn:hover .personnel__toggle {
+  transform: translateX(2px);
+}
+
+/* Always-visible teaser fact so the collapsed state has structure (§5). */
+.personnel__teaser {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(8ch, 10ch) minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: baseline;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--line);
+}
+.personnel__teaser dt {
+  color: var(--accent);
+}
+.personnel__teaser dd {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* Restrained disclosure — grid-rows 0fr→1fr + opacity, no page flip. */
+.personnel__reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--dur-state) var(--ease-standard),
+    opacity var(--dur-state) var(--ease-standard),
+    visibility 0s linear var(--dur-state);
+}
+.personnel__reveal > * {
+  overflow: hidden;
+  min-height: 0;
+}
+.personnel__reveal[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows var(--dur-state) var(--ease-standard),
+    opacity var(--dur-state) var(--ease-standard);
+}
+
+.personnel__facts {
+  display: grid;
+  gap: 0.7rem;
+  padding-top: 0.8rem;
+}
+.personnel__row {
+  display: grid;
+  grid-template-columns: minmax(8ch, 10ch) minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: baseline;
+}
+.personnel__value {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* =============================================================
+   STACK — three-column taxonomy + contextual detail panel (§12)
+   ============================================================= */
+.stack-layout {
+  margin-top: var(--space-lg);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.stack-taxonomy {
+  margin-top: 0;
+}
+
 .stack-group__title {
   font-family: var(--font-mono);
   font-size: var(--text-meta);
@@ -233,7 +830,7 @@
   text-transform: uppercase;
   color: var(--accent);
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--line-strong);
 }
 .stack-group__blurb {
   margin-top: 0.75rem;
@@ -243,40 +840,351 @@
 }
 .stack-group__items {
   margin-top: var(--space-md);
+  margin-left: -0.6rem; /* bleed hit-area left; right edge stays flush */
   display: grid;
-  gap: 0.55rem;
+  gap: 0.15rem;
 }
 .stack-group__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
   font-size: var(--text-body);
   color: var(--text-secondary);
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+  border-left: 2px solid transparent;
+  transition:
+    color var(--dur-micro) var(--ease-standard),
+    background-color var(--dur-micro) var(--ease-standard),
+    border-color var(--dur-micro) var(--ease-standard),
+    transform var(--dur-micro) var(--ease-standard);
+}
+.stack-group__item:hover,
+.stack-group__item:focus-visible {
+  color: var(--text-primary);
 }
 
-/* ---- CONTACT ---- */
+.stack-group__cue {
+  width: 0.6rem;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-2px);
+  transition:
+    opacity var(--dur-micro) var(--ease-standard),
+    transform var(--dur-micro) var(--ease-standard);
+}
+.stack-group__cue::before {
+  content: "\25B8"; /* ▸ */
+}
+.stack-group__item[aria-pressed="true"] {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+  background-color: var(--accent-quiet);
+  transform: translateX(3px);
+}
+.stack-group__item[aria-pressed="true"] .stack-group__cue {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.stack-detail {
+  border: 1px solid var(--line-strong);
+  background-color: var(--bg-soft);
+  padding: clamp(1.2rem, 1.9vw, 1.7rem);
+  box-shadow: var(--depth-shadow-rest);
+  display: grid;
+  gap: 0.85rem;
+  align-content: start;
+}
+.stack-detail__kicker {
+  color: var(--accent);
+}
+.stack-detail__name {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  color: var(--text-primary);
+}
+.stack-detail__blurb {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.stack-detail__used-label {
+  margin-top: 0.4rem;
+}
+.stack-detail__used {
+  display: grid;
+  gap: 0.4rem;
+}
+.stack-detail__used li {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  padding-left: 0.9rem;
+  position: relative;
+}
+.stack-detail__used li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--accent);
+}
+.stack-detail__none {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* =============================================================
+   CONTACT — the designed ending (§13)
+   ============================================================= */
+.section--closing {
+  padding-bottom: clamp(2.25rem, 4vw, 3.25rem);
+}
+
+.contact__grid {
+  margin-top: var(--space-lg);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+
 .contact__headline {
   font-size: var(--text-h2);
-  max-width: 18ch;
+  max-width: 16ch;
 }
-.contact__actions {
+
+.contact__meta {
   margin-top: var(--space-lg);
+}
+
+.contact__actions {
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 1.9rem);
+  align-content: start;
+}
+
+.contact__primary {
+  display: grid;
+  gap: 0.35rem;
+  padding: clamp(1rem, 1.8vw, 1.4rem) clamp(1.1rem, 2vw, 1.5rem);
+  border: 1px solid var(--line-strong);
+  background-color: var(--bg-soft);
+  box-shadow: var(--depth-shadow-rest);
+  transition: border-color var(--dur-micro) var(--ease-standard),
+    background-color var(--dur-micro) var(--ease-standard),
+    box-shadow var(--dur-state) var(--ease-standard);
+}
+.contact__primary:hover,
+.contact__primary:focus-visible {
+  border-color: var(--accent);
+  background-color: var(--surface);
+  box-shadow: var(--depth-shadow-raised);
+}
+.contact__primary-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.contact__primary-value {
+  font-family: var(--font-display);
+  font-size: var(--text-h4);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.contact__secondary {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem 1.75rem;
+  gap: 0.85rem 1.75rem;
+  padding-left: clamp(1.1rem, 2vw, 1.5rem);
 }
+
 .contact__closing {
-  margin-top: var(--space-xl);
+  margin-top: var(--space-lg);
   font-family: var(--font-mono);
   font-size: var(--text-meta);
   letter-spacing: 0.06em;
   color: var(--text-muted);
 }
 
-@media (max-width: 560px) {
-  .archive-record {
-    grid-template-columns: 2.5rem minmax(0, 1fr);
-    row-gap: 0.5rem;
+/* =============================================================
+   Portrait — the real photo (components/Portrait.jsx). Fills its slot
+   with an authored crop; PortraitPlate below is the load-failure
+   fallback only.
+   ============================================================= */
+.portrait-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.portrait-img--home {
+  /* fills the tall portrait media region; the crop shows full head,
+     shoulders / hoodie and natural headroom — biased slightly up so the
+     face sits comfortably above the caption fade (§6) */
+  object-fit: cover;
+  object-position: 50% 32%;
+  filter: saturate(0.96) contrast(1.02);
+}
+.portrait-img--about {
+  filter: saturate(0.96) contrast(1.02);
+}
+
+/* =============================================================
+   Portrait plate — authored placeholder for a failed portrait load
+   (see components/PortraitPlate.jsx).
+   ============================================================= */
+/* Authored placeholder — clean, non-broken, replaced once a real
+   portrait exists (Phase 4.6 §7). No overflow, no clipped label. */
+.portrait-plate {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: clamp(0.9rem, 1.6vw, 1.35rem);
+  overflow: hidden;
+  background-color: var(--surface);
+  background-image: linear-gradient(
+    160deg,
+    rgba(239, 232, 220, 0.04),
+    transparent 55%
+  );
+}
+.portrait-plate--about {
+  min-height: 0;
+  aspect-ratio: 4 / 5;
+}
+.portrait-plate__mark {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.6rem + 2.2vw, 3.25rem);
+  line-height: 1;
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+}
+.portrait-plate__foot {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.portrait-plate__name {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.portrait-plate__status {
+  font-family: var(--font-mono);
+  font-size: calc(var(--text-meta) - 1px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.portrait-plate--about .portrait-plate__mark {
+  font-size: clamp(1.75rem, 1.4rem + 1.8vw, 2.6rem);
+}
+
+/* =============================================================
+   Safe degrade below desktop. NOT the authored mobile pass (Phase 5)
+   — the horizontal archive folds to stacked rows and two-column
+   panels drop to one column so nothing overflows.
+   ============================================================= */
+@media (max-width: 1100px) {
+  .stack-layout {
+    grid-template-columns: 1fr;
   }
-  .archive-record__status {
-    grid-column: 2;
+  .stack-detail {
+    max-width: 520px;
+  }
+  .contact__grid {
+    grid-template-columns: 1fr;
+  }
+  .contact__secondary {
+    padding-left: 0;
+  }
+}
+
+/* Below the horizontal desktop archive: a vertically stacked archive —
+   NOT cards. Each record is a full-width native link to /projects/:slug:
+   [nn · flag] Title [● state]. No hover lift on coarse pointers; a tap
+   navigates straight to the file (§13). Authored mobile is Phase 5. */
+@media (max-width: 1300px) {
+  .archive-shelf {
+    flex-direction: column;
+    min-height: 0;
+    gap: 1px;
+    transform: none;
+  }
+  .archive-record {
+    flex: none;
+  }
+  /* No overlay on the stacked archive — a tap navigates straight to the
+     file (§15). The touch fallback is the vertical list itself. */
+  .archive-record__overlay {
+    display: none;
+  }
+  .archive-record__link {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1.25rem;
+    padding: 1rem clamp(1rem, 3vw, 1.5rem);
+  }
+  /* orange edge cue only, no lift, on coarse pointers */
+  .archive-record__link:hover,
+  .archive-record__link:focus-visible {
+    box-shadow: inset 0 2px 0 var(--accent), var(--depth-shadow-rest);
+  }
+  .archive-record__filing {
+    order: 1;
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .archive-record__state {
+    order: 2;
+    margin: 0 0 0 auto;
+  }
+  .archive-record__title {
+    order: 3;
+    flex: 1 1 100%;
+    font-size: var(--text-h4);
+    color: var(--text-primary);
+  }
+}
+
+@media (max-width: 560px) {
+  .selected-work__item {
+    grid-template-columns: 2.25ch minmax(0, 1fr);
+    grid-template-areas: "idx line";
+    column-gap: 0.6rem;
+  }
+  .selected-work__line {
     white-space: normal;
+  }
+  .selected-work__cue {
+    display: none;
+  }
+  .ledger__row {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+  .personnel__teaser,
+  .personnel__row {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
   }
 }

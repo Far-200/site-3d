@@ -170,14 +170,108 @@ video {
   border: 0;
 }
 
-/* ---- Reduced motion (§15) ---- */
+/* ---- Reduced motion (§15) ----
+   Driven by the [data-reduced-motion] attribute that <ArchiveShell> writes
+   from the shared preference (OS setting + the header RM override). The
+   media query is kept as a no-JS fallback, but yields when the user has
+   explicitly turned motion back ON (data-reduced-motion="false"), so the
+   control can override the OS for the session as the spec requires. */
+.archive[data-reduced-motion="true"] *,
+.archive[data-reduced-motion="true"] *::before,
+.archive[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .archive *,
-  .archive *::before,
-  .archive *::after {
+  .archive:not([data-reduced-motion="false"]) *,
+  .archive:not([data-reduced-motion="false"]) *::before,
+  .archive:not([data-reduced-motion="false"]) *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Belt-and-braces: neutralise the small translate/rotate affordances so a
+   reduced-motion reader never sees an un-animated element sitting offset. */
+.archive[data-reduced-motion="true"] .preview__portrait,
+.archive[data-reduced-motion="true"] .preview__project,
+.archive[data-reduced-motion="true"] .personnel__toggle {
+  transform: none !important;
+}
+/* Kill the disclosure's transition-delay too (the global rule only zeroes
+   duration), so the fact list shows/hides instantly under reduced motion. */
+.archive[data-reduced-motion="true"] .personnel__reveal {
+  transition: none !important;
+}
+
+/* ---- Spatial layer neutralised under reduced motion (§17 §9) ----
+   Every depth / tilt transform is dropped so nothing keeps drifting;
+   the state itself still reads through borders, background, shadow and
+   the layout (flex-grow / disclosure) change. */
+.archive[data-reduced-motion="true"] .preview,
+.archive[data-reduced-motion="true"] .archive-shelf,
+.archive[data-reduced-motion="true"] .archive-record,
+.archive[data-reduced-motion="true"] .about__aside,
+.archive[data-reduced-motion="true"] .about__portrait,
+.archive[data-reduced-motion="true"] .personnel,
+.archive[data-reduced-motion="true"] .stack-group__item,
+.archive[data-reduced-motion="true"] .stack-detail {
+  transform: none !important;
+}
+
+/* ---- Touch / coarse pointer: no pointer parallax, static depth kept ----
+   Belt-and-braces alongside useSpatialRig's own guard. */
+@media (hover: none), (pointer: coarse) {
+  .archive {
+    --rig-px: 0 !important;
+    --rig-py: 0 !important;
+  }
+}
+
+/* ---- Section entrance reveal (Phase 4.5 §9) --------------------------
+   A section is hidden ONLY while useReveal has actively set
+   data-revealed="false"; with no IntersectionObserver, or under reduced
+   motion, the attribute is set straight to "true" (or stays absent) so
+   content is never stuck invisible. Direct children of .frame fade + lift
+   ~10px with a light stagger; nothing animates per-word. */
+/* Uses the independent `translate` property, not `transform`, so it
+   composes with the Phase 4 spatial transforms (e.g. the archive shelf
+   tilt) instead of overriding them. */
+.archive .section > .frame > * {
+  transition:
+    opacity var(--dur-state) var(--ease-standard),
+    translate var(--dur-state) var(--ease-standard);
+}
+.archive .section[data-revealed="false"] > .frame > * {
+  opacity: 0;
+  translate: 0 10px;
+}
+.archive .section[data-revealed="true"] > .frame > * {
+  opacity: 1;
+  translate: none;
+}
+.archive .section[data-revealed="true"] > .frame > :nth-child(2) {
+  transition-delay: 40ms;
+}
+.archive .section[data-revealed="true"] > .frame > :nth-child(3) {
+  transition-delay: 75ms;
+}
+.archive .section[data-revealed="true"] > .frame > :nth-child(n + 4) {
+  transition-delay: 100ms;
+}
+
+/* Reduced motion (system or the RM control): show everything at once. */
+.archive[data-reduced-motion="true"] .section > .frame > * {
+  opacity: 1 !important;
+  translate: none !important;
+  transition: none !important;
 }
