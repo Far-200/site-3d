@@ -120,7 +120,7 @@ function HomeSection() {
             <div className="preview__head">
               <p className="meta-label">Preview</p>
               <p className="preview__hint">
-                {active ? "selected work" : "hover selected work →"}
+                {active ? "selected work" : "select work →"}
               </p>
             </div>
 

@@ -5,13 +5,17 @@ import Footer from "./components/Footer";
 import ScrollManager from "./components/ScrollManager";
 import BootTerminal from "./components/BootTerminal";
 import { markBooted, shouldBoot } from "./lib/boot";
-import HomePage from "./pages/HomePage";
 import ArchivePage from "./pages/ArchivePage";
 import ArchiveProjectPage from "./pages/ArchiveProjectPage";
 import "./App.css";
 
-// Route-level code splitting: home loads eagerly (it's the landing
-// experience), everything else on demand.
+// Route-level code splitting. The continuous archive ("/" and
+// "/projects/:slug") is the real landing experience and loads eagerly.
+// Every legacy classic-site route is lazy — including the legacy HomePage,
+// whose dependency tree pulls in Three.js / R3F / Drei (the archive
+// itself is CSS-only). Keeping it lazy keeps ~1 MB of 3D code out of the
+// primary bundle; it only downloads if a visitor reaches a legacy route.
+const HomePage = lazy(() => import("./pages/HomePage"));
 const WorkPage = lazy(() => import("./pages/WorkPage"));
 const ProjectDetailPage = lazy(() => import("./pages/ProjectDetailPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));

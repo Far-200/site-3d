@@ -22,7 +22,8 @@ export const about = {
     { label: "EXPLORING", value: "AI systems, security, 3D web" },
     { label: "OPEN TO", value: "Internships, collaborations, real dev work" },
   ],
-  // Personnel File facts — shown flat in Phase 1, expandable in Phase 3.
+  // Personnel File facts — the first row is the always-visible teaser,
+  // the rest sit behind the expand disclosure.
   personnel: [
     { label: "LOCATION", value: "India · Remote-friendly" },
     { label: "EDUCATION", value: "Computer Science — undergraduate" },

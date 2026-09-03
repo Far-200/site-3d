@@ -148,6 +148,13 @@
     justify-self: start;
     max-width: 30rem;
   }
+  /* Once the preview sits under the thesis (not beside it) its media
+     region no longer needs the full desktop height — keep the portrait
+     from looming on stacked tablet/narrow-laptop widths. The ≤720
+     authored-mobile cap takes over below this. */
+  .preview__stage {
+    height: clamp(230px, 30vw, 300px);
+  }
 }
 
 /* Tablet / narrow laptop: collapse the editorial split. */

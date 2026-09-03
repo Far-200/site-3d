@@ -6,8 +6,8 @@
 //
 // `usedIn` slugs reference data/projects.js and drive the contextual
 // detail panel. `note` is the one-line context shown in that panel.
-// Phase 2 renders the panel statically for the default selection
-// (React); per-row selection is Phase 3.
+// The panel follows the selected row live (side column on desktop,
+// inline beneath the row on mobile).
 
 export const stackGroups = [
   {

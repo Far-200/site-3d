@@ -67,7 +67,9 @@
   font-size: var(--text-meta);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--bg);
+  /* near-black on the burnt-orange fill — pure #000 clears WCAG AA (4.6:1)
+     where the warm --bg (#15110f) sat just under at ~4.1:1. */
+  color: #000;
   background-color: var(--accent);
   border-radius: 2px;
   transition: filter var(--dur-micro) var(--ease-standard);
@@ -1407,11 +1409,11 @@
     grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-areas:
       "filing state chevron"
-      "title  title chevron";
+      "title  title  title";
     align-items: center;
-    gap: 0.4rem 0.9rem;
-    padding: 0.95rem clamp(0.9rem, 3.5vw, 1.15rem);
-    min-height: 60px;
+    gap: 0.3rem 0.9rem;
+    padding: 0.8rem clamp(0.9rem, 3.5vw, 1.15rem);
+    min-height: 56px;
     text-align: left;
     background-image: linear-gradient(
       180deg,

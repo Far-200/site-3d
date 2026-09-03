@@ -12,13 +12,19 @@
   --surface: #1c1815;       /* raised panels / preview frames           */
 
   /* ---- Foreground (§4) ---- */
+  /* Relationship per art-design.md §4; exact muted value tuned up from the
+     recommended #777067 (~3.8:1 on --bg — below WCAG AA) to ~4.8:1 while
+     staying clearly the quietest tier, well under --text-secondary. */
   --text-primary: #efe8dc;
   --text-secondary: #b8afa3;
-  --text-muted: #777067;
+  --text-muted: #8a8279;
 
   /* ---- Accent — used sparingly (§4) ---- */
-  --accent: #c6632c;
-  --accent-quiet: rgba(198, 99, 44, 0.16);
+  /* Tuned up from the recommended #c6632c so small accent labels clear
+     WCAG AA on both --bg (~5.2:1) and the lifted --bg-soft panels
+     (~5.0:1); still an unmistakably burnt orange, not a brighter hue. */
+  --accent: #cf6a33;
+  --accent-quiet: rgba(207, 106, 51, 0.16);
 
   /* ---- Lines / hairlines ---- */
   --line: rgba(239, 232, 220, 0.12);

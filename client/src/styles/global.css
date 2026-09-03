@@ -160,7 +160,12 @@ video {
   max-width: 62ch;
 }
 
-.archive a {
+/* Zero-specificity reset via :where() so any component link rule (a
+   single class like .home__cta / .link-quiet) wins the cascade. A plain
+   `.archive a` selector (0,1,1) was silently overriding those — most
+   visibly forcing the burnt-orange CTA to inherit light body text
+   (~1.9:1 contrast) instead of its intended dark-on-accent. */
+.archive :where(a) {
   color: inherit;
   text-decoration: none;
 }
@@ -216,7 +221,7 @@ video {
   z-index: var(--z-overlay);
   padding: 0.6rem 1rem;
   background: var(--accent);
-  color: #fff;
+  color: #000; /* black on accent clears AA; white sat at ~3.7:1 */
   font-family: var(--font-mono);
   font-size: var(--text-meta);
   letter-spacing: 0.08em;
@@ -307,7 +312,11 @@ video {
   perspective-origin: 50% 50% !important;
 }
 .archive[data-reduced-motion="true"] .archive__atmos {
-  transform: scale(1.05) !important;
+  /* Under reduced motion the rig is already zeroed, so there is no
+     parallax translate to overscan — sit the field flush and static.
+     Matches the coarse-pointer rule below, so RM is predictable on every
+     device with no exposed edge. */
+  transform: none !important;
   animation: none !important;
 }
 
