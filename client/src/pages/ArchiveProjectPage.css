@@ -212,3 +212,39 @@
   align-self: flex-start;
   margin-top: 1rem;
 }
+
+/* =============================================================
+   PHASE 5 — project file on mobile (≤720px, art-design.md §12)
+   Tighter rhythm, comfortable measure, touch-sized links. No
+   desktop gutters (the shared .frame gutter already collapses),
+   no oversized media, no horizontal overflow. Missing data still
+   renders nothing rather than a placeholder.
+   ============================================================= */
+@media (max-width: 720px) {
+  .project-file__main {
+    padding-block: clamp(1.75rem, 6vw, 2.75rem) clamp(2rem, 8vw, 3rem);
+    gap: clamp(1.4rem, 5vw, 2rem);
+  }
+  .project-file__head {
+    margin-top: var(--space-sm);
+    gap: 0.7rem;
+  }
+  .project-file__title {
+    font-size: var(--text-h2);
+    max-width: 16ch;
+  }
+  .project-file__meta {
+    gap: 0.8rem 1.75rem;
+  }
+  .project-file__actions {
+    gap: 0.5rem 1.5rem;
+  }
+  .project-file__actions a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .project-file__bar-inner {
+    gap: 1rem;
+  }
+}

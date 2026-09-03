@@ -165,9 +165,18 @@
   }
 }
 
-/* Phone: single column, no forced opening viewport, damp large type.
-   This is NOT the authored mobile pass (Phase 5) — just a safe
-   degrade: prevent overflow, keep readable padding (§21). */
+/* ≤720: authored mobile (Phase 5). Single column throughout, no forced
+   opening viewport, damped display type. The section-level composition
+   overrides live in sections.css §"PHASE 5"; these are the frame-level
+   primitives. */
+@media (max-width: 720px) {
+  .section--opening {
+    /* content-driven — the hero's own height carries it (§7, Phase 5 §3) */
+    min-height: 0;
+    padding-block: clamp(1.75rem, 6vw, 2.75rem) clamp(2rem, 7vw, 3rem);
+  }
+}
+
 @media (max-width: 560px) {
   .archive {
     --section-py: clamp(2.75rem, 12vw, 3.5rem);
@@ -175,9 +184,6 @@
        on a 390px screen. */
     --text-display: clamp(2.1rem, 1.4rem + 4vw, 2.6rem);
     --text-h2: clamp(1.65rem, 1.3rem + 2vw, 2rem);
-  }
-  .section--opening {
-    min-height: 0;
   }
   .cols-3 {
     grid-template-columns: 1fr;

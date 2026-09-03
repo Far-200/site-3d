@@ -311,12 +311,41 @@ video {
   animation: none !important;
 }
 
-/* ---- Touch / coarse pointer: no pointer parallax, static depth kept ----
-   Belt-and-braces alongside useSpatialRig's own guard. */
+/* ---- Touch / coarse pointer (Phase 5 §11) ----
+   No pointer parallax (rig zeroed, belt-and-braces alongside
+   useSpatialRig's guard) AND the Phase 4 static depth is flattened: the
+   perspective clusters, the per-record translateZ stagger and the
+   forward-tier panels all sit on one plane. Shadows, borders and the
+   warm atmosphere field stay for visual continuity; the atmosphere drops
+   its scroll drift. Priorities on touch are stability, readability and
+   GPU/battery cost — not mouse-oriented depth theatrics. */
 @media (hover: none), (pointer: coarse) {
   .archive {
     --rig-px: 0 !important;
     --rig-py: 0 !important;
+  }
+  .archive .split--home,
+  .archive .split--about,
+  .archive .stack-layout,
+  .archive .archive-shelf {
+    perspective: none !important;
+  }
+  .archive .preview,
+  .archive .preview__stage,
+  .archive .archive-record,
+  .archive .archive-record__overlay,
+  .archive .about__aside,
+  .archive .about__portrait,
+  .archive .personnel,
+  .archive .stack-detail,
+  .archive .contact__primary {
+    transform: none !important;
+  }
+  .archive__atmos {
+    /* no parallax on touch, so the 5% overscan that hid its edges is not
+       needed — sit it flush and drop the scroll drift. */
+    transform: none !important;
+    animation: none !important;
   }
 }
 

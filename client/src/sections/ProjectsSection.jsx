@@ -1,16 +1,23 @@
+import { useState } from "react";
 import { archiveProjects } from "../data/projects";
 import useReveal from "../lib/useReveal";
 
 // PROJECTS — "ARCHIVE // 02" (art-design.md §10).
 //
-// Fixed 8-column shelf. On hover/focus a larger preview of the SAME
-// project appears as an absolute overlay inside the shelf's vertical band
-// — it visually covers neighbouring records (intentional) but nothing
-// reflows: no width/height/margin change, no vertical clearance, no
-// content above the shelf. Both the resting record and the overlay live
+// Desktop (>720px): fixed 8-column shelf. On hover/focus a larger preview
+// of the SAME project appears as an absolute overlay inside the shelf's
+// vertical band — it visually covers neighbouring records (intentional)
+// but nothing reflows. Both the resting record and the overlay live
 // inside ONE native <a href="/projects/:slug">, so hover stays true
 // moving between them and a click anywhere navigates. Pure CSS
 // (:hover / :focus-visible) — no React hover state.
+//
+// Mobile (≤720px, Phase 5): the shelf is hidden and an authored
+// stacked-expandable archive takes its place — a real <button
+// aria-expanded> per record opening ONE panel at a time (screenshot,
+// summary, status, stack, explicit OPEN FILE link). Expand and navigate
+// are separate actions. Both trees render from the same archiveProjects;
+// CSS shows exactly one per breakpoint, so the desktop DOM is untouched.
 
 function stateTone(project) {
   const value = (project.status ?? project.availability ?? "").toLowerCase();
@@ -46,6 +53,8 @@ function overlayAlign(index) {
 
 function ProjectsSection() {
   const revealRef = useReveal();
+  // Mobile accordion: one record open at a time (null = all collapsed).
+  const [openSlug, setOpenSlug] = useState(null);
 
   return (
     <section
@@ -151,6 +160,95 @@ function ProjectsSection() {
                     </span>
                   </span>
                 </a>
+              </li>
+            );
+          })}
+        </ol>
+
+        {/* ---- Mobile (≤720px): authored stacked-expandable archive ---- */}
+        <ol className="archive-stack" aria-label="Project archive">
+          {archiveProjects.map((project) => {
+            const shortTitle = project.shortTitle ?? project.title;
+            const status = project.status ?? project.availability ?? "—";
+            const open = openSlug === project.slug;
+            const panelId = `m-record-${project.slug}`;
+            const stack = project.technologies?.length
+              ? project.technologies
+              : null;
+
+            return (
+              <li
+                className="archive-stack__record"
+                key={project.slug}
+                data-state={stateTone(project)}
+                data-open={open ? "true" : "false"}
+              >
+                <button
+                  type="button"
+                  className="archive-stack__summary"
+                  aria-expanded={open}
+                  aria-controls={panelId}
+                  onClick={() =>
+                    setOpenSlug((current) =>
+                      current === project.slug ? null : project.slug,
+                    )
+                  }
+                >
+                  <span className="archive-stack__filing">
+                    <span className="archive-stack__num">{project.index}</span>
+                    {project.featured && (
+                      <span className="archive-stack__flag">Flagship</span>
+                    )}
+                  </span>
+                  <span className="archive-stack__title">{shortTitle}</span>
+                  <span className="archive-stack__state">
+                    <span className="archive-record__dot" aria-hidden="true" />
+                    {stateCue(project)}
+                  </span>
+                  <span className="archive-stack__chevron" aria-hidden="true" />
+                </button>
+
+                <div
+                  className="archive-stack__panel"
+                  id={panelId}
+                  data-open={open ? "true" : "false"}
+                  role="region"
+                  aria-label={`${project.title} — details`}
+                >
+                  <div className="archive-stack__panel-inner">
+                    {project.image && (
+                      <span className="archive-stack__shot">
+                        <img
+                          src={project.image}
+                          alt={project.imageAlt ?? ""}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </span>
+                    )}
+                    {project.summary && (
+                      <p className="archive-stack__text">{project.summary}</p>
+                    )}
+                    <dl className="archive-stack__meta">
+                      <div>
+                        <dt>Status</dt>
+                        <dd>{status}</dd>
+                      </div>
+                      {stack && (
+                        <div>
+                          <dt>Stack</dt>
+                          <dd>{stack.join(" · ")}</dd>
+                        </div>
+                      )}
+                    </dl>
+                    <a
+                      className="archive-stack__open"
+                      href={`/projects/${project.slug}`}
+                    >
+                      Open file <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </div>
               </li>
             );
           })}

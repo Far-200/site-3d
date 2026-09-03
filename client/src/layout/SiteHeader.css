@@ -7,7 +7,11 @@
    visual height ≈ 80–90px and --header-h reflects that (the sections'
    scroll-margin-top is derived from the same token). */
 
-.site-header {
+/* Scoped to .archive: the legacy multi-page stylesheet (App.css) also
+   defines a bare `.site-header` (z-index:50, translucent, blurred). This
+   selector's extra specificity keeps the archive header opaque and above
+   the mobile menu regardless of bundle order. */
+.archive .site-header {
   position: sticky;
   top: 0;
   z-index: var(--z-header);
@@ -146,8 +150,39 @@
   cursor: not-allowed;
 }
 
+/* ---- The authored mobile menu toggle lives in the bar; hidden on the
+   full desktop composition. ---- */
+.site-header__menu-btn {
+  display: none;
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 0.5rem 0.7rem;
+  margin-inline-start: auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  min-height: 40px;
+  transition: color var(--dur-micro) var(--ease-standard),
+    border-color var(--dur-micro) var(--ease-standard);
+}
+.site-header__menu-btn:hover {
+  color: var(--text-primary);
+}
+.site-header[data-menu-open="true"] .site-header__menu-btn {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---- The mobile menu panel — hidden by default, drawn only ≤720px. ---- */
+.site-menu {
+  display: none;
+}
+
 /* =============================================================
-   Graceful degrade below desktop. NOT the authored mobile menu.
+   Graceful degrade below desktop (721px+). NOT the authored mobile menu.
    ============================================================= */
 
 /* Smaller laptops: drop the nav indices, keep labels. */
@@ -157,15 +192,9 @@
   }
 }
 
-@media (max-width: 1120px) {
-  .site-header__util--mobile {
-    display: none;
-  }
-}
-
-/* Below the desktop composition: identity + utilities on one row, nav
-   wraps to its own full-width row. */
-@media (max-width: 940px) {
+/* Between the desktop composition and the authored mobile menu: identity
+   + utilities on one row, nav wraps to its own full-width row. */
+@media (max-width: 940px) and (min-width: 721px) {
   .site-header__inner {
     flex-wrap: wrap;
     justify-content: space-between;
@@ -185,15 +214,105 @@
   }
 }
 
-@media (max-width: 560px) {
-  .site-header__utils {
-    gap: 0.6rem;
-    padding-left: 0;
-    border-left: none;
+/* =============================================================
+   PHASE 5 — authored mobile header + menu (≤720px, art-design.md §14)
+   The desktop nav and utility strip step aside for one button and a
+   full-height panel in the archive language. The sticky bar itself
+   stays put so Menu/Close is always reachable.
+   ============================================================= */
+@media (max-width: 720px) {
+  .site-header__inner {
+    gap: 1rem;
   }
-  /* Keep only the section index + Resume; RM/SND/reload are
-     non-essential until Phase 3/5. */
-  .site-header__util:not([href]) {
+  .site-header__nav,
+  .site-header__utils {
     display: none;
+  }
+  .site-header__menu-btn {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .site-menu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-header) - 5); /* under the sticky bar */
+    padding: calc(var(--header-h) + 1.75rem) var(--gutter)
+      max(2rem, env(safe-area-inset-bottom));
+    background-color: var(--bg);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 160ms var(--ease-standard),
+      visibility 0s linear 160ms;
+  }
+  .site-menu[data-open="true"] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 160ms var(--ease-standard);
+  }
+
+  .site-menu__list {
+    display: grid;
+    gap: 0.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .site-menu__link {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1rem 0.25rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    color: var(--text-secondary);
+    transition: color var(--dur-micro) var(--ease-standard);
+  }
+  .site-menu__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: var(--tracking-meta);
+    color: var(--text-muted);
+  }
+  .site-menu__link:hover,
+  .site-menu__link:focus-visible {
+    color: var(--text-primary);
+  }
+  .site-menu__link[aria-current="true"] {
+    color: var(--accent);
+  }
+  .site-menu__link[aria-current="true"] .site-menu__num {
+    color: var(--accent);
+  }
+
+  .site-menu__utils {
+    margin-top: auto;
+    padding-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+  }
+  .site-menu__util {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color var(--dur-micro) var(--ease-standard);
+  }
+  .site-menu__util:hover,
+  .site-menu__util:focus-visible {
+    color: var(--text-secondary);
+  }
+  .site-menu__util[aria-pressed="true"] {
+    color: var(--accent);
   }
 }

@@ -1291,3 +1291,327 @@
     gap: 0.2rem;
   }
 }
+
+/* =============================================================
+   PHASE 5 — AUTHORED MOBILE COMPOSITION  (≤720px, art-design.md §14)
+   Purely additive. The Phase 1–4 desktop rules above are untouched and
+   nothing in this block applies above 720px. Mobile is authored, not a
+   scaled desktop: Projects becomes a stacked expandable archive, Stack
+   moves its detail inline, media gets an explicit size ceiling, and the
+   Phase 4 depth transforms flatten on the coarse pointer.
+   ============================================================= */
+
+/* Mobile-only elements are inert everywhere until the breakpoint. */
+.archive-stack,
+.stack-group__detail-host,
+.stack-detail--inline,
+.selected-work__go {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .archive {
+    --section-py: clamp(2.5rem, 8vw, 3.25rem);
+    --eyebrow-gap: clamp(1.5rem, 5vw, 2.25rem);
+  }
+
+  /* ---- HOME (§9) — headline before media; portrait has a ceiling ---- */
+  .split--home {
+    gap: clamp(1.75rem, 6vw, 2.5rem);
+    perspective: none;
+  }
+  .home__thesis {
+    margin-top: clamp(1rem, 3vw, 1.5rem);
+    font-size: clamp(1.9rem, 1.15rem + 3.6vw, 2.6rem);
+    max-width: 18ch;
+  }
+  .home__elaboration {
+    margin-top: clamp(1rem, 3vw, 1.5rem);
+  }
+  .home__actions {
+    margin-top: clamp(1.5rem, 5vw, 2rem);
+  }
+  .preview {
+    transform: none;
+  }
+  /* the portrait/media region must not fill the screen (§9) */
+  .preview__stage {
+    height: clamp(190px, 46vw, 260px);
+  }
+  .preview__stage,
+  .about__aside,
+  .about__portrait,
+  .personnel,
+  .stack-detail {
+    transform: none !important; /* flatten Phase 4 translateZ on touch */
+  }
+
+  /* Selected Work rows: the 3px edge cue becomes an explicit "Open →" on
+     the active row so a second tap has a visible target (§9). */
+  .selected-work__item {
+    grid-template-columns: 2.25ch minmax(0, 1fr) auto;
+    grid-template-areas: "idx line go";
+    column-gap: 0.75rem;
+    padding-block: 0.7rem;
+  }
+  .selected-work__line {
+    white-space: normal;
+  }
+  .selected-work__cue {
+    display: none;
+  }
+  .selected-work__go {
+    grid-area: go;
+    align-self: center;
+    display: none;
+    gap: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .selected-work__item[data-active="true"] .selected-work__go {
+    display: inline-flex;
+  }
+
+  /* ---- PROJECTS (§10, §14) — stacked expandable archive ---- */
+  .archive-shelf {
+    display: none;
+  }
+  .archive-stack {
+    display: grid;
+    margin-top: var(--space-md);
+    border: 1px solid var(--line-strong);
+    background-color: var(--line-strong); /* shows through the seams */
+    gap: 1px;
+  }
+  .archive-stack__record {
+    background-color: var(--bg-soft);
+    display: grid;
+  }
+  .archive-stack__record[data-state="live"] .archive-record__dot,
+  .archive-stack__record[data-state="shipped"] .archive-record__dot {
+    background-color: var(--state-success);
+  }
+  .archive-stack__record[data-state="wip"] .archive-record__dot {
+    background-color: var(--accent);
+  }
+  .archive-stack__record[data-state="archived"] .archive-record__dot {
+    background-color: var(--state-maintained);
+  }
+
+  .archive-stack__summary {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "filing state chevron"
+      "title  title chevron";
+    align-items: center;
+    gap: 0.4rem 0.9rem;
+    padding: 0.95rem clamp(0.9rem, 3.5vw, 1.15rem);
+    min-height: 60px;
+    text-align: left;
+    background-image: linear-gradient(
+      180deg,
+      rgba(239, 232, 220, 0.03),
+      transparent 60%
+    );
+  }
+  .archive-stack__filing {
+    grid-area: filing;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .archive-stack__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-body);
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+  }
+  .archive-stack__flag {
+    font-family: var(--font-mono);
+    font-size: calc(var(--text-meta) - 1px);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .archive-stack__title {
+    grid-area: title;
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+  .archive-stack__state {
+    grid-area: state;
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--text-muted);
+  }
+  .archive-stack__chevron {
+    grid-area: chevron;
+    width: 0.72rem;
+    height: 0.72rem;
+    border-right: 1.5px solid var(--text-muted);
+    border-bottom: 1.5px solid var(--text-muted);
+    rotate: 45deg;
+    translate: 0 -2px;
+    transition: rotate var(--dur-state) var(--ease-standard),
+      border-color var(--dur-micro) var(--ease-standard);
+  }
+  .archive-stack__record[data-open="true"] .archive-stack__chevron {
+    rotate: 225deg;
+    translate: 0 2px;
+    border-color: var(--accent);
+  }
+  .archive-stack__summary:hover .archive-stack__chevron,
+  .archive-stack__summary:focus-visible .archive-stack__chevron {
+    border-color: var(--text-secondary);
+  }
+
+  /* restrained disclosure — grid-rows 0fr→1fr, no page flip (§15) */
+  .archive-stack__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--dur-state) var(--ease-standard);
+  }
+  .archive-stack__panel[data-open="true"] {
+    grid-template-rows: 1fr;
+  }
+  .archive-stack__panel-inner {
+    overflow: hidden;
+    min-height: 0;
+    visibility: hidden;
+    display: grid;
+    gap: 0.9rem;
+    padding: 0 clamp(0.9rem, 3.5vw, 1.15rem);
+    transition: visibility 0s linear var(--dur-state);
+  }
+  .archive-stack__panel[data-open="true"] .archive-stack__panel-inner {
+    visibility: visible;
+    padding-bottom: 1.15rem;
+    transition: visibility 0s linear 0s;
+  }
+  .archive-stack__shot {
+    display: block;
+    border: 1px solid var(--line);
+    background-color: var(--bg);
+    overflow: hidden;
+    max-height: 42vh;
+  }
+  .archive-stack__shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: saturate(0.94) contrast(1.02);
+  }
+  .archive-stack__text {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    max-width: none;
+  }
+  .archive-stack__meta {
+    display: grid;
+    gap: 0.55rem;
+  }
+  .archive-stack__meta > div {
+    display: grid;
+    grid-template-columns: minmax(6ch, 8ch) minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+  .archive-stack__meta dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .archive-stack__meta dd {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+  .archive-stack__open {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--accent);
+  }
+
+  /* ---- ABOUT (§11) — natural reading sequence, quiet portrait ---- */
+  .split--about {
+    gap: clamp(1.5rem, 5vw, 2.25rem);
+    perspective: none;
+  }
+  .about__aside {
+    gap: var(--space-sm);
+  }
+  .about__portrait {
+    max-width: clamp(140px, 44vw, 190px);
+  }
+
+  /* ---- STACK (§12) — detail inline under the selected row ---- */
+  .stack-layout {
+    display: block;
+    perspective: none;
+  }
+  .cols-3.stack-taxonomy {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  .stack-detail--aside {
+    display: none;
+  }
+  .stack-group__detail-host {
+    display: block;
+  }
+  .stack-detail--inline {
+    display: grid;
+    margin: 0.5rem 0 0.35rem;
+    box-shadow: none;
+    border-color: var(--line);
+    background-color: var(--bg);
+  }
+  .stack-group__items {
+    gap: 0.1rem;
+  }
+
+  /* ---- CONTACT (§13) — comfortably tappable, ends naturally ---- */
+  .contact__grid {
+    gap: clamp(1.5rem, 6vw, 2.25rem);
+  }
+  .contact__secondary {
+    padding-left: 0;
+    gap: 0.25rem 1.75rem;
+  }
+  .contact__secondary a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .contact__closing {
+    margin-top: var(--space-md);
+  }
+
+  /* ---- FOOTER (§10 mobile) — respect the safe area, no extra void ---- */
+  .archive-footer__inner {
+    padding-bottom: max(
+      clamp(1.75rem, 3vw, 2.5rem),
+      env(safe-area-inset-bottom)
+    );
+  }
+}

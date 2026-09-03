@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { identity, links } from "../data/profile";
 import { featuredWorkProjects } from "../data/projects";
 import useReveal from "../lib/useReveal";
@@ -24,13 +24,40 @@ function HomeSection() {
   const revealRef = useReveal();
   const selected = featuredWorkProjects.slice(0, 4);
   const [activeSlug, setActiveSlug] = useState(null);
+  // Which row a touch has already "armed" for navigation. A ref, not
+  // state, so it is authoritative inside the click handler regardless of
+  // the focus-driven re-render that a tap also triggers.
+  const armedSlug = useRef(null);
 
   const active = selected.find((p) => p.slug === activeSlug) ?? null;
 
+  const clearActive = () => {
+    setActiveSlug(null);
+    armedSlug.current = null;
+  };
+
   const clearIfLeaving = (event) => {
     if (!event.currentTarget.contains(event.relatedTarget)) {
-      setActiveSlug(null);
+      clearActive();
     }
+  };
+
+  // Touch / no-hover: the first tap on a Selected Work row previews the
+  // project (no navigation); a second tap on the same, now-armed row
+  // follows the link. On hover devices the row navigates on the first
+  // click, exactly as before. Keeps taps unambiguous (art-design.md §9).
+  const handleSelectedClick = (event, slug) => {
+    const coarse =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(hover: none)").matches;
+    if (!coarse) return;
+    if (armedSlug.current === slug) {
+      armedSlug.current = null; // let this tap navigate
+      return;
+    }
+    event.preventDefault();
+    armedSlug.current = slug;
+    setActiveSlug(slug);
   };
 
   return (
@@ -87,7 +114,7 @@ function HomeSection() {
             className="split__aside preview"
             aria-label="Selected work preview"
             data-preview-active={active ? "true" : "false"}
-            onMouseLeave={() => setActiveSlug(null)}
+            onMouseLeave={clearActive}
             onBlur={clearIfLeaving}
           >
             <div className="preview__head">
@@ -171,6 +198,9 @@ function HomeSection() {
                         data-active={isActive ? "true" : undefined}
                         onMouseEnter={() => setActiveSlug(project.slug)}
                         onFocus={() => setActiveSlug(project.slug)}
+                        onClick={(event) =>
+                          handleSelectedClick(event, project.slug)
+                        }
                       >
                         <span className="selected-work__idx">
                           {project.index}
@@ -182,6 +212,9 @@ function HomeSection() {
                           <span className="selected-work__status">
                             {projectStatus(project)}
                           </span>
+                        </span>
+                        <span className="selected-work__go" aria-hidden="true">
+                          Open <span>→</span>
                         </span>
                         <span
                           className="selected-work__cue"

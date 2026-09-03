@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { stackGroups } from "../data/stack";
 import { archiveProjects } from "../data/projects";
 import { useArchivePrefs } from "../lib/archivePrefsContext";
@@ -11,8 +11,14 @@ import useReveal from "../lib/useReveal";
 // selects it (hover-select was removed in Phase 4.6 — sweeping the
 // pointer across the list thrashed the panel). The selected row gets
 // orange emphasis plus a structural cue (▸ marker + left rule). One state
-// (`selectedName`) drives the pressed row and the aria-live detail panel
-// in the same render, so they can never disagree.
+// (`selectedName`) drives the pressed row and the detail panel in the
+// same render, so they can never disagree.
+//
+// The detail panel is rendered TWICE from one <StackDetail>: once as a
+// side column (desktop) and once inline directly beneath the selected
+// row (mobile, per §12 "contextual details appear below selected item").
+// CSS shows exactly one per breakpoint; the hidden one is display:none so
+// it leaves the a11y tree and never double-announces.
 //
 // Technology → project mapping is data (`item.usedIn` slugs in
 // data/stack.js), resolved here against the project archive — no switch
@@ -30,6 +36,38 @@ function findItem(name) {
     if (item) return { group, item };
   }
   return null;
+}
+
+function StackDetail({ selected, usedIn, isExploring, variant }) {
+  return (
+    <aside
+      className={`stack-detail stack-detail--${variant}`}
+      aria-label="Selected technology detail"
+      aria-live="polite"
+    >
+      {/* Rendered directly from `selected` — no keyed remount, no
+          keyframe. One state (selectedName) drives both the pressed row
+          and this panel in the same render, so they can never disagree
+          and the content can never get stuck mid-animation. */}
+      <p className="meta-label stack-detail__kicker">{selected.group.title}</p>
+      <p className="stack-detail__name">{selected.item.name}</p>
+      <p className="stack-detail__blurb">{selected.item.note}</p>
+
+      {usedIn.length > 0 && (
+        <>
+          <p className="meta-label stack-detail__used-label">Used in</p>
+          <ul className="stack-detail__used">
+            {usedIn.map((title) => (
+              <li key={title}>{title}</li>
+            ))}
+          </ul>
+        </>
+      )}
+      {usedIn.length === 0 && isExploring && (
+        <p className="stack-detail__none">Exploring — no shipped project yet.</p>
+      )}
+    </aside>
+  );
 }
 
 function StackSection() {
@@ -79,23 +117,35 @@ function StackSection() {
                   {group.items.map((item) => {
                     const isSelected = item.name === selected?.item.name;
                     return (
-                      <li key={item.name}>
-                        <button
-                          type="button"
-                          className="stack-group__item"
-                          aria-pressed={isSelected}
-                          onFocus={() => select(item.name)}
-                          onClick={() =>
-                            select(item.name, { fromClick: true })
-                          }
-                        >
-                          <span
-                            className="stack-group__cue"
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </button>
-                      </li>
+                      <Fragment key={item.name}>
+                        <li>
+                          <button
+                            type="button"
+                            className="stack-group__item"
+                            aria-pressed={isSelected}
+                            onFocus={() => select(item.name)}
+                            onClick={() =>
+                              select(item.name, { fromClick: true })
+                            }
+                          >
+                            <span
+                              className="stack-group__cue"
+                              aria-hidden="true"
+                            />
+                            {item.name}
+                          </button>
+                        </li>
+                        {isSelected && selected && (
+                          <li className="stack-group__detail-host">
+                            <StackDetail
+                              selected={selected}
+                              usedIn={usedIn}
+                              isExploring={isExploring}
+                              variant="inline"
+                            />
+                          </li>
+                        )}
+                      </Fragment>
                     );
                   })}
                 </ul>
@@ -104,38 +154,12 @@ function StackSection() {
           </div>
 
           {selected && (
-            <aside
-              className="stack-detail"
-              aria-label="Selected technology detail"
-              aria-live="polite"
-            >
-              {/* Phase 4.6 §6: rendered directly from `selected` — no keyed
-                  remount, no keyframe. One state (selectedName) drives both
-                  the pressed row and this panel in the same render, so they
-                  can never disagree, and the content can never get stuck
-                  mid-animation. */}
-              <p className="meta-label stack-detail__kicker">
-                {selected.group.title}
-              </p>
-              <p className="stack-detail__name">{selected.item.name}</p>
-              <p className="stack-detail__blurb">{selected.item.note}</p>
-
-              {usedIn.length > 0 && (
-                <>
-                  <p className="meta-label stack-detail__used-label">Used in</p>
-                  <ul className="stack-detail__used">
-                    {usedIn.map((title) => (
-                      <li key={title}>{title}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
-              {usedIn.length === 0 && isExploring && (
-                <p className="stack-detail__none">
-                  Exploring — no shipped project yet.
-                </p>
-              )}
-            </aside>
+            <StackDetail
+              selected={selected}
+              usedIn={usedIn}
+              isExploring={isExploring}
+              variant="aside"
+            />
           )}
         </div>
       </div>
