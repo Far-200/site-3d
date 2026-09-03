@@ -18,8 +18,11 @@ import "../sections/sections.css";
 
 // The continuous archive — one page, five states (art-design.md §7).
 // Phase 3 added the interaction layer; Phase 4 adds a restrained CSS-only
-// spatial layer (perspective, per-record depth, one shared pointer rig).
-// No WebGL / R3F Canvas — CSS transforms carry the depth cleanly (§8).
+// spatial layer: one fixed background atmosphere (tier 0), localized
+// perspective on the Home preview / Projects shelf / About aside / Stack
+// panel, per-record depth on the shelf, the overlay coming forward as a
+// foreground file, and one shared pointer rig feeding CSS variables.
+// No WebGL / R3F Canvas — CSS transforms carry the depth cleanly (§8, §17).
 
 function ArchiveShell() {
   const { motionReduced } = useArchivePrefs();
@@ -36,6 +39,10 @@ function ArchiveShell() {
       ref={rootRef}
       data-reduced-motion={motionReduced ? "true" : "false"}
     >
+      {/* Tier 0 — fixed background atmosphere. Decorative only; all
+          content and navigation sit above it in the DOM. */}
+      <div className="archive__atmos" aria-hidden="true" />
+
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>

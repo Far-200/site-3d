@@ -110,11 +110,29 @@
      --rig-px / --rig-py are the shared normalized pointer position
      (-1..1) written by useSpatialRig; they default to 0 so every
      calc() resolves before the hook runs, on touch, and under RM.
-     The depth ramp is deliberately tiny (single-digit px, <=1deg). */
+     The depth ramp is deliberately tiny (single-digit px, <=1deg).
+
+     Phase 4 depth model — five tiers, one ramp, no per-element magic
+     numbers (§17). Back to front:
+       0  atmosphere   .archive__atmos — fixed field behind everything
+       1  base plane   page ground / body copy (no transform)
+       2  panels       .preview / .about__aside / .stack-detail / shelf
+       3  active        hovered / focused / open panel
+       4  foreground    the archival file overlay coming forward
+     Every consumer multiplies --rig-px/--rig-py by one of these units;
+     nothing invents its own coefficient. */
   --rig-px: 0;
   --rig-py: 0;
+  --depth-perspective: 1600px;   /* shared viewing distance for 3D clusters */
+  --rig-parallax: 3px;           /* tier-2 pointer parallax unit (2D)       */
+  --rig-parallax-soft: 1.5px;    /* damped unit for the calm lower sections */
+  --depth-tilt: 0.5deg;          /* max rig-driven rotation (tier 2–3)      */
+  --depth-lift: 7px;             /* tier-4 translateZ — overlay foreground  */
+  --atmos-parallax: 7px;         /* atmosphere counter-parallax (tier 0)    */
   --depth-shadow-rest: 0 10px 26px -14px rgba(0, 0, 0, 0.55);
   --depth-shadow-raised: 0 22px 48px -20px rgba(0, 0, 0, 0.62);
+  --depth-shadow-foreground: 0 30px 62px -22px rgba(0, 0, 0, 0.72),
+    0 10px 24px -14px rgba(0, 0, 0, 0.5);
 
   /* ---- Z layers ---- */
   --z-header: 100;

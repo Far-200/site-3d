@@ -81,23 +81,45 @@
 }
 
 /* ---- PREVIEW + SELECTED WORK — one coherent right-side object (§8) ---- */
+/* Tier 2: the preview plate sits a touch forward of the thesis on its own
+   perspective, faces the pointer by <=0.5deg and carries a few px of
+   parallax — a physical archive display mounted just off the page (§9,
+   §17). The container's perspective only bites on the plate; the thesis
+   column beside it has no 3D transform. */
+.split--home {
+  perspective: var(--depth-perspective);
+}
 .preview {
   border: 1px solid var(--line-strong);
   background-color: var(--bg-soft);
   padding: clamp(0.9rem, 1.2vw, 1.15rem);
   display: grid;
   gap: clamp(0.8rem, 1.1vw, 1rem);
-  /* a hair of 2D pointer parallax — a physical archive display (§9). */
-  transform: translate(
-    calc(var(--rig-px) * -3px),
-    calc(var(--rig-py) * -2px)
-  );
+  transform: translate3d(
+      calc(var(--rig-px) * var(--rig-parallax) * -1),
+      calc(var(--rig-py) * var(--rig-parallax) * -1),
+      0
+    )
+    rotateY(calc(var(--rig-px) * var(--depth-tilt) * -1))
+    rotateX(calc(var(--rig-py) * var(--depth-tilt)))
+    translateZ(6px);
   box-shadow: var(--depth-shadow-rest);
   transition: transform var(--dur-micro) linear,
     box-shadow var(--dur-state) var(--ease-standard);
 }
 .preview[data-preview-active="true"] {
   box-shadow: var(--depth-shadow-raised);
+}
+/* Differential parallax: the media region drifts slightly WITH the
+   pointer while the plate drifts against it, so the portrait reads as
+   recessed inside the mount rather than painted onto it. */
+.preview__stage {
+  transform: translate3d(
+    calc(var(--rig-px) * var(--rig-parallax-soft)),
+    calc(var(--rig-py) * var(--rig-parallax-soft)),
+    0
+  );
+  transition: transform var(--dur-micro) linear;
 }
 
 .preview__head {
@@ -406,12 +428,16 @@
      in this chain clips, and edge overlays are anchored inward so no
      horizontal page scrollbar appears. */
   overflow: visible;
-  /* a hair of pointer parallax, 2D translate only */
-  transform: translate(
-    calc(var(--rig-px) * 3px),
-    calc(var(--rig-py) * 2px)
-  );
-  transition: transform var(--dur-micro) linear;
+  /* Tier 2: the shelf is the archive's one real depth space (§10). Rather
+     than translate the whole shelf, it holds the perspective and the
+     viewpoint tracks the pointer a few percent — records nearer the
+     pointer face the reader fractionally more. Records carry their own
+     translateZ (below); the overlay comes forward inside the same space. */
+  perspective: var(--depth-perspective);
+  perspective-origin:
+    calc(50% + var(--rig-px) * 6%)
+    calc(50% + var(--rig-py) * 6%);
+  transition: perspective-origin var(--dur-state) var(--ease-standard);
 }
 
 /* Every slot is the same size, always — equal flex, no width/basis/grow
@@ -422,11 +448,30 @@
   flex: 1 1 0;
   min-width: 0;
   display: flex;
+  /* keep the record's own translateZ and its overlay's in one 3D space */
+  transform-style: preserve-3d;
+  transition: transform var(--dur-state) var(--ease-archive);
 }
-/* Lift the hovered record's whole slot (incl. its overlay) above every
-   sibling. Layout-neutral — z-index only. */
+/* Resting depth stagger — the shelf bows very gently toward the reader at
+   its centre; edge records sit a few px further back (§10 "inactive
+   records recede slightly"). Groups mirror the overlay alignment rule:
+   01–02 and 07–08 furthest back, 03 & 06 mid, 04–05 at the front plane. */
+.archive-record:nth-child(1),
+.archive-record:nth-child(2),
+.archive-record:nth-child(7),
+.archive-record:nth-child(8) {
+  transform: translateZ(-8px);
+}
+.archive-record:nth-child(3),
+.archive-record:nth-child(6) {
+  transform: translateZ(-3px);
+}
+/* Lift the hovered / focused record's whole slot (incl. its overlay)
+   toward the reader and above every sibling (§10 "active record moves
+   slightly toward camera"). Still layout-neutral — Z + z-index only. */
 .archive-record:hover,
 .archive-record:focus-within {
+  transform: translateZ(10px);
   z-index: 5;
 }
 
@@ -449,6 +494,9 @@
     transparent 42%
   );
   box-shadow: var(--depth-shadow-rest);
+  /* pass the shelf's 3D space through to the overlay so it can translateZ
+     forward as a foreground file rather than a flat scaled card */
+  transform-style: preserve-3d;
 }
 .archive-record__link:focus-visible {
   outline: var(--focus-ring);
@@ -537,25 +585,29 @@
      the one place a heavier shadow is wanted (§10). No glow / gradient. */
   box-shadow:
     inset 0 3px 0 var(--accent),
-    0 26px 55px -20px rgba(0, 0, 0, 0.72),
-    0 8px 20px -12px rgba(0, 0, 0, 0.5);
+    var(--depth-shadow-foreground);
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
-  transform: scale(0.96);
+  /* Tier 4: rest just behind its slot's plane and slightly small, then
+     translateZ forward + lift on activation so the file reads as being
+     drawn out of the shelf toward the reader (§10). transform-origin is
+     the anchored inner edge (below), so the forward magnification always
+     grows AWAY from the frame edge — edge overlays stay in bounds. */
+  transform: translateZ(-4px) translateY(2px) scale(0.96);
   pointer-events: none;
   transition: opacity 200ms ease-out,
-    transform 200ms ease-out,
+    transform 220ms var(--ease-archive),
     visibility 0s linear 200ms;
 }
 .archive-record__link:hover .archive-record__overlay,
 .archive-record__link:focus-visible .archive-record__overlay {
   opacity: 1;
   visibility: visible;
-  transform: scale(1);
+  transform: translateZ(var(--depth-lift)) translateY(-5px) scale(1.02);
   pointer-events: auto;
   transition: opacity 200ms ease-out,
-    transform 200ms ease-out,
+    transform 220ms var(--ease-archive),
     visibility 0s linear 0s;
 }
 
@@ -675,14 +727,24 @@
   max-width: 24ch;
 }
 
+/* Tier 2: the personnel system sits forward of the identity ledger on its
+   own perspective — portrait one layer up, the file itself lifting toward
+   the foreground when it opens (§11 "a record moving toward the
+   foreground"). The identity column has no 3D transform. */
+.split--about {
+  perspective: var(--depth-perspective);
+}
 .about__aside {
   display: grid;
   gap: var(--space-md);
-  /* subtle pointer parallax, 2D translate only (no preserve-3d) */
-  transform: translate(
-    calc(var(--rig-px) * 3px),
-    calc(var(--rig-py) * 2px)
-  );
+  transform-style: preserve-3d;
+  transform: translate3d(
+      calc(var(--rig-px) * var(--rig-parallax)),
+      calc(var(--rig-py) * var(--rig-parallax)),
+      0
+    )
+    rotateY(calc(var(--rig-px) * var(--depth-tilt) * -1))
+    rotateX(calc(var(--rig-py) * var(--depth-tilt)));
   transition: transform var(--dur-micro) linear;
 }
 
@@ -693,11 +755,12 @@
   overflow: hidden;
   /* nudged up a little in Phase 4.8 §10 for balance — still not dominant */
   max-width: clamp(164px, 21vw, 224px);
+  transform: translateZ(6px);
   transition: transform var(--dur-state) var(--ease-standard);
 }
 /* when the personnel file opens the portrait eases fractionally back */
 .about__aside[data-personnel-open="true"] .about__portrait {
-  transform: translateY(4px) scale(0.985);
+  transform: translateZ(3px) translateY(4px) scale(0.985);
 }
 .about__portrait :is(img, .portrait-plate) {
   display: block;
@@ -721,7 +784,7 @@
     border-color var(--dur-state) var(--ease-standard);
 }
 .personnel[data-open="true"] {
-  transform: translateY(-3px) scale(1.008);
+  transform: translateZ(9px) translateY(-3px) scale(1.008);
   box-shadow: var(--depth-shadow-raised);
   border-color: var(--accent);
 }
@@ -824,6 +887,10 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
   gap: clamp(2rem, 4vw, 3.5rem);
   align-items: start;
+  /* Tier 2: the contextual panel reads as a card pulled slightly off the
+     index it belongs to (§12). Perspective bites only on .stack-detail;
+     the taxonomy list keeps its 2D pressed-row shift. */
+  perspective: var(--depth-perspective);
 }
 
 .stack-taxonomy {
@@ -911,6 +978,16 @@
      EXPLORING selection with no reflow and no dead space; only the few
      projection-heavy BUILD WITH entries still grow past it. */
   min-height: 17.5rem;
+  /* Tier 2 depth: forward of the index, a few px of pointer parallax and
+     a sub-degree turn toward the cursor. */
+  transform: translate3d(
+      calc(var(--rig-px) * var(--rig-parallax-soft)),
+      calc(var(--rig-py) * var(--rig-parallax-soft)),
+      0
+    )
+    rotateY(calc(var(--rig-px) * var(--depth-tilt) * -1))
+    translateZ(4px);
+  transition: transform var(--dur-micro) linear;
 }
 .stack-detail__kicker {
   color: var(--accent);
@@ -989,7 +1066,16 @@
   border: 1px solid var(--line-strong);
   background-color: var(--bg-soft);
   box-shadow: var(--depth-shadow-rest);
-  transition: border-color var(--dur-micro) var(--ease-standard),
+  /* Spatial intensity tapers toward the close (§13): only the email card
+     carries a whisper of parallax — half the unit, no tilt, no Z — and
+     the footer stays flat and anchored. */
+  transform: translate3d(
+    calc(var(--rig-px) * var(--rig-parallax-soft) * -1),
+    calc(var(--rig-py) * var(--rig-parallax-soft) * -1),
+    0
+  );
+  transition: transform var(--dur-micro) linear,
+    border-color var(--dur-micro) var(--ease-standard),
     background-color var(--dur-micro) var(--ease-standard),
     box-shadow var(--dur-state) var(--ease-standard);
 }
