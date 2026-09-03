@@ -28,37 +28,55 @@
 
 const projects = [
   {
-    // ⚠️ DATA INCOMPLETE — flagged in Phase 4.5.
-    // "The Last Website" is a SEPARATE, shipped 3D hackathon project. It is
-    // NOT this portfolio site. An earlier pass invented a "this site itself
-    // / portfolio-template experiment" description; that fabrication has
-    // been removed. The only facts currently confirmed are: it is a 3D web
-    // build, it was made for a hackathon, and it shipped. Every field below
-    // marked TODO needs the real details from the original project source
-    // (repo, devpost/submission, or the author) before launch. Do not
-    // invent replacements.
+    // Record 01 factual data restored from the original project repository:
+    // github.com/Far-200/the-last-website (its README and package.json are
+    // the authoritative source). "The Last Website" is a SEPARATE, shipped
+    // 3D web project — NOT this portfolio site. An earlier pass invented a
+    // "this site itself / portfolio-template experiment" description; that
+    // fabrication stays removed.
+    //
+    // Fields still unsupported by that source stay null: role, problem,
+    // contribution and builtBecause are not documented anywhere in the
+    // repo, and repository ownership alone is not evidence of a team role.
+    // dataComplete stays false until those gaps are filled from the author.
     slug: "the-last-website",
     legacySlugs: [],
     index: "01",
     title: "The Last Website",
     shortTitle: "The Last Website",
     eyebrow: "3D web — hackathon build",
-    role: null, // TODO: confirm role/contribution on the hackathon team
-    // Visitor-facing summary states only what is confirmed. No recovery /
-    // TODO language here — unavailable metadata is simply omitted in the UI.
+    role: null, // not documented in the project repository
+    // Visitor-facing summary states only what the project repo confirms.
     summary:
-      "A 3D web experience built for a hackathon and shipped.",
-    problem: null, // TODO
-    contribution: null, // TODO
-    description: [], // TODO: restore from original submission
-    builtBecause: null, // TODO
-    technologies: [], // TODO: confirm real stack (3D web — likely WebGL/Three.js, unverified)
+      "A linear, progression-driven 3D web narrative set after the death of the internet, where one surviving server holds a partial, corrupted archive of ordinary human life. The visitor moves forward through five authored scenes, recovering fragments of everyday communication rather than the platforms that carried them.",
+    problem: null, // not documented in the project repository
+    contribution: null, // not documented in the project repository
+    description: [
+      "The Last Website is a shipped, single-page 3D interactive narrative with a fixed emotional arc. One server has outlived the internet and has spent years rebuilding a corrupted index of ordinary human life; the visitor arrives as its first connection in that time and moves through what it managed to keep.",
+      "The experience is one-directional — no free roam, no inventory, nothing to win. It runs through five scenes: Prelude, Feed, Graveyard, Memories and Last Message (uncertainty, recognition, desolation, intimacy, absence). What survived is not the platforms but the people inside them: a group chat about whether the cat was fed, an unsent draft, an answering-machine message someone meant to return.",
+      "The visitor controls pace, not aim. Three of the five scenes advance on wheel, trackpad or vertical drag while the camera stays authored, and every required interaction is a real focusable control, so the whole sequence can be completed from the keyboard. Screen-reader narration of the visual-only beats and full prefers-reduced-motion support are built into the scene architecture, and a single continuous soundtrack runs from the visitor's connect gesture and drains to silence before the ending.",
+      "The archive is built almost entirely from procedural React Three Fiber geometry — the one modelled asset is a small grave-marker kit used in the Graveyard — with no backend, no global state library and no post-processing stack.",
+    ],
+    builtBecause: null, // not documented in the project repository
+    technologies: [
+      "React 19",
+      "Vite 8",
+      "Three.js",
+      "React Three Fiber",
+      "Drei",
+      "GSAP",
+      "Native browser audio",
+    ],
     features: [],
-    projectFocus: [],
+    projectFocus: [
+      "The world as the interface — no HUD, no nav, restraint over spectacle",
+      "An authored camera with one-directional progression the visitor paces but cannot aim",
+      "Accessibility built into the scene architecture: screen-reader narration and reduced-motion parity",
+    ],
     learnings: [],
     nextImprovements: null,
-    liveUrl: null, // TODO: hackathon demo / deployment URL if still live
-    githubUrl: null, // TODO: source repo
+    liveUrl: "https://the-last-website-beta.vercel.app/",
+    githubUrl: "https://github.com/Far-200/the-last-website",
     // Real screenshot chosen from public/project_images/the-last-website/
     // by viewing every candidate — see Phase 4.7 report.
     image: "/project_images/the-last-website/prelude.png",

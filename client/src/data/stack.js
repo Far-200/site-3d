@@ -17,8 +17,16 @@ export const stackGroups = [
     items: [
       {
         name: "React",
+        // "the-last-website" is included: React 19 is verified for Record 01
+        // by the original project repo (github.com/Far-200/the-last-website
+        // — README "Built With" and package.json).
         note: "Primary UI library across most shipped projects — component structure, state, and routing.",
-        usedIn: ["the-last-website", "aptivision", "flowtrace", "folder-structure-visualizer"],
+        usedIn: [
+          "the-last-website",
+          "aptivision",
+          "flowtrace",
+          "folder-structure-visualizer",
+        ],
       },
       {
         name: "JavaScript",
@@ -64,6 +72,9 @@ export const stackGroups = [
       },
       {
         name: "Three.js",
+        // "the-last-website" is included: Three.js (via React Three Fiber)
+        // is verified for Record 01 by the original project repo
+        // (github.com/Far-200/the-last-website — README "Built With").
         note: "The spatial layer behind the archive — depth and perspective, not decoration.",
         usedIn: ["the-last-website"],
       },

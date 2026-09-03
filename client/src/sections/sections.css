@@ -519,7 +519,12 @@
 .archive-record__overlay {
   position: absolute;
   top: 0;
-  height: 100%;
+  /* At least the record's height, but free to grow downward when the
+     content (filing + title + status + shot + summary + open) needs it.
+     The overlay is out of flow, so this never changes the shelf or page
+     height — it just spills over the section's own bottom padding, which
+     is why records with a screenshot no longer clip their title. */
+  min-height: 100%;
   width: clamp(300px, 26vw, 380px);
   z-index: 20;
   display: flex;
@@ -601,8 +606,10 @@
   color: var(--text-muted);
 }
 .archive-record__ov-shot {
-  flex: 1 1 auto;
-  min-height: 46px;
+  /* Fixed band rather than flex-grow: growing to fill a fixed-height
+     overlay used to squeeze the title and status into the same line. */
+  flex: 0 0 auto;
+  height: clamp(84px, 9vw, 118px);
   overflow: hidden;
   border: 1px solid var(--line);
   background-color: var(--bg);
@@ -897,6 +904,13 @@
   display: grid;
   gap: 0.85rem;
   align-content: start;
+  /* Stabiliser: the contextual panel is content-sized, so selecting a
+     terse entry (e.g. Git) after a mapped one used to reflow the whole
+     section — and Contact/Footer below it — by ~160px. A min-height near
+     the taxonomy column's own height absorbs every REGULARLY USE /
+     EXPLORING selection with no reflow and no dead space; only the few
+     projection-heavy BUILD WITH entries still grow past it. */
+  min-height: 17.5rem;
 }
 .stack-detail__kicker {
   color: var(--accent);
@@ -1105,6 +1119,9 @@
   }
   .stack-detail {
     max-width: 520px;
+    /* single-column here — no side-by-side row to keep level, so let the
+       panel be purely content-sized again. */
+    min-height: 0;
   }
   .contact__grid {
     grid-template-columns: 1fr;
