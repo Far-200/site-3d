@@ -1,0 +1,247 @@
+/* =============================================================
+   Cobalt Forest Workshop — base layer
+
+   Bundled variable display font (no runtime Google Fonts request),
+   then reset / typography defaults / layout primitives, all scoped
+   to `.cfw`. The legacy `.archive` system is untouched.
+   ============================================================= */
+
+/* Weight axis only (no optical-size axis file). Each subset is a separate
+   @font-face with unicode-range, so the browser fetches just the latin
+   woff2 for English content. */
+@import "@fontsource-variable/fraunces/wght.css";
+
+/* ---- Page ground continuity ---------------------------------
+   The forest-night ground is also painted on the root elements so
+   there is never an uncovered strip before React mounts or past
+   the footer. Kept as a literal value (matches --cfw-night) since
+   it must apply outside the .cfw scope. Only takes effect on the
+   V2 homepage route via the body[data-route] hook set in
+   CobaltHomePage; the legacy routes keep #15110f. */
+body[data-cfw-route="true"],
+body[data-cfw-route="true"] #root {
+  background-color: #0c171d;
+}
+
+/* ---- Scope root ---- */
+.cfw {
+  position: relative;
+  min-height: 100vh;
+  background-color: var(--cfw-night);
+  color: var(--cfw-text-soft);
+  font-family: var(--cfw-font-sans);
+  font-size: var(--cfw-text-body);
+  line-height: var(--cfw-leading-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.cfw *,
+.cfw *::before,
+.cfw *::after {
+  box-sizing: border-box;
+}
+
+/* ---- Headings — expressive serif ---- */
+.cfw h1,
+.cfw h2,
+.cfw h3 {
+  margin: 0;
+  font-family: var(--cfw-font-display);
+  font-weight: 460;
+  font-optical-sizing: auto;
+  line-height: var(--cfw-leading-tight);
+  letter-spacing: var(--cfw-tracking-display);
+  color: var(--cfw-text);
+  text-wrap: balance;
+}
+
+.cfw h4,
+.cfw h5,
+.cfw h6 {
+  margin: 0;
+  font-family: var(--cfw-font-sans);
+  color: var(--cfw-text);
+}
+
+.cfw p {
+  margin: 0;
+  max-width: 64ch;
+}
+
+.cfw a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cfw ul,
+.cfw ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cfw button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.cfw img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---- Mono metadata label — one reusable primitive ---- */
+.cfw-meta {
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-meta);
+  letter-spacing: var(--cfw-tracking-meta);
+  text-transform: uppercase;
+  color: var(--cfw-text-mute);
+}
+
+/* ---- Shared content frame ---- */
+.cfw-frame {
+  width: 100%;
+  max-width: var(--cfw-content-max);
+  margin-inline: auto;
+  padding-inline: var(--cfw-gutter);
+}
+
+/* ---- Section rhythm — content-driven ---- */
+.cfw-section {
+  padding-block: var(--cfw-section-py);
+}
+.cfw-section + .cfw-section {
+  padding-block-start: 0;
+}
+
+/* Section header block: mono kicker, serif title, sans intro. */
+.cfw-section__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-xs);
+  margin-block-end: var(--cfw-kicker-gap);
+}
+.cfw-section__title {
+  font-size: var(--cfw-text-h2);
+}
+.cfw-section__intro {
+  max-width: 52ch;
+  color: var(--cfw-text-soft);
+  font-size: var(--cfw-text-lead);
+  line-height: var(--cfw-leading-snug);
+}
+
+/* ---- Buttons / CTAs ---- */
+.cfw-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.85em 1.4em;
+  border-radius: var(--cfw-radius-md);
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  transition:
+    transform var(--cfw-dur-micro) var(--cfw-ease),
+    background-color var(--cfw-dur-micro) var(--cfw-ease),
+    border-color var(--cfw-dur-micro) var(--cfw-ease);
+}
+.cfw-btn--primary {
+  background-color: var(--cfw-saffron);
+  color: #1c1206;
+  font-weight: 600;
+}
+.cfw-btn--primary:hover {
+  background-color: var(--cfw-amber);
+  transform: translateY(-1px);
+}
+.cfw-btn--ghost {
+  border: 1px solid var(--cfw-line-strong);
+  color: var(--cfw-text);
+}
+.cfw-btn--ghost:hover {
+  border-color: var(--cfw-amber);
+  transform: translateY(-1px);
+}
+
+/* Quiet inline link with an underline affordance. */
+.cfw-link {
+  color: var(--cfw-text);
+  border-bottom: 1px solid var(--cfw-line-strong);
+  transition: border-color var(--cfw-dur-micro) var(--cfw-ease),
+    color var(--cfw-dur-micro) var(--cfw-ease);
+}
+.cfw-link:hover {
+  color: var(--cfw-amber);
+  border-color: var(--cfw-amber);
+}
+
+/* ---- Accessible focus ---- */
+.cfw :focus-visible {
+  outline: var(--cfw-focus-ring);
+  outline-offset: var(--cfw-focus-offset);
+  border-radius: var(--cfw-radius-sm);
+}
+.cfw :focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---- Skip link ---- */
+.cfw-skip {
+  position: absolute;
+  left: var(--cfw-gutter);
+  top: 0;
+  z-index: 300;
+  transform: translateY(-130%);
+  padding: 0.6rem 1rem;
+  background: var(--cfw-saffron);
+  color: #1c1206;
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform var(--cfw-dur-micro) var(--cfw-ease);
+}
+.cfw-skip:focus-visible {
+  transform: translateY(0);
+}
+
+/* ---- Visually hidden ---- */
+.cfw-vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Selection ---- */
+.cfw ::selection {
+  background: var(--cfw-accent-quiet);
+  color: var(--cfw-text);
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .cfw *,
+  .cfw *::before,
+  .cfw *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

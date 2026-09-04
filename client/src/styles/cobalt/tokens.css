@@ -1,0 +1,124 @@
+/* =============================================================
+   Cobalt Forest Workshop — design tokens (V2 homepage only)
+
+   A separate visual system from the frozen `.archive` design.
+   Everything here is scoped to `.cfw` so the legacy archive
+   (`.archive`) token system and CSS are never touched.
+
+   Direction: a quiet late-night builder's workspace in the woods.
+   Deep cobalt / blue-green / forest-night atmosphere, warm paper
+   layers, small saffron / amber accents.
+
+   Structural pass: palette + scale only. Texture / scrapbook
+   decoration (paper tears, halftone, tape, pins, ink slashes) is
+   a deliberate second layer added later.
+   ============================================================= */
+
+.cfw {
+  /* ---- Atmosphere: forest-night ground ---- */
+  --cfw-night: #0c171d;          /* continuous page ground (blue-green near-black) */
+  --cfw-night-soft: #10202a;     /* barely-there lift                             */
+  --cfw-cobalt-deep: #142a4d;    /* deep cobalt / ultramarine panel base          */
+  --cfw-cobalt: #1f3f74;         /* cobalt surface                                */
+  --cfw-cobalt-line: #2f5fae;    /* brighter cobalt for lines / links on dark     */
+  --cfw-pine: #16302b;           /* blue-green forest tone                        */
+  --cfw-pine-soft: #1e413a;      /* raised forest panel                           */
+
+  /* ---- Warm paper / note / scrapbook layers ---- */
+  --cfw-paper: #f1e7d0;          /* primary paper card                            */
+  --cfw-paper-2: #e9dcbe;        /* aged / secondary paper                        */
+  --cfw-paper-edge: #d6c199;     /* torn-edge / border on paper                   */
+  --cfw-ink: #2b2723;            /* charcoal ink — body text on paper             */
+  --cfw-ink-soft: #5a5148;       /* secondary text on paper                       */
+
+  /* ---- Accents: saffron / orange / amber (used sparingly) ---- */
+  --cfw-saffron: #e08a2b;
+  --cfw-amber: #f2b750;
+  --cfw-rust: #c25b2a;
+  --cfw-accent-quiet: rgba(224, 138, 43, 0.16);
+
+  /* ---- Text on the dark ground ---- */
+  --cfw-text: #eef2ec;           /* primary                                       */
+  --cfw-text-soft: #bcc8c5;      /* secondary                                     */
+  --cfw-text-mute: #8a9a96;      /* metadata / labels (kept >= ~4.7:1 on ground)  */
+  --cfw-line: rgba(238, 242, 236, 0.12);
+  --cfw-line-strong: rgba(238, 242, 236, 0.22);
+
+  /* ---- Muted charcoal for supporting UI ---- */
+  --cfw-charcoal: #232b2e;
+
+  /* ---- State ---- */
+  --cfw-live: #7fb08a;           /* muted green  */
+  --cfw-wip: #d8a94a;            /* amber        */
+
+  /* ---- Typography ---------------------------------------------
+     Display  -> Fraunces Variable (locally bundled via
+                 @fontsource-variable/fraunces, imported in base.css),
+                 expressive editorial serif for major headings.
+     Sans     -> system UI stack, calm utility / body text.
+     Mono     -> labels, metadata, tags, nav.
+     --------------------------------------------------------- */
+  --cfw-font-display: "Fraunces Variable", "Fraunces", "Iowan Old Style",
+    "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --cfw-font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --cfw-font-mono: ui-monospace, "Cascadia Mono", "SF Mono", "Segoe UI Mono",
+    Consolas, "Liberation Mono", monospace;
+
+  /* ---- Type scale — clamp()-driven, comfortable at 100% zoom ---- */
+  --cfw-text-meta: clamp(0.78rem, 0.74rem + 0.18vw, 0.88rem);
+  --cfw-text-sm: clamp(0.9rem, 0.87rem + 0.16vw, 1rem);
+  --cfw-text-body: clamp(1rem, 0.96rem + 0.24vw, 1.13rem);
+  --cfw-text-lead: clamp(1.15rem, 1.04rem + 0.5vw, 1.45rem);
+  --cfw-text-h4: clamp(1.05rem, 0.99rem + 0.3vw, 1.2rem);
+  --cfw-text-h3: clamp(1.3rem, 1.13rem + 0.85vw, 1.75rem);
+  --cfw-text-h2: clamp(1.9rem, 1.55rem + 1.6vw, 2.7rem);
+  --cfw-text-display: clamp(2.6rem, 1.9rem + 3.4vw, 4.6rem);
+
+  --cfw-leading-tight: 1.08;
+  --cfw-leading-snug: 1.3;
+  --cfw-leading-body: 1.62;
+  --cfw-tracking-meta: 0.16em;
+  --cfw-tracking-display: -0.02em;
+
+  /* ---- Spacing scale ---- */
+  --cfw-space-3xs: 0.25rem;
+  --cfw-space-2xs: 0.5rem;
+  --cfw-space-xs: 0.75rem;
+  --cfw-space-sm: 1rem;
+  --cfw-space-md: 1.5rem;
+  --cfw-space-lg: 2.5rem;
+  --cfw-space-xl: 4rem;
+  --cfw-space-2xl: 6.5rem;
+
+  /* ---- Shared layout frame ---- */
+  --cfw-content-max: 1180px;
+  --cfw-gutter: clamp(1.25rem, 5vw, 5rem);
+  --cfw-header-h: clamp(3.75rem, 3.2rem + 1.4vw, 4.75rem);
+
+  /* ---- Section rhythm — content-driven, never forced to 100vh ---- */
+  --cfw-section-py: clamp(3.5rem, 3rem + 6vw, 7rem);
+  --cfw-kicker-gap: clamp(1.5rem, 1rem + 2.5vw, 2.75rem);
+
+  /* ---- Radii ---- */
+  --cfw-radius-sm: 3px;
+  --cfw-radius-md: 8px;
+  --cfw-radius-lg: 16px;
+
+  /* ---- Elevation ---- */
+  --cfw-shadow-sm: 0 8px 22px -14px rgba(0, 0, 0, 0.6);
+  --cfw-shadow-md: 0 20px 44px -22px rgba(0, 0, 0, 0.65);
+  --cfw-shadow-paper: 0 14px 30px -18px rgba(0, 0, 0, 0.55);
+
+  /* ---- Focus ---- */
+  --cfw-focus-ring: 2px solid var(--cfw-amber);
+  --cfw-focus-offset: 3px;
+
+  /* ---- Motion ---- */
+  --cfw-dur-micro: 140ms;
+  --cfw-dur-state: 260ms;
+  --cfw-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---- Z layers ---- */
+  --cfw-z-header: 100;
+}

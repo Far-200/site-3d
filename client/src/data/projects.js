@@ -14,6 +14,12 @@
 // - featuredWork  whether the project appears in Featured Work on home.
 //                 false keeps the data but holds the project back — it
 //                 still appears in the /work archive.
+// - homepageFlagship
+//                 opt-in flag for the Cobalt Forest Workshop homepage
+//                 ("/", CobaltHomePage). The three flagged records render
+//                 as the large "Selected Work" cards; every other record
+//                 falls to the compact "Lab / Side Quests" strip. Purely
+//                 additive — the legacy archive ignores it.
 // - availability  short, honest deployment/access metadata (not a warning).
 // - description   overview paragraphs for the detail page.
 // - features / projectFocus / learnings / nextImprovements
@@ -85,6 +91,7 @@ const projects = [
     gallery: [],
     featured: true,
     featuredWork: true,
+    homepageFlagship: true,
     status: "Shipped · hackathon",
     availability: null,
     dataComplete: false,
@@ -132,6 +139,7 @@ const projects = [
     gallery: [],
     featured: false,
     featuredWork: true,
+    homepageFlagship: true,
     status: null,
     availability: "Source / case study",
     scenePreset: "vision",
@@ -226,6 +234,7 @@ const projects = [
     // Folder on disk is public/project_images/folder-structure-viewer/
     // (spelled "viewer", not the "visualizer" slug).
     image: "/project_images/folder-structure-viewer/example_use.png",
+    homepageFlagship: true,
     imageAlt:
       "Folder Structure Visualizer — a pasted ASCII tree on the left rendered as an interactive visual folder tree on the right",
     gallery: [
@@ -453,6 +462,15 @@ const projects = [
 export const featuredWorkProjects = projects.filter((p) => p.featuredWork);
 
 export const archiveProjects = projects;
+
+// Cobalt Forest Workshop homepage ("/"). The three flagged records are the
+// large "Selected Work" cards, in archive order; everything else becomes a
+// compact "Lab / Side Quests" chip. Split here so the homepage sections
+// never hard-code slugs.
+export const homepageFlagshipProjects = projects.filter(
+  (p) => p.homepageFlagship,
+);
+export const homepageLabProjects = projects.filter((p) => !p.homepageFlagship);
 
 export function getProjectBySlug(slug) {
   return projects.find((p) => p.slug === slug) ?? null;
