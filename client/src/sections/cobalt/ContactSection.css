@@ -1,0 +1,98 @@
+/* Cobalt Forest Workshop — Contact. Structural pass. */
+
+.cfw-contact {
+  background-color: var(--cfw-cobalt-deep);
+  border-block-start: 1px solid var(--cfw-line);
+}
+
+.cfw-contact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: clamp(2rem, 1rem + 5vw, 4.5rem);
+  align-items: start;
+}
+
+.cfw-contact__lead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-md);
+}
+.cfw-contact__headline {
+  font-size: var(--cfw-text-h2);
+  max-width: 16ch;
+}
+.cfw-contact__body {
+  color: var(--cfw-text-soft);
+  max-width: 50ch;
+}
+
+.cfw-contact__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-sm);
+  margin-block-start: var(--cfw-space-2xs);
+}
+.cfw-contact__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cfw-contact__fact dd {
+  margin: 0;
+  color: var(--cfw-text);
+  font-size: var(--cfw-text-sm);
+}
+
+/* ---- Actions ---- */
+.cfw-contact__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-md);
+}
+.cfw-contact__primary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--cfw-space-md);
+  border: 1px solid var(--cfw-line-strong);
+  border-radius: var(--cfw-radius-md);
+  background-color: var(--cfw-night-soft);
+  transition:
+    border-color var(--cfw-dur-micro) var(--cfw-ease),
+    transform var(--cfw-dur-micro) var(--cfw-ease);
+}
+.cfw-contact__primary:hover {
+  border-color: var(--cfw-amber);
+  transform: translateY(-2px);
+}
+.cfw-contact__primary-val {
+  font-family: var(--cfw-font-display);
+  font-size: var(--cfw-text-h4);
+  color: var(--cfw-text);
+  word-break: break-word;
+}
+
+.cfw-contact__secondary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cfw-space-md);
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+}
+
+.cfw-contact__sign {
+  margin-block-start: var(--cfw-kicker-gap);
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+  color: var(--cfw-text-mute);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 800px) {
+  .cfw-contact__grid {
+    grid-template-columns: 1fr;
+  }
+  .cfw-contact__actions {
+    max-width: 32rem;
+  }
+}

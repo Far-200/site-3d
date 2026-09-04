@@ -1,0 +1,63 @@
+/* Cobalt Forest Workshop — Lab / Side Quests. Structural pass. */
+
+.cfw-lab {
+  background-color: var(--cfw-pine);
+  border-block: 1px solid var(--cfw-line);
+}
+
+.cfw-lab__strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1px;
+  background-color: var(--cfw-line);
+  border: 1px solid var(--cfw-line);
+  border-radius: var(--cfw-radius-md);
+  overflow: hidden;
+}
+
+.cfw-lab__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-2xs);
+  padding: var(--cfw-space-md);
+  background-color: var(--cfw-pine);
+  transition: background-color var(--cfw-dur-micro) var(--cfw-ease);
+}
+.cfw-lab__item:hover {
+  background-color: var(--cfw-pine-soft);
+}
+
+.cfw-lab__name {
+  font-family: var(--cfw-font-display);
+  font-size: var(--cfw-text-h4);
+  color: var(--cfw-text);
+}
+.cfw-lab__desc {
+  font-size: var(--cfw-text-sm);
+  color: var(--cfw-text-soft);
+  max-width: 40ch;
+}
+.cfw-lab__tags {
+  font-family: var(--cfw-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--cfw-text-mute);
+}
+.cfw-lab__foot {
+  display: flex;
+  gap: var(--cfw-space-md);
+  margin-block-start: auto;
+  padding-block-start: var(--cfw-space-xs);
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+}
+.cfw-lab__more {
+  color: var(--cfw-amber);
+}
+.cfw-lab__ext {
+  color: var(--cfw-text-soft);
+  transition: color var(--cfw-dur-micro) var(--cfw-ease);
+}
+.cfw-lab__ext:hover {
+  color: var(--cfw-amber);
+}

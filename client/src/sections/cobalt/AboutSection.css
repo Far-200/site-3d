@@ -1,0 +1,83 @@
+/* Cobalt Forest Workshop — About the Human. Structural pass. */
+
+.cfw-about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(2rem, 1rem + 5vw, 4.5rem);
+  align-items: start;
+}
+
+.cfw-about__lead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-md);
+}
+.cfw-about__title {
+  font-size: var(--cfw-text-h2);
+  max-width: 20ch;
+  margin-block-end: var(--cfw-space-2xs);
+}
+.cfw-about__para {
+  color: var(--cfw-text-soft);
+  max-width: 58ch;
+}
+
+/* ---- Aside: portrait + fuels ---- */
+.cfw-about__aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-md);
+}
+.cfw-about__portrait {
+  margin: 0;
+  width: clamp(9rem, 6rem + 12vw, 13rem);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--cfw-radius-md);
+  border: 1px solid var(--cfw-line-strong);
+  background-color: var(--cfw-charcoal);
+}
+.cfw-about__portrait :is(img, .portrait-plate) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cfw-about__fuels-label {
+  color: var(--cfw-saffron);
+}
+.cfw-about__fuels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-sm);
+}
+.cfw-about__fuel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--cfw-space-sm);
+  border: 1px solid var(--cfw-line);
+  border-left: 2px solid var(--cfw-saffron);
+  border-radius: var(--cfw-radius-sm);
+  background-color: var(--cfw-night-soft);
+}
+.cfw-about__fuel-k {
+  font-family: var(--cfw-font-display);
+  font-size: var(--cfw-text-h4);
+  color: var(--cfw-text);
+}
+.cfw-about__fuel-v {
+  font-size: var(--cfw-text-sm);
+  color: var(--cfw-text-soft);
+  max-width: 42ch;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 860px) {
+  .cfw-about__grid {
+    grid-template-columns: 1fr;
+  }
+  .cfw-about__aside {
+    max-width: 32rem;
+  }
+}

@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import ScrollManager from "./components/ScrollManager";
 import BootTerminal from "./components/BootTerminal";
 import { markBooted, shouldBoot } from "./lib/boot";
+import CobaltHomePage from "./pages/CobaltHomePage";
 import ArchivePage from "./pages/ArchivePage";
 import ArchiveProjectPage from "./pages/ArchiveProjectPage";
 import "./App.css";
@@ -32,14 +33,21 @@ function App() {
     setBooting(false);
   };
 
-  // The redesigned continuous archive owns "/" and the canonical project
-  // detail routes "/projects/:slug". Both are fully self-contained (own
-  // header/frame/footer, own token scope) and never fall into the legacy
-  // green shell. Every other legacy route keeps the original shell below.
-  if (location.pathname === "/" || location.pathname.startsWith("/projects/")) {
+  // Self-contained V2 surfaces. "/" is the Cobalt Forest Workshop homepage
+  // (its own `.cfw` token scope). The frozen continuous archive is
+  // preserved at "/archive", and it still owns the canonical project
+  // detail routes "/projects/:slug". All three bring their own
+  // header/frame/footer and never fall into the legacy green shell. Every
+  // other legacy route keeps the original shell below.
+  if (
+    location.pathname === "/" ||
+    location.pathname === "/archive" ||
+    location.pathname.startsWith("/projects/")
+  ) {
     return (
       <Routes>
-        <Route path="/" element={<ArchivePage />} />
+        <Route path="/" element={<CobaltHomePage />} />
+        <Route path="/archive" element={<ArchivePage />} />
         <Route path="/projects/:slug" element={<ArchiveProjectPage />} />
         {/* any other /projects/* shape → back to the archive */}
         <Route path="*" element={<ArchivePage />} />

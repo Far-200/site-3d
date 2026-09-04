@@ -1,0 +1,148 @@
+/* Cobalt Forest Workshop — header. Structural pass. */
+
+.cfw-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--cfw-z-header);
+  background-color: color-mix(in srgb, var(--cfw-night) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--cfw-line);
+}
+
+.cfw-header__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  column-gap: var(--cfw-space-lg);
+  min-height: var(--cfw-header-h);
+}
+
+/* ---- Identity ---- */
+.cfw-header__identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.15;
+}
+.cfw-header__name {
+  font-family: var(--cfw-font-display);
+  font-size: var(--cfw-text-h4);
+  color: var(--cfw-text);
+}
+.cfw-header__role {
+  font-size: 0.72rem;
+}
+
+/* ---- Desktop nav ---- */
+.cfw-header__nav {
+  justify-self: center;
+}
+.cfw-header__nav-list {
+  display: flex;
+  gap: var(--cfw-space-md);
+}
+.cfw-header__nav-link {
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+  color: var(--cfw-text-soft);
+  padding-block: 0.4rem;
+  transition: color var(--cfw-dur-micro) var(--cfw-ease);
+}
+.cfw-header__nav-link:hover {
+  color: var(--cfw-amber);
+}
+
+/* ---- Utilities ---- */
+.cfw-header__utils {
+  display: flex;
+  align-items: center;
+  gap: var(--cfw-space-sm);
+}
+.cfw-header__util {
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+  color: var(--cfw-text-soft);
+  transition: color var(--cfw-dur-micro) var(--cfw-ease);
+}
+.cfw-header__util:hover {
+  color: var(--cfw-amber);
+}
+.cfw-header__util--cta {
+  padding: 0.5em 0.9em;
+  border: 1px solid var(--cfw-line-strong);
+  border-radius: var(--cfw-radius-sm);
+  color: var(--cfw-text);
+}
+.cfw-header__util--cta:hover {
+  border-color: var(--cfw-amber);
+}
+
+/* ---- Mobile menu button + panel ---- */
+.cfw-header__menu-btn {
+  display: none;
+  justify-self: end;
+  grid-column: 3;
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+  color: var(--cfw-text);
+  padding: 0.5em 0.75em;
+  border: 1px solid var(--cfw-line-strong);
+  border-radius: var(--cfw-radius-sm);
+}
+
+.cfw-menu {
+  display: none;
+}
+
+@media (max-width: 820px) {
+  .cfw-header__inner {
+    grid-template-columns: 1fr auto;
+    column-gap: var(--cfw-space-sm);
+  }
+  .cfw-header__nav,
+  .cfw-header__utils {
+    display: none;
+  }
+  .cfw-header__menu-btn {
+    display: inline-flex;
+  }
+
+  .cfw-menu {
+    display: block;
+    overflow: hidden;
+    max-height: 0;
+    border-bottom: 1px solid transparent;
+    transition:
+      max-height var(--cfw-dur-state) var(--cfw-ease),
+      border-color var(--cfw-dur-state) var(--cfw-ease);
+  }
+  .cfw-menu[data-open="true"] {
+    max-height: 70vh;
+    border-bottom-color: var(--cfw-line);
+  }
+  .cfw-menu__nav {
+    padding: var(--cfw-space-sm) var(--cfw-gutter) var(--cfw-space-md);
+  }
+  .cfw-menu__list {
+    display: flex;
+    flex-direction: column;
+  }
+  .cfw-menu__link {
+    display: block;
+    padding: 0.9rem 0;
+    font-family: var(--cfw-font-display);
+    font-size: var(--cfw-text-h4);
+    color: var(--cfw-text);
+    border-bottom: 1px solid var(--cfw-line);
+  }
+  .cfw-menu__utils {
+    display: flex;
+    gap: var(--cfw-space-md);
+    padding: var(--cfw-space-sm) var(--cfw-gutter) var(--cfw-space-lg);
+  }
+  .cfw-menu__util {
+    font-family: var(--cfw-font-mono);
+    font-size: var(--cfw-text-sm);
+    color: var(--cfw-text-soft);
+  }
+}

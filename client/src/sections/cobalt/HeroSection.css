@@ -1,0 +1,96 @@
+/* Cobalt Forest Workshop — Hero. Structural pass. */
+
+.cfw-hero {
+  /* Close to a full opening viewport, but content-driven — never forced. */
+  min-height: min(88vh, 780px);
+  display: flex;
+  align-items: center;
+  padding-block-start: clamp(2.5rem, 2rem + 4vw, 5rem);
+}
+
+.cfw-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(2rem, 1rem + 6vw, 5.5rem);
+  width: 100%;
+}
+
+/* ---- Left: copy ---- */
+.cfw-hero__lead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-md);
+}
+.cfw-hero__headline {
+  font-size: var(--cfw-text-display);
+  max-width: 16ch;
+}
+.cfw-hero__sub {
+  font-size: var(--cfw-text-lead);
+  line-height: var(--cfw-leading-snug);
+  color: var(--cfw-text);
+  max-width: 46ch;
+}
+.cfw-hero__body {
+  color: var(--cfw-text-soft);
+  max-width: 52ch;
+}
+.cfw-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cfw-space-sm);
+  margin-block-start: var(--cfw-space-xs);
+}
+
+/* ---- Right: bench note ---- */
+.cfw-hero__aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-md);
+  padding: var(--cfw-space-md);
+  border: 1px solid var(--cfw-line);
+  border-radius: var(--cfw-radius-md);
+  background-color: var(--cfw-night-soft);
+}
+.cfw-hero__aside-label {
+  color: var(--cfw-saffron);
+}
+.cfw-hero__bench {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cfw-space-sm);
+}
+.cfw-hero__bench li {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-block-end: var(--cfw-space-sm);
+  border-bottom: 1px solid var(--cfw-line);
+}
+.cfw-hero__bench li:last-child {
+  border-bottom: none;
+  padding-block-end: 0;
+}
+.cfw-hero__bench-v {
+  color: var(--cfw-text);
+  font-size: var(--cfw-text-sm);
+}
+.cfw-hero__aside-link {
+  align-self: flex-start;
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .cfw-hero__grid {
+    grid-template-columns: 1fr;
+  }
+  .cfw-hero {
+    min-height: 0;
+  }
+  .cfw-hero__aside {
+    max-width: 30rem;
+  }
+}

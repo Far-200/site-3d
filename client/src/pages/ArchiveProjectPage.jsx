@@ -29,11 +29,11 @@ function TopBar() {
   return (
     <div className="project-file__bar">
       <div className="frame project-file__bar-inner">
-        <a className="project-file__identity" href="/">
+        <a className="project-file__identity" href="/archive">
           {identity.name} <span aria-hidden="true">/</span>{" "}
           <span className="project-file__handle">{identity.handle}</span>
         </a>
-        <a className="project-file__back" href="/#projects">
+        <a className="project-file__back" href="/archive#projects">
           <span aria-hidden="true">←</span> Back to archive
         </a>
       </div>
@@ -57,7 +57,7 @@ function ProjectNotFound() {
           That project record isn&rsquo;t in the archive. It may have been
           renamed or removed.
         </p>
-        <a className="link-cta" href="/#projects">
+        <a className="link-cta" href="/archive#projects">
           Back to the archive <span aria-hidden="true">→</span>
         </a>
       </main>
@@ -263,7 +263,7 @@ function ProjectFile({ project }) {
 
         <a
           className="project-file__back project-file__back--foot"
-          href="/#projects"
+          href="/archive#projects"
         >
           <span aria-hidden="true">←</span> Back to archive
         </a>

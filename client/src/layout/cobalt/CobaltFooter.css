@@ -1,0 +1,46 @@
+/* Cobalt Forest Workshop — footer. Structural pass. */
+
+.cfw-footer {
+  border-top: 1px solid var(--cfw-line);
+  padding-block: var(--cfw-space-lg);
+  background-color: var(--cfw-night);
+}
+
+.cfw-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cfw-space-md);
+}
+
+.cfw-footer__mark {
+  font-family: var(--cfw-font-display);
+  font-size: var(--cfw-text-h4);
+  color: var(--cfw-text);
+}
+
+.cfw-footer__links {
+  display: flex;
+  gap: var(--cfw-space-md);
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+}
+.cfw-footer__links a {
+  color: var(--cfw-text-soft);
+  transition: color var(--cfw-dur-micro) var(--cfw-ease);
+}
+.cfw-footer__links a:hover {
+  color: var(--cfw-amber);
+}
+
+.cfw-footer__meta {
+  font-size: 0.72rem;
+}
+
+@media (max-width: 560px) {
+  .cfw-footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
