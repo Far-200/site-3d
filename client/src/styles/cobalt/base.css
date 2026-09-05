@@ -37,6 +37,11 @@ body[data-cfw-route="true"] #root {
 .cfw {
   position: relative;
   min-height: 100vh;
+  /* Several decorative elements (pinned photo, tape, rotated lab slips,
+     gateway tilt) use `transform: rotate()`. The Cobalt route branch has
+     no wrapping `.app-shell` like the legacy shell does, so this scope
+     root carries its own overflow guard instead of relying on one. */
+  overflow-x: clip;
   background-color: var(--cfw-night);
   background-image: radial-gradient(
       120% 130% at 50% 12%,
@@ -196,6 +201,11 @@ body[data-cfw-route="true"] #root {
   margin-inline: auto;
   padding-inline: var(--cfw-gutter);
 }
+/* Wider variant for compositions where a screenshot or portrait needs to
+   carry real visual weight (hero, flagship gateway). */
+.cfw-frame--wide {
+  max-width: var(--cfw-content-wide);
+}
 
 /* ---- Section rhythm — content-driven ---- */
 .cfw-section {
@@ -220,6 +230,15 @@ body[data-cfw-route="true"] #root {
   color: var(--cfw-text-soft);
   font-size: var(--cfw-text-lead);
   line-height: var(--cfw-leading-snug);
+}
+
+/* ---- Page intro header — shared opening block for /work, /lab, /about.
+   Same kicker/title/intro rhythm as a section head, just tagged with an
+   <h1> for the page. ---- */
+.cfw-page-intro__title {
+  font-size: var(--cfw-text-h2);
+  max-width: 20ch;
+  margin-block: var(--cfw-space-sm) var(--cfw-space-md);
 }
 
 /* ---- Buttons / CTAs ---- */

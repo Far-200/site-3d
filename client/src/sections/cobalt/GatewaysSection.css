@@ -1,0 +1,124 @@
+/* Cobalt Forest Workshop — Gateways. Three deliberately different
+   "doors" rather than three identical cards: Work reads as the primary
+   editorial door (text directly on the canvas, no box), Lab is a pinned
+   paper note, About is a small stamped label. */
+
+.cfw-gateways__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  grid-template-areas:
+    "work lab"
+    "work about";
+  gap: clamp(1.25rem, 0.5rem + 2vw, 2rem);
+}
+
+.cfw-gateway {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  transition: transform var(--cfw-dur-state) var(--cfw-ease);
+}
+.cfw-gateway__eyebrow {
+  color: var(--cfw-saffron);
+}
+.cfw-gateway__cta {
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+  color: var(--cfw-amber);
+  margin-block-start: 0.3em;
+}
+.cfw-gateway__note {
+  color: var(--cfw-text-soft);
+  max-width: 30ch;
+}
+.cfw-gateway__stat {
+  font-family: var(--cfw-font-mono);
+  font-size: var(--cfw-text-sm);
+  color: var(--cfw-text-mute);
+}
+
+/* ---- Work: the primary door — text directly on the canvas with a
+   struck accent bar, no bordered box. ---- */
+.cfw-gateway--work {
+  grid-area: work;
+  position: relative;
+  padding-inline-start: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+}
+.cfw-gateway--work::before {
+  content: "";
+  position: absolute;
+  inset-block: 0.2em 0.2em;
+  left: 0;
+  width: 4px;
+  background-color: var(--cfw-saffron);
+}
+.cfw-gateway--work .cfw-gateway__title {
+  font-family: var(--cfw-font-display);
+  font-size: var(--cfw-text-h3);
+  color: var(--cfw-text);
+  line-height: var(--cfw-leading-tight);
+}
+.cfw-gateway--work:hover {
+  transform: translateX(4px);
+}
+
+/* ---- Lab: a pinned paper note ---- */
+.cfw-gateway--lab {
+  grid-area: lab;
+  position: relative;
+  padding: var(--cfw-space-md);
+  transform: rotate(-1deg);
+}
+.cfw-gateway--lab .cfw-gateway__title {
+  font-family: var(--cfw-font-display);
+  font-size: var(--cfw-text-h3);
+  line-height: var(--cfw-leading-tight);
+}
+.cfw-gateway--lab .cfw-gateway__note,
+.cfw-gateway--lab .cfw-gateway__stat,
+.cfw-gateway--lab .cfw-gateway__cta {
+  color: var(--cfw-ink-soft);
+}
+.cfw-gateway--lab .cfw-gateway__cta {
+  color: var(--cfw-rust);
+}
+.cfw-gateway--lab .cfw-gateway__eyebrow {
+  color: var(--cfw-rust);
+}
+.cfw-gateway__tape {
+  top: -0.6rem;
+  right: 1.25rem;
+  transform: rotate(4deg);
+}
+.cfw-gateway--lab:hover {
+  transform: rotate(0deg);
+}
+
+/* ---- About: a small stamped label ---- */
+.cfw-gateway--about {
+  grid-area: about;
+  padding-block-start: var(--cfw-space-sm);
+  border-block-start: 1px dashed var(--cfw-line-strong);
+}
+.cfw-gateway--about .cfw-gateway__title {
+  font-family: var(--cfw-font-display);
+  font-size: var(--cfw-text-h4);
+  color: var(--cfw-text);
+}
+.cfw-gateway--about .cfw-gateway__note {
+  font-size: var(--cfw-text-sm);
+  font-style: italic;
+}
+.cfw-gateway--about:hover {
+  transform: translateX(4px);
+}
+
+@media (max-width: 720px) {
+  .cfw-gateways__grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "work"
+      "lab"
+      "about";
+  }
+}

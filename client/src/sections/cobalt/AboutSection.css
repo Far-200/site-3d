@@ -1,4 +1,7 @@
-/* Cobalt Forest Workshop — About the Human. Structural pass. */
+/* Cobalt Forest Workshop — About the Human (/about). Notebook editorial:
+   prose blocks with small mono headings on the left, principles and a
+   compact status strip on the right/below. No portrait here — the
+   visitor already met Farhaan in the hero. */
 
 .cfw-about__grid {
   display: grid;
@@ -7,28 +10,12 @@
   align-items: start;
 }
 
-.cfw-about__lead {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cfw-space-md);
-}
-.cfw-about__title {
-  font-size: var(--cfw-text-h2);
-  max-width: 20ch;
-  margin-block-end: var(--cfw-space-2xs);
-}
-.cfw-about__para {
-  color: var(--cfw-text-soft);
-  max-width: 58ch;
-}
-/* The prose block carries a faint notebook rule behind it — a workshop
-   note texture, scoped away from the kicker/title so it never runs
-   through the display serif. Kept subtle enough to never fight
-   legibility of the body copy itself. */
 .cfw-about__notes {
   display: flex;
   flex-direction: column;
-  gap: var(--cfw-space-md);
+  gap: var(--cfw-space-lg);
+  /* Faint notebook rule behind the prose — a workshop-note texture, kept
+     subtle enough to never fight legibility. */
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0,
@@ -38,45 +25,27 @@
   );
 }
 
-/* ---- Aside: portrait + fuels ---- */
+.cfw-about__block-label {
+  color: var(--cfw-saffron);
+  margin-block-end: 0.4em;
+}
+.cfw-about__para {
+  color: var(--cfw-text-soft);
+  max-width: 58ch;
+}
+.cfw-about__block--exploring .cfw-about__block-label {
+  color: var(--cfw-amber);
+}
+.cfw-about__block--exploring .cfw-about__para {
+  color: var(--cfw-text);
+}
+
+/* ---- Aside: fuels ---- */
 .cfw-about__aside {
   display: flex;
   flex-direction: column;
   gap: var(--cfw-space-md);
 }
-.cfw-about__portrait-row {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--cfw-space-sm);
-  flex-wrap: wrap;
-}
-.cfw-about__portrait {
-  margin: 0;
-  width: clamp(8rem, 5.5rem + 10vw, 11.5rem);
-  aspect-ratio: 1;
-  overflow: hidden;
-  border-radius: var(--cfw-radius-md);
-  border: 1px solid var(--cfw-line-strong);
-  background-color: var(--cfw-charcoal);
-  transform: rotate(-1.5deg);
-}
-.cfw-about__portrait :is(img, .portrait-plate) {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.cfw-about__margin-note {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  max-width: 16rem;
-  font-size: var(--cfw-text-sm);
-  color: var(--cfw-text-soft);
-}
-.cfw-about__margin-note .cfw-meta {
-  color: var(--cfw-saffron);
-}
-
 .cfw-about__fuels-label {
   color: var(--cfw-saffron);
 }
@@ -104,6 +73,32 @@
   font-size: var(--cfw-text-sm);
   color: var(--cfw-text-soft);
   max-width: 42ch;
+}
+
+/* ---- Status notes — a compact pinned strip of the frozen archive's
+   real BUILDING/LEARNING/EXPLORING/OPEN TO facts. ---- */
+.cfw-about__status {
+  margin-block-start: clamp(2.5rem, 2rem + 3vw, 4rem);
+  padding-block-start: var(--cfw-space-lg);
+  border-block-start: 1px dashed var(--cfw-line-strong);
+}
+.cfw-about__status-label {
+  margin-block-end: var(--cfw-space-sm);
+}
+.cfw-about__status-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cfw-space-lg) clamp(1.5rem, 1rem + 2vw, 3rem);
+}
+.cfw-about__status-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cfw-about__status-row dd {
+  margin: 0;
+  font-size: var(--cfw-text-sm);
+  color: var(--cfw-text);
 }
 
 /* ---- Responsive ---- */

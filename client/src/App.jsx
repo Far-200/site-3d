@@ -6,6 +6,9 @@ import ScrollManager from "./components/ScrollManager";
 import BootTerminal from "./components/BootTerminal";
 import { markBooted, shouldBoot } from "./lib/boot";
 import CobaltHomePage from "./pages/CobaltHomePage";
+import CobaltWorkPage from "./pages/CobaltWorkPage";
+import CobaltLabPage from "./pages/CobaltLabPage";
+import CobaltAboutPage from "./pages/CobaltAboutPage";
 import ArchivePage from "./pages/ArchivePage";
 import ArchiveProjectPage from "./pages/ArchiveProjectPage";
 import "./App.css";
@@ -33,21 +36,33 @@ function App() {
     setBooting(false);
   };
 
-  // Self-contained V2 surfaces. "/" is the Cobalt Forest Workshop homepage
-  // (its own `.cfw` token scope). The frozen continuous archive is
-  // preserved at "/archive", and it still owns the canonical project
-  // detail routes "/projects/:slug". All three bring their own
-  // header/frame/footer and never fall into the legacy green shell. Every
-  // other legacy route keeps the original shell below.
+  // Self-contained V2 surfaces. "/" is the Cobalt Forest Workshop
+  // homepage, with "/work", "/lab", and "/about" as its routed sibling
+  // pages (its own `.cfw` token scope, shared CobaltHeader/CobaltFooter).
+  // The frozen continuous archive is preserved at "/archive", and it
+  // still owns the canonical project detail routes "/projects/:slug".
+  // Every other legacy route keeps the original shell below.
+  //
+  // NOTE: this claims "/work" and "/about" for the Cobalt pages, which
+  // shadows the legacy classic-site WorkPage/AboutPage below — those
+  // components and their data are untouched, just no longer reachable by
+  // URL. A deliberate, confirmed trade-off (no route can serve two
+  // different pages at once) rather than an oversight.
   if (
     location.pathname === "/" ||
     location.pathname === "/archive" ||
+    location.pathname === "/work" ||
+    location.pathname === "/lab" ||
+    location.pathname === "/about" ||
     location.pathname.startsWith("/projects/")
   ) {
     return (
       <Routes>
         <Route path="/" element={<CobaltHomePage />} />
         <Route path="/archive" element={<ArchivePage />} />
+        <Route path="/work" element={<CobaltWorkPage />} />
+        <Route path="/lab" element={<CobaltLabPage />} />
+        <Route path="/about" element={<CobaltAboutPage />} />
         <Route path="/projects/:slug" element={<ArchiveProjectPage />} />
         {/* any other /projects/* shape → back to the archive */}
         <Route path="*" element={<ArchivePage />} />

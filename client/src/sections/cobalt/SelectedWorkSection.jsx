@@ -2,13 +2,14 @@ import { cobalt } from "../../data/profile";
 import { homepageFlagshipProjects } from "../../data/projects";
 import "./SelectedWorkSection.css";
 
-// SELECTED WORK — three flagship project cards (data/projects.js
-// `homepageFlagship`). The first card takes a wider "feature" span on
-// desktop; the other two share a row with alternating screenshot crops
-// and a pinned paper index tag, so the row reads as a story strip rather
-// than three identical SaaS cards. Cards are a real link when a
-// canonical URL exists, otherwise a static record (no dead "#" links —
-// data-integrity rule).
+// SELECTED WORK — the /work page's flagship subsection (data/projects.js
+// `homepageFlagship`, currently 3 records). Full-width alternating rows,
+// not a repeated card template: each screenshot sits directly on the
+// canvas at real size, text opposite it, no bordered box wrapping the
+// whole row. Direction alternates project to project so the sequence
+// reads as an edited strip. Cards are a real link when a canonical URL
+// exists, otherwise a static record (no dead "#" links — data-integrity
+// rule).
 
 const { selectedWork } = cobalt;
 
@@ -26,7 +27,7 @@ function SelectedWorkSection() {
   return (
     <section
       className="cfw-work cfw-section"
-      id="selected-work"
+      id="flagship-work"
       aria-labelledby="work-title"
     >
       <div className="cfw-frame">
@@ -38,71 +39,57 @@ function SelectedWorkSection() {
           <p className="cfw-section__intro">{selectedWork.intro}</p>
         </div>
 
-        <ol className="cfw-work__grid">
+        <ol className="cfw-work__list">
           {homepageFlagshipProjects.map((project, i) => {
             const ext = primaryExternal(project);
             return (
               <li
-                className="cfw-work__card"
+                className="cfw-work__row"
                 key={project.slug}
-                data-feature={i === 0 ? "true" : "false"}
-                data-crop={i % 2 === 1 ? "tall" : "wide"}
+                data-align={i % 2 === 1 ? "reverse" : "forward"}
               >
-                <a className="cfw-work__link" href={projectHref(project)}>
-                  {i === 0 ? (
-                    <span className="cfw-work__index cfw-meta">
-                      {project.index}
-                    </span>
+                <a className="cfw-work__media" href={projectHref(project)}>
+                  {project.image ? (
+                    <img
+                      src={project.image}
+                      alt={project.imageAlt ?? `${project.title} screenshot`}
+                      loading="lazy"
+                      decoding="async"
+                    />
                   ) : (
-                    <span className="cfw-work__index-tag cfw-paper cfw-meta">
-                      {project.index}
+                    <span className="cfw-work__media-empty" aria-hidden="true">
+                      {project.title}
                     </span>
                   )}
-
-                  <span className="cfw-work__media">
-                    {project.image ? (
-                      <img
-                        src={project.image}
-                        alt={project.imageAlt ?? `${project.title} screenshot`}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    ) : (
-                      <span className="cfw-work__media-empty" aria-hidden="true">
-                        {project.title}
-                      </span>
-                    )}
-                  </span>
-
-                  <span className="cfw-work__body">
-                    <span className="cfw-work__eyebrow cfw-meta">
-                      {project.eyebrow}
-                    </span>
-                    <span className="cfw-work__title">{project.title}</span>
-                    <span className="cfw-work__summary">{project.summary}</span>
-
-                    {project.technologies?.length > 0 && (
-                      <span className="cfw-work__tags">
-                        {project.technologies.slice(0, 4).map((tech) => (
-                          <span className="cfw-work__tag" key={tech}>
-                            {tech}
-                          </span>
-                        ))}
-                      </span>
-                    )}
-
-                    <span className="cfw-work__affordance">
-                      <span className="cfw-work__cta">
-                        Open case <span aria-hidden="true">→</span>
-                      </span>
-                      {ext && (
-                        <span className="cfw-work__ext cfw-meta">
-                          {ext.label} available
-                        </span>
-                      )}
-                    </span>
-                  </span>
                 </a>
+
+                <div className="cfw-work__copy">
+                  <span className="cfw-work__index cfw-meta">
+                    {project.index}
+                  </span>
+                  <span className="cfw-work__eyebrow cfw-meta">
+                    {project.eyebrow}
+                  </span>
+                  <h3 className="cfw-work__title">{project.title}</h3>
+                  <p className="cfw-work__summary">{project.summary}</p>
+
+                  {project.technologies?.length > 0 && (
+                    <p className="cfw-work__tags">
+                      {project.technologies.slice(0, 5).join(" · ")}
+                    </p>
+                  )}
+
+                  <div className="cfw-work__affordance">
+                    <a className="cfw-btn cfw-btn--ghost" href={projectHref(project)}>
+                      Open case study <span aria-hidden="true">→</span>
+                    </a>
+                    {ext && (
+                      <span className="cfw-work__ext cfw-meta">
+                        {ext.label} available
+                      </span>
+                    )}
+                  </div>
+                </div>
               </li>
             );
           })}

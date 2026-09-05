@@ -1,21 +1,25 @@
-/* Cobalt Forest Workshop — Contact. Structural pass. */
+/* Cobalt Forest Workshop — Contact. A compact closing strip: no full-bleed
+   background block, no facts grid, no boxed action panel — just the
+   headline and the four direct links, sitting on the page canvas. */
 
 .cfw-contact {
-  background-color: var(--cfw-cobalt-deep);
+  padding-block: clamp(2.5rem, 2rem + 3vw, 4rem);
   border-block-start: 1px solid var(--cfw-line);
 }
 
-.cfw-contact__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: clamp(2rem, 1rem + 5vw, 4.5rem);
-  align-items: start;
+.cfw-contact__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--cfw-space-lg);
 }
 
 .cfw-contact__lead {
   display: flex;
   flex-direction: column;
-  gap: var(--cfw-space-md);
+  gap: var(--cfw-space-sm);
+  flex: 1 1 26rem;
 }
 .cfw-contact__headline {
   position: relative;
@@ -24,76 +28,35 @@
 }
 .cfw-contact__body {
   color: var(--cfw-text-soft);
-  max-width: 50ch;
+  max-width: 46ch;
 }
 
-.cfw-contact__facts {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cfw-space-sm);
-  margin-block-start: var(--cfw-space-2xs);
-}
-.cfw-contact__fact {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.cfw-contact__fact dd {
-  margin: 0;
-  color: var(--cfw-text);
-  font-size: var(--cfw-text-sm);
-}
-
-/* ---- Actions ---- */
-.cfw-contact__actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cfw-space-md);
-}
-.cfw-contact__primary {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: var(--cfw-space-md);
-  border: 1px solid var(--cfw-line-strong);
-  border-radius: var(--cfw-radius-md);
-  background-color: var(--cfw-night-soft);
-  transition:
-    border-color var(--cfw-dur-micro) var(--cfw-ease),
-    transform var(--cfw-dur-micro) var(--cfw-ease);
-}
-.cfw-contact__primary:hover {
-  border-color: var(--cfw-amber);
-  transform: translateY(-2px);
-}
-.cfw-contact__primary-val {
-  font-family: var(--cfw-font-display);
-  font-size: var(--cfw-text-h4);
-  color: var(--cfw-text);
-  word-break: break-word;
-}
-
-.cfw-contact__secondary {
+.cfw-contact__links {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--cfw-space-md);
+  gap: var(--cfw-space-lg);
   font-family: var(--cfw-font-mono);
   font-size: var(--cfw-text-sm);
+}
+.cfw-contact__link {
+  color: var(--cfw-text-soft);
+  border-bottom: 1px solid var(--cfw-line-strong);
+  padding-block-end: 2px;
+  transition: color var(--cfw-dur-micro) var(--cfw-ease),
+    border-color var(--cfw-dur-micro) var(--cfw-ease);
+}
+.cfw-contact__link:hover {
+  color: var(--cfw-amber);
+  border-color: var(--cfw-amber);
+}
+.cfw-contact__link--primary {
+  color: var(--cfw-text);
+  font-weight: 600;
 }
 
 .cfw-contact__sign {
-  margin-block-start: var(--cfw-kicker-gap);
+  margin-block-start: var(--cfw-space-lg);
   font-family: var(--cfw-font-mono);
   font-size: var(--cfw-text-sm);
   color: var(--cfw-text-mute);
-}
-
-/* ---- Responsive ---- */
-@media (max-width: 800px) {
-  .cfw-contact__grid {
-    grid-template-columns: 1fr;
-  }
-  .cfw-contact__actions {
-    max-width: 32rem;
-  }
 }

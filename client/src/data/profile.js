@@ -76,11 +76,20 @@ export const cobalt = {
     primaryCta: { label: "See selected work", href: "#selected-work" },
     secondaryCta: { label: "Get in touch", href: "#contact" },
   },
+  // Homepage gateway teaser — a short pointer to the flagship spotlight,
+  // not the full archive (that intro lives in `work` below).
   selectedWork: {
     kicker: "Selected work",
     title: "Three I'd show you first",
     intro:
       "Bigger builds where the idea, the system design, and the finish all had to hold together.",
+  },
+  // /work — the full project archive page.
+  work: {
+    kicker: "Work",
+    title: "The full archive",
+    intro:
+      "The larger builds get the full case-file treatment below; everything else — utilities, one-sitting builds, smaller tools — sits in the archive beneath them.",
   },
   lab: {
     kicker: "Lab / side quests",
@@ -88,13 +97,45 @@ export const cobalt = {
     intro:
       "Utilities, prototypes, and one-sitting builds — where new ideas get tried before they earn a bigger project.",
   },
+  // Compact homepage doors into /work, /lab, /about — short editorial
+  // labels only; the live counts each door shows are computed from the
+  // real project data at render time, never hard-coded here.
+  gateways: {
+    work: {
+      label: "Work",
+      note: "Flagship builds and the full project archive",
+      cta: "Browse the work",
+    },
+    lab: {
+      label: "Lab",
+      note: "Smaller experiments and side quests",
+      cta: "Peek inside",
+    },
+    about: {
+      label: "About",
+      note: "The human behind the projects",
+      cta: "Read more",
+    },
+  },
   about: {
     kicker: "About the human",
     title: "I learn by shipping, not by finishing tutorials",
-    paragraphs: [
-      "I'm a computer-science undergraduate who got into this because building things is genuinely fun — the part where a strange idea turns into something that runs.",
-      "I think in systems: how the pieces fit, where they'll break, what the person on the other end actually needs. Design and code aren't separate steps for me; they're the same decision made twice.",
-      "Right now I'm going deep on full-stack fundamentals and data structures, and building small tools that remove friction from everyday dev work.",
+    // Editorial notebook sections for the dedicated /about page. Headings
+    // are structural framing, not new biographical claims — the prose
+    // itself is unchanged from the original three paragraphs.
+    sections: [
+      {
+        heading: "Why I build",
+        text: "I'm a computer-science undergraduate who got into this because building things is genuinely fun — the part where a strange idea turns into something that runs.",
+      },
+      {
+        heading: "How I work",
+        text: "I think in systems: how the pieces fit, where they'll break, what the person on the other end actually needs. Design and code aren't separate steps for me; they're the same decision made twice.",
+      },
+      {
+        heading: "Right now",
+        text: "Right now I'm going deep on full-stack fundamentals and data structures, and building small tools that remove friction from everyday dev work.",
+      },
     ],
     // "Core fuels" — note/paper treatment. Grounded in the frozen `about`
     // metadata, just phrased as personal traits rather than status labels.

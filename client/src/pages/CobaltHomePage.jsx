@@ -1,21 +1,28 @@
-import { useEffect } from "react";
-import usePageMeta from "../lib/usePageMeta";
-import CobaltHeader from "../layout/cobalt/CobaltHeader";
-import CobaltFooter from "../layout/cobalt/CobaltFooter";
-import HeroSection from "../sections/cobalt/HeroSection";
-import SelectedWorkSection from "../sections/cobalt/SelectedWorkSection";
-import LabSection from "../sections/cobalt/LabSection";
-import AboutSection from "../sections/cobalt/AboutSection";
-import ContactSection from "../sections/cobalt/ContactSection";
-
+// Token/base imports come first so their rules land earliest in the
+// bundled stylesheet — every section's own CSS (imported below) then
+// wins any equal-specificity override (e.g. a section's own
+// `padding-block-start` against the shared `.cfw-section` rule) by
+// normal cascade order, instead of silently losing to it.
 import "../styles/cobalt/tokens.css";
 import "../styles/cobalt/base.css";
 
-// Cobalt Forest Workshop — the V2 homepage. Self-contained: its own
-// header, footer, and `.cfw` token scope, entirely separate from the
-// frozen `.archive` system (still live at /archive). A late-night
-// builder's workshop in the woods — deep cobalt / forest-night
-// atmosphere, warm paper layers, small saffron accents.
+import usePageMeta from "../lib/usePageMeta";
+import useCobaltRoute from "../lib/useCobaltRoute";
+import CobaltHeader from "../layout/cobalt/CobaltHeader";
+import CobaltFooter from "../layout/cobalt/CobaltFooter";
+import HeroSection from "../sections/cobalt/HeroSection";
+import FlagshipGatewaySection from "../sections/cobalt/FlagshipGatewaySection";
+import GatewaysSection from "../sections/cobalt/GatewaysSection";
+import ContactSection from "../sections/cobalt/ContactSection";
+
+// Cobalt Forest Workshop — the workshop ENTRANCE, not the full portfolio.
+// Self-contained: its own header, footer, and `.cfw` token scope,
+// entirely separate from the frozen `.archive` system (still live at
+// /archive). Deliberately short and dense: Hero, one flagship spotlight,
+// compact doors into /work, /lab, /about, and a slim closing strip. The
+// full Selected Work archive, Lab bench, and About essay each moved to
+// their own routed page — see CobaltWorkPage / CobaltLabPage /
+// CobaltAboutPage.
 
 function CobaltHomePage() {
   usePageMeta(
@@ -23,14 +30,7 @@ function CobaltHomePage() {
     "Farhaan Khan — full-stack developer. Full-stack apps, developer tools, and AI-assisted systems, built to actually get used.",
   );
 
-  // Paint the forest-night ground on <body>/#root only while this route is
-  // mounted, so the legacy routes keep their own #15110f ground.
-  useEffect(() => {
-    document.body.dataset.cfwRoute = "true";
-    return () => {
-      delete document.body.dataset.cfwRoute;
-    };
-  }, []);
+  useCobaltRoute();
 
   return (
     <div className="cfw">
@@ -42,9 +42,8 @@ function CobaltHomePage() {
 
       <main id="cfw-main">
         <HeroSection />
-        <SelectedWorkSection />
-        <LabSection />
-        <AboutSection />
+        <FlagshipGatewaySection />
+        <GatewaysSection />
         <ContactSection />
       </main>
 

@@ -1,20 +1,21 @@
 /* Cobalt Forest Workshop — Hero. First visual composition pass. */
 
 .cfw-hero {
-  /* Close to a full opening viewport, but content-driven — never forced.
-     Content is vertically centered within this floor, so a laptop/large
-     desktop viewport never reads as a half-empty screen. */
-  min-height: min(86vh, 760px);
+  /* The hero is the dominant opening statement — close to a full
+     viewport on desktop — but still content-driven, never a hard-forced
+     100vh: content is vertically centered within this floor, so a
+     laptop/large desktop viewport never reads as half-empty. */
+  min-height: min(90vh, 840px);
   display: flex;
   align-items: center;
-  padding-block-start: clamp(2.5rem, 2rem + 4vw, 5rem);
+  padding-block-start: clamp(2rem, 1.5rem + 3vw, 4rem);
 }
 
 .cfw-hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   align-items: start;
-  gap: clamp(2rem, 1rem + 6vw, 5.5rem);
+  gap: clamp(2.5rem, 1rem + 7vw, 6.5rem);
   width: 100%;
 }
 
@@ -58,9 +59,9 @@
    footprint stays well under the copy column at every breakpoint. */
 .cfw-hero__photo {
   position: relative;
-  margin: 0 0 0 clamp(0.5rem, 2vw, 1.5rem);
-  width: clamp(7.25rem, 4.5rem + 10vw, 10.5rem);
-  padding: 0.45rem 0.45rem 1rem;
+  margin: 0 0 0 clamp(0.5rem, 2vw, 2rem);
+  width: clamp(9rem, 5rem + 13vw, 14.5rem);
+  padding: 0.55rem 0.55rem 1.2rem;
   border-radius: 2px;
   transform: rotate(-2.5deg);
 }
@@ -147,7 +148,7 @@
     flex-direction: column;
   }
   .cfw-hero__photo {
-    width: clamp(6rem, 30vw, 8rem);
+    width: clamp(6.5rem, 32vw, 9rem);
   }
   .cfw-hero .cfw-ink-accent {
     width: 2rem;

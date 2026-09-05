@@ -54,6 +54,9 @@
 .cfw-header__nav-link:hover {
   color: var(--cfw-amber);
 }
+.cfw-header__nav-link--active {
+  color: var(--cfw-text);
+}
 
 /* ---- Utilities ---- */
 .cfw-header__utils {
@@ -136,6 +139,9 @@
     font-size: var(--cfw-text-h4);
     color: var(--cfw-text);
     border-bottom: 1px solid var(--cfw-line);
+  }
+  .cfw-menu__link--active {
+    color: var(--cfw-saffron);
   }
   .cfw-menu__utils {
     display: flex;

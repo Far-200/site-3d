@@ -1,16 +1,13 @@
-import { cobalt } from "../../data/profile";
 import { homepageLabProjects } from "../../data/projects";
 import "./LabSection.css";
 
-// LAB / SIDE QUESTS — compact band of the non-flagship records
-// (data/projects.js, everything without `homepageFlagship`). Each tile
-// reads as a pinned index card: title, one-line descriptor, stamped
-// stack tags, and a link out when a canonical URL exists. A few tiles
-// carry a barely-there rotation for controlled imperfection — never
-// enough to hurt scanability. Reads as active builder energy, not a
-// second portfolio grid.
-
-const { lab } = cobalt;
+// LAB / SIDE QUESTS — the /lab page's bench of non-flagship records
+// (data/projects.js, everything without `homepageFlagship`). Laid out as
+// a CSS multi-column flow rather than a uniform grid, so item heights
+// stagger naturally into something closer to a corkboard than a
+// dashboard. Every third slip gets a paper treatment for variety among
+// the pine cards. A few items carry a barely-there rotation — controlled
+// imperfection, reset on hover/focus, never enough to hurt scanability.
 
 function labLink(project) {
   if (project.liveUrl) return { label: "Live ↗", href: project.liveUrl };
@@ -20,32 +17,26 @@ function labLink(project) {
 
 function LabSection() {
   return (
-    <section className="cfw-lab cfw-section" id="lab" aria-labelledby="lab-title">
+    <section className="cfw-lab cfw-section" aria-label="Lab bench">
       <div className="cfw-frame">
-        <div className="cfw-section__head">
-          <p className="cfw-meta">{lab.kicker}</p>
-          <h2 id="lab-title" className="cfw-section__title">
-            {lab.title}
-          </h2>
-          <p className="cfw-section__intro">{lab.intro}</p>
-        </div>
-
-        <ul className="cfw-lab__strip">
-          {homepageLabProjects.map((project) => {
+        <ul className="cfw-lab__bench">
+          {homepageLabProjects.map((project, i) => {
             const link = labLink(project);
             const descriptor =
               project.eyebrow ??
               (project.builtBecause
                 ? `Built because ${project.builtBecause}`
                 : null);
+            const isPaper = i % 3 === 2;
 
             return (
-              <li className="cfw-lab__item" key={project.slug}>
+              <li
+                className={`cfw-lab__item${isPaper ? " cfw-paper" : ""}`}
+                key={project.slug}
+              >
                 <span className="cfw-lab__pin" aria-hidden="true" />
                 <p className="cfw-lab__name">{project.shortTitle ?? project.title}</p>
-                {descriptor && (
-                  <p className="cfw-lab__desc">{descriptor}</p>
-                )}
+                {descriptor && <p className="cfw-lab__desc">{descriptor}</p>}
 
                 {project.technologies?.length > 0 && (
                   <p className="cfw-lab__tags">

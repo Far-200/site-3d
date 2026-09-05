@@ -65,15 +65,18 @@
   --cfw-font-mono: ui-monospace, "Cascadia Mono", "SF Mono", "Segoe UI Mono",
     Consolas, "Liberation Mono", monospace;
 
-  /* ---- Type scale — clamp()-driven, comfortable at 100% zoom ---- */
+  /* ---- Type scale — clamp()-driven, comfortable at 100% zoom ----
+     Re-tuned in the architecture-correction pass: the first pass read as
+     undersized on real desktop viewports. Targets at ~1536px: display
+     ~100px, section/project headings ~60px, lead ~28px, body ~19-20px. */
   --cfw-text-meta: clamp(0.78rem, 0.74rem + 0.18vw, 0.88rem);
-  --cfw-text-sm: clamp(0.9rem, 0.87rem + 0.16vw, 1rem);
-  --cfw-text-body: clamp(1rem, 0.96rem + 0.24vw, 1.13rem);
-  --cfw-text-lead: clamp(1.15rem, 1.04rem + 0.5vw, 1.45rem);
-  --cfw-text-h4: clamp(1.05rem, 0.99rem + 0.3vw, 1.2rem);
-  --cfw-text-h3: clamp(1.3rem, 1.13rem + 0.85vw, 1.75rem);
-  --cfw-text-h2: clamp(1.9rem, 1.55rem + 1.6vw, 2.7rem);
-  --cfw-text-display: clamp(2.6rem, 1.9rem + 3.4vw, 4.6rem);
+  --cfw-text-sm: clamp(0.92rem, 0.88rem + 0.18vw, 1.05rem);
+  --cfw-text-body: clamp(1.05rem, 1rem + 0.3vw, 1.25rem);
+  --cfw-text-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.75rem);
+  --cfw-text-h4: clamp(1.1rem, 1.02rem + 0.35vw, 1.3rem);
+  --cfw-text-h3: clamp(1.4rem, 1.15rem + 1.2vw, 2.1rem);
+  --cfw-text-h2: clamp(2.2rem, 1.6rem + 2.6vw, 4rem);
+  --cfw-text-display: clamp(3rem, 2rem + 4.5vw, 6.5rem);
 
   --cfw-leading-tight: 1.08;
   --cfw-leading-snug: 1.3;
@@ -92,12 +95,15 @@
   --cfw-space-2xl: 6.5rem;
 
   /* ---- Shared layout frame ---- */
-  --cfw-content-max: 1180px;
-  --cfw-gutter: clamp(1.25rem, 5vw, 5rem);
+  --cfw-content-max: 1280px;
+  /* Wider frame for compositions that need the screenshot/portrait to
+     carry real visual weight (hero, flagship gateway). */
+  --cfw-content-wide: 1440px;
+  --cfw-gutter: clamp(1.25rem, 5vw, 4.5rem);
   --cfw-header-h: clamp(3.75rem, 3.2rem + 1.4vw, 4.75rem);
 
   /* ---- Section rhythm — content-driven, never forced to 100vh ---- */
-  --cfw-section-py: clamp(3.5rem, 3rem + 6vw, 7rem);
+  --cfw-section-py: clamp(2.75rem, 2rem + 5vw, 5.5rem);
   --cfw-kicker-gap: clamp(1.5rem, 1rem + 2.5vw, 2.75rem);
 
   /* ---- Radii ---- */

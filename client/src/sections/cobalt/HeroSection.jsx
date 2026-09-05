@@ -14,7 +14,7 @@ const { hero } = cobalt;
 function HeroSection() {
   return (
     <section className="cfw-hero cfw-section" id="top" aria-labelledby="hero-title">
-      <div className="cfw-frame cfw-hero__grid">
+      <div className="cfw-frame cfw-frame--wide cfw-hero__grid">
         <div className="cfw-hero__lead">
           <p className="cfw-hero__kicker cfw-meta">{hero.kicker}</p>
 

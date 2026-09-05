@@ -1,84 +1,41 @@
-/* Cobalt Forest Workshop — Selected Work. Structural pass. */
+/* Cobalt Forest Workshop — Selected Work (the /work page's flagship
+   subsection). Full-width alternating rows; screenshots sit directly on
+   the canvas at real size rather than inside a padded card. */
 
-.cfw-work__grid {
+.cfw-work__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.cfw-work__row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1.25rem, 0.5rem + 2.5vw, 2.25rem);
-}
-
-/* The feature card spans the full row and lays out side-by-side. */
-.cfw-work__card[data-feature="true"] {
-  grid-column: 1 / -1;
-}
-
-.cfw-work__link {
-  display: grid;
-  grid-template-rows: auto auto 1fr;
-  height: 100%;
-  padding: var(--cfw-space-md);
-  border: 1px solid var(--cfw-line);
-  border-radius: var(--cfw-radius-lg);
-  background-color: var(--cfw-night-soft);
-  transition:
-    border-color var(--cfw-dur-state) var(--cfw-ease),
-    transform var(--cfw-dur-state) var(--cfw-ease),
-    background-color var(--cfw-dur-state) var(--cfw-ease);
-}
-.cfw-work__link:hover {
-  border-color: var(--cfw-cobalt-line);
-  background-color: var(--cfw-cobalt-deep);
-  transform: translateY(-3px);
-}
-
-.cfw-work__card[data-feature="true"] .cfw-work__link {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  grid-template-rows: auto 1fr;
-  column-gap: clamp(1.5rem, 0.5rem + 3vw, 3rem);
-  align-items: start;
+  align-items: center;
+  gap: clamp(2rem, 1rem + 4vw, 4rem);
+  padding-block: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
 }
-.cfw-work__card[data-feature="true"] .cfw-work__index {
-  grid-column: 1 / -1;
+.cfw-work__row + .cfw-work__row {
+  border-block-start: 1px solid var(--cfw-line);
 }
-.cfw-work__card[data-feature="true"] .cfw-work__media {
-  grid-row: 2;
+.cfw-work__row[data-align="reverse"] .cfw-work__media {
+  order: 2;
 }
-
-.cfw-work__index {
-  display: block;
-  margin-block-end: var(--cfw-space-sm);
-  color: var(--cfw-saffron);
+.cfw-work__row[data-align="reverse"] .cfw-work__copy {
+  order: 1;
 }
 
-/* Pinned paper index tag — the story-strip's small workshop motif on the
-   two supporting cards (the feature card keeps the plain mono index). */
-.cfw-work__index-tag {
-  display: inline-block;
-  align-self: flex-start;
-  margin-block-end: var(--cfw-space-sm);
-  padding: 0.2em 0.55em;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  color: var(--cfw-ink);
-  transform: rotate(-2deg);
-}
-.cfw-work__card:nth-of-type(even) .cfw-work__index-tag {
-  transform: rotate(1.5deg);
-}
-
-/* ---- Media ---- */
 .cfw-work__media {
   display: block;
   overflow: hidden;
-  border-radius: var(--cfw-radius-md);
-  border: 1px solid var(--cfw-line);
-  background-color: var(--cfw-charcoal);
+  border: 1px solid var(--cfw-line-strong);
   aspect-ratio: 16 / 10;
-  margin-block-end: var(--cfw-space-md);
+  background-color: var(--cfw-charcoal);
+  box-shadow: var(--cfw-shadow-sm);
+  transition: border-color var(--cfw-dur-state) var(--cfw-ease);
 }
-/* Varied screenshot crop between the two supporting cards, so the row
-   reads as an edited strip rather than three identical thumbnails. */
-.cfw-work__card[data-feature="false"][data-crop="tall"] .cfw-work__media {
-  aspect-ratio: 4 / 3;
+.cfw-work__media:hover,
+.cfw-work__media:focus-visible {
+  border-color: var(--cfw-cobalt-line);
 }
 .cfw-work__media img {
   width: 100%;
@@ -93,71 +50,54 @@
   padding: var(--cfw-space-md);
   text-align: center;
   font-family: var(--cfw-font-display);
-  font-size: var(--cfw-text-h4);
+  font-size: var(--cfw-text-h3);
   color: var(--cfw-text-mute);
 }
 
-/* ---- Body ---- */
-.cfw-work__body {
+.cfw-work__copy {
   display: flex;
   flex-direction: column;
-  gap: var(--cfw-space-xs);
+  gap: 0.35em;
+}
+.cfw-work__index {
+  color: var(--cfw-saffron);
 }
 .cfw-work__title {
   font-family: var(--cfw-font-display);
-  font-size: var(--cfw-text-h3);
+  font-size: var(--cfw-text-h2);
   color: var(--cfw-text);
   line-height: var(--cfw-leading-tight);
+  margin-block-start: 0.15em;
 }
 .cfw-work__summary {
   color: var(--cfw-text-soft);
-  font-size: var(--cfw-text-sm);
-  max-width: 54ch;
+  max-width: 50ch;
+  margin-block-start: 0.4em;
 }
-
 .cfw-work__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--cfw-space-2xs);
-  margin-block-start: var(--cfw-space-2xs);
-}
-.cfw-work__tag {
   font-family: var(--cfw-font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  padding: 0.3em 0.6em;
-  border: 1px solid var(--cfw-line);
-  border-radius: var(--cfw-radius-sm);
-  color: var(--cfw-text-soft);
+  font-size: var(--cfw-text-sm);
+  color: var(--cfw-text-mute);
+  margin-block-start: 0.3em;
 }
-
 .cfw-work__affordance {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--cfw-space-sm);
-  margin-block-start: auto;
-  padding-block-start: var(--cfw-space-sm);
-}
-.cfw-work__cta {
-  font-family: var(--cfw-font-mono);
-  font-size: var(--cfw-text-sm);
-  color: var(--cfw-amber);
+  align-items: center;
+  gap: var(--cfw-space-md);
+  margin-block-start: var(--cfw-space-sm);
 }
 .cfw-work__ext {
   font-size: 0.7rem;
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 720px) {
-  .cfw-work__grid {
+@media (max-width: 800px) {
+  .cfw-work__row {
     grid-template-columns: 1fr;
   }
-  .cfw-work__card[data-feature="true"] .cfw-work__link {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr;
-  }
-  .cfw-work__card[data-feature="true"] .cfw-work__media {
-    grid-row: auto;
+  .cfw-work__row[data-align="reverse"] .cfw-work__media,
+  .cfw-work__row[data-align="reverse"] .cfw-work__copy {
+    order: 0;
   }
 }

@@ -472,6 +472,11 @@ export const homepageFlagshipProjects = projects.filter(
 );
 export const homepageLabProjects = projects.filter((p) => !p.homepageFlagship);
 
+// The single flagship spotlight used by the Cobalt homepage's gateway
+// composition — the one record flagged `featured` (distinct from the three
+// `homepageFlagship` cards on /work). Currently "The Last Website".
+export const flagshipProject = projects.find((p) => p.featured) ?? null;
+
 export function getProjectBySlug(slug) {
   return projects.find((p) => p.slug === slug) ?? null;
 }
