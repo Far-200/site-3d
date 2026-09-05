@@ -18,6 +18,7 @@
   gap: var(--cfw-space-md);
 }
 .cfw-contact__headline {
+  position: relative;
   font-size: var(--cfw-text-h2);
   max-width: 16ch;
 }

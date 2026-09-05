@@ -9,7 +9,10 @@ function CobaltFooter() {
   return (
     <footer className="cfw-footer">
       <div className="cfw-frame cfw-footer__inner">
-        <span className="cfw-footer__mark">{footer.domain}</span>
+        <span className="cfw-footer__mark">
+          <span className="cfw-mark" aria-hidden="true" />
+          {footer.domain}
+        </span>
 
         <ul className="cfw-footer__links">
           <li>

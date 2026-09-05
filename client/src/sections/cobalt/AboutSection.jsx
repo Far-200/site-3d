@@ -1,13 +1,14 @@
-import { cobalt } from "../../data/profile";
+import { cobalt, about as frozenAbout } from "../../data/profile";
 import Portrait from "../../components/Portrait";
 import "./AboutSection.css";
 
-// ABOUT THE HUMAN — personal, grounded. Structural pass: intro prose left,
-// a small portrait + "core fuels" note list right. The fuels get a
-// note/paper treatment later; for now they are a clean bordered list with
-// real hierarchy.
+// ABOUT THE HUMAN — personal, grounded. Intro prose left; a small pinned
+// portrait, a margin note, and the "core fuels" list on the right. The
+// margin note reuses the frozen archive's real "EXPLORING" fact rather
+// than inventing a new personal claim (data-integrity rule).
 
 const { about } = cobalt;
+const exploring = frozenAbout.meta.find((row) => row.label === "EXPLORING");
 
 function AboutSection() {
   return (
@@ -22,17 +23,27 @@ function AboutSection() {
           <h2 id="about-title" className="cfw-about__title">
             {about.title}
           </h2>
-          {about.paragraphs.map((para) => (
-            <p className="cfw-about__para" key={para.slice(0, 24)}>
-              {para}
-            </p>
-          ))}
+          <div className="cfw-about__notes">
+            {about.paragraphs.map((para) => (
+              <p className="cfw-about__para" key={para.slice(0, 24)}>
+                {para}
+              </p>
+            ))}
+          </div>
         </div>
 
         <aside className="cfw-about__aside" aria-label="Core fuels">
-          <figure className="cfw-about__portrait">
-            <Portrait variant="about" />
-          </figure>
+          <div className="cfw-about__portrait-row">
+            <figure className="cfw-about__portrait">
+              <Portrait variant="about" />
+            </figure>
+            {exploring && (
+              <p className="cfw-about__margin-note">
+                <span className="cfw-meta">Currently exploring</span>
+                {exploring.value}
+              </p>
+            )}
+          </div>
 
           <p className="cfw-meta cfw-about__fuels-label">Core fuels</p>
           <ul className="cfw-about__fuels">

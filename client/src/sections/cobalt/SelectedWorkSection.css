@@ -49,6 +49,22 @@
   color: var(--cfw-saffron);
 }
 
+/* Pinned paper index tag — the story-strip's small workshop motif on the
+   two supporting cards (the feature card keeps the plain mono index). */
+.cfw-work__index-tag {
+  display: inline-block;
+  align-self: flex-start;
+  margin-block-end: var(--cfw-space-sm);
+  padding: 0.2em 0.55em;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--cfw-ink);
+  transform: rotate(-2deg);
+}
+.cfw-work__card:nth-of-type(even) .cfw-work__index-tag {
+  transform: rotate(1.5deg);
+}
+
 /* ---- Media ---- */
 .cfw-work__media {
   display: block;
@@ -58,6 +74,11 @@
   background-color: var(--cfw-charcoal);
   aspect-ratio: 16 / 10;
   margin-block-end: var(--cfw-space-md);
+}
+/* Varied screenshot crop between the two supporting cards, so the row
+   reads as an edited strip rather than three identical thumbnails. */
+.cfw-work__card[data-feature="false"][data-crop="tall"] .cfw-work__media {
+  aspect-ratio: 4 / 3;
 }
 .cfw-work__media img {
   width: 100%;

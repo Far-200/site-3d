@@ -1,8 +1,10 @@
-/* Cobalt Forest Workshop — Hero. Structural pass. */
+/* Cobalt Forest Workshop — Hero. First visual composition pass. */
 
 .cfw-hero {
-  /* Close to a full opening viewport, but content-driven — never forced. */
-  min-height: min(88vh, 780px);
+  /* Close to a full opening viewport, but content-driven — never forced.
+     Content is vertically centered within this floor, so a laptop/large
+     desktop viewport never reads as a half-empty screen. */
+  min-height: min(86vh, 760px);
   display: flex;
   align-items: center;
   padding-block-start: clamp(2.5rem, 2rem + 4vw, 5rem);
@@ -23,6 +25,7 @@
   gap: var(--cfw-space-md);
 }
 .cfw-hero__headline {
+  position: relative;
   font-size: var(--cfw-text-display);
   max-width: 16ch;
 }
@@ -43,8 +46,39 @@
   margin-block-start: var(--cfw-space-xs);
 }
 
-/* ---- Right: bench note ---- */
+/* ---- Right: pinned photo + bench note ---- */
 .cfw-hero__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cfw-space-lg);
+}
+
+/* A small pinned photograph — a workshop detail, not a hero image. Its
+   footprint stays well under the copy column at every breakpoint. */
+.cfw-hero__photo {
+  position: relative;
+  margin: 0 0 0 clamp(0.5rem, 2vw, 1.5rem);
+  width: clamp(7.25rem, 4.5rem + 10vw, 10.5rem);
+  padding: 0.45rem 0.45rem 1rem;
+  border-radius: 2px;
+  transform: rotate(-2.5deg);
+}
+.cfw-hero__photo :is(img, .portrait-plate) {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 22%;
+  filter: saturate(0.94) contrast(1.02);
+}
+.cfw-hero__photo-tape {
+  top: -0.65rem;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+.cfw-hero__bench-card {
   display: flex;
   flex-direction: column;
   gap: var(--cfw-space-md);
@@ -52,6 +86,7 @@
   border: 1px solid var(--cfw-line);
   border-radius: var(--cfw-radius-md);
   background-color: var(--cfw-night-soft);
+  width: 100%;
 }
 .cfw-hero__aside-label {
   color: var(--cfw-saffron);
@@ -82,7 +117,9 @@
   font-size: var(--cfw-text-sm);
 }
 
-/* ---- Responsive ---- */
+/* ---- Responsive ----
+   Above 1600px the grid gap clamp already tops out; below that we only
+   need to re-flow, never re-author, the composition. */
 @media (max-width: 900px) {
   .cfw-hero__grid {
     grid-template-columns: 1fr;
@@ -91,6 +128,30 @@
     min-height: 0;
   }
   .cfw-hero__aside {
-    max-width: 30rem;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--cfw-space-md);
+  }
+  .cfw-hero__photo {
+    margin-inline-start: 0;
+  }
+  .cfw-hero__bench-card {
+    flex: 1 1 16rem;
+    min-width: 16rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .cfw-hero__aside {
+    flex-direction: column;
+  }
+  .cfw-hero__photo {
+    width: clamp(6rem, 30vw, 8rem);
+  }
+  .cfw-hero .cfw-ink-accent {
+    width: 2rem;
+    height: 0.7em;
+    top: -0.7em;
   }
 }

@@ -25,6 +25,9 @@
   line-height: 1.15;
 }
 .cfw-header__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
   font-family: var(--cfw-font-display);
   font-size: var(--cfw-text-h4);
   color: var(--cfw-text);
@@ -70,7 +73,6 @@
 .cfw-header__util--cta {
   padding: 0.5em 0.9em;
   border: 1px solid var(--cfw-line-strong);
-  border-radius: var(--cfw-radius-sm);
   color: var(--cfw-text);
 }
 .cfw-header__util--cta:hover {

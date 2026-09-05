@@ -41,7 +41,10 @@ function CobaltHeader() {
     <header className="cfw-header" data-menu-open={menuOpen ? "true" : "false"}>
       <div className="cfw-frame cfw-header__inner">
         <a className="cfw-header__identity" href="#top" onClick={closeMenu}>
-          <span className="cfw-header__name">{identity.name}</span>
+          <span className="cfw-header__name">
+            <span className="cfw-mark" aria-hidden="true" />
+            {identity.name}
+          </span>
           <span className="cfw-header__role cfw-meta">
             {identity.role} · workshop
           </span>

@@ -16,21 +16,49 @@
 }
 
 .cfw-lab__item {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--cfw-space-2xs);
   padding: var(--cfw-space-md);
   background-color: var(--cfw-pine);
-  transition: background-color var(--cfw-dur-micro) var(--cfw-ease);
+  transition: background-color var(--cfw-dur-micro) var(--cfw-ease),
+    transform var(--cfw-dur-micro) var(--cfw-ease);
 }
 .cfw-lab__item:hover {
   background-color: var(--cfw-pine-soft);
+}
+
+/* Controlled imperfection: a few tiles sit at a barely-there tilt, like
+   index cards not quite squared in a drawer. Kept small enough that it
+   never disturbs scanability or alignment. */
+.cfw-lab__strip li.cfw-lab__item:nth-child(3n + 2) {
+  transform: rotate(-0.4deg);
+}
+.cfw-lab__strip li.cfw-lab__item:nth-child(3n) {
+  transform: rotate(0.35deg);
+}
+.cfw-lab__item:hover {
+  transform: rotate(0deg);
+}
+
+/* A small pinned-card dot in the corner — decorative only. */
+.cfw-lab__pin {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--cfw-saffron);
+  opacity: 0.75;
 }
 
 .cfw-lab__name {
   font-family: var(--cfw-font-display);
   font-size: var(--cfw-text-h4);
   color: var(--cfw-text);
+  padding-inline-start: var(--cfw-space-sm);
 }
 .cfw-lab__desc {
   font-size: var(--cfw-text-sm);
@@ -38,9 +66,17 @@
   max-width: 40ch;
 }
 .cfw-lab__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+}
+.cfw-lab__tag {
   font-family: var(--cfw-font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: 0.03em;
+  padding: 0.2em 0.5em;
+  border: 1px solid var(--cfw-line);
+  border-radius: var(--cfw-radius-sm);
   color: var(--cfw-text-mute);
 }
 .cfw-lab__foot {

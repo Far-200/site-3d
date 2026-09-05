@@ -3,10 +3,12 @@ import { homepageLabProjects } from "../../data/projects";
 import "./LabSection.css";
 
 // LAB / SIDE QUESTS — compact band of the non-flagship records
-// (data/projects.js, everything without `homepageFlagship`). Each is a
-// small tile: title, one-line descriptor, tags, and a link out when a
-// canonical URL exists. Reads as active builder energy, not a second
-// portfolio grid.
+// (data/projects.js, everything without `homepageFlagship`). Each tile
+// reads as a pinned index card: title, one-line descriptor, stamped
+// stack tags, and a link out when a canonical URL exists. A few tiles
+// carry a barely-there rotation for controlled imperfection — never
+// enough to hurt scanability. Reads as active builder energy, not a
+// second portfolio grid.
 
 const { lab } = cobalt;
 
@@ -39,6 +41,7 @@ function LabSection() {
 
             return (
               <li className="cfw-lab__item" key={project.slug}>
+                <span className="cfw-lab__pin" aria-hidden="true" />
                 <p className="cfw-lab__name">{project.shortTitle ?? project.title}</p>
                 {descriptor && (
                   <p className="cfw-lab__desc">{descriptor}</p>
@@ -46,7 +49,11 @@ function LabSection() {
 
                 {project.technologies?.length > 0 && (
                   <p className="cfw-lab__tags">
-                    {project.technologies.slice(0, 3).join(" · ")}
+                    {project.technologies.slice(0, 3).map((tech) => (
+                      <span className="cfw-lab__tag" key={tech}>
+                        {tech}
+                      </span>
+                    ))}
                   </p>
                 )}
 

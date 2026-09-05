@@ -3,11 +3,12 @@ import { homepageFlagshipProjects } from "../../data/projects";
 import "./SelectedWorkSection.css";
 
 // SELECTED WORK — three flagship project cards (data/projects.js
-// `homepageFlagship`). Structural pass: strong hierarchy — index + title
-// lead, then media, summary, tags, and one interaction affordance. The
-// first card takes a wider "feature" span on desktop; the other two share
-// a row. Cards are a real link when a canonical URL exists, otherwise a
-// static record (no dead "#" links — data-integrity rule).
+// `homepageFlagship`). The first card takes a wider "feature" span on
+// desktop; the other two share a row with alternating screenshot crops
+// and a pinned paper index tag, so the row reads as a story strip rather
+// than three identical SaaS cards. Cards are a real link when a
+// canonical URL exists, otherwise a static record (no dead "#" links —
+// data-integrity rule).
 
 const { selectedWork } = cobalt;
 
@@ -45,11 +46,18 @@ function SelectedWorkSection() {
                 className="cfw-work__card"
                 key={project.slug}
                 data-feature={i === 0 ? "true" : "false"}
+                data-crop={i % 2 === 1 ? "tall" : "wide"}
               >
                 <a className="cfw-work__link" href={projectHref(project)}>
-                  <span className="cfw-work__index cfw-meta">
-                    {project.index}
-                  </span>
+                  {i === 0 ? (
+                    <span className="cfw-work__index cfw-meta">
+                      {project.index}
+                    </span>
+                  ) : (
+                    <span className="cfw-work__index-tag cfw-paper cfw-meta">
+                      {project.index}
+                    </span>
+                  )}
 
                   <span className="cfw-work__media">
                     {project.image ? (

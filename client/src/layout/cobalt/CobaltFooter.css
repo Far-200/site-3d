@@ -15,6 +15,9 @@
 }
 
 .cfw-footer__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
   font-family: var(--cfw-font-display);
   font-size: var(--cfw-text-h4);
   color: var(--cfw-text);

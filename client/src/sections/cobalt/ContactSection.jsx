@@ -18,6 +18,7 @@ function ContactSection() {
         <div className="cfw-contact__lead">
           <p className="cfw-meta">{contact.kicker}</p>
           <h2 id="contact-title" className="cfw-contact__headline">
+            <span className="cfw-ink-accent" aria-hidden="true" />
             {contact.headline}
           </h2>
           <p className="cfw-contact__body">{contact.body}</p>
